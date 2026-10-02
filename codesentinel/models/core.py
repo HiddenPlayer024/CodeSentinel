@@ -99,6 +99,9 @@ class Project(BaseModel):
     languages: List[str] = []
     file_count: int = 0
     scanned_files: List[str] = []
+    source_type: str = "local"
+    repository_url: Optional[str] = None
+    ref: Optional[str] = None
 
 class ScanSession(BaseModel):
     id: str

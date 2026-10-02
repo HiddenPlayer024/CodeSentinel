@@ -2,11 +2,23 @@ import os
 from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from typing import Optional
+import tempfile
+import logging
 
 from codesentinel.core.scanner import Scanner
 from codesentinel.models.core import ScanSession
 from codesentinel.ai.verifier import AIVerifier
 from codesentinel.ai.providers import MockProvider, OllamaProvider, OpenAICompatibleProvider
+from codesentinel.api.github_scan import (
+    GitHubArchiveAcquirer, 
+    InvalidGitHubURLError, 
+    ResourceLimitExceededError, 
+    SafeExtractionError, 
+    GitHubUpstreamError
+)
+
+logger = logging.getLogger(__name__)
 
 app = FastAPI(
     title="CodeSentinel API",
@@ -19,9 +31,37 @@ class ScanRequest(BaseModel):
     ai: bool = False
     ai_provider: str = "mock"
 
+class GitHubScanRequest(BaseModel):
+    repository_url: str
+    ref: Optional[str] = None
+    ai: bool = False
+    ai_provider: str = "mock"
+
 @app.get("/health")
 def health_check():
     return {"status": "healthy"}
+
+def _run_scanner_and_ai(target_path: Path, ai: bool, ai_provider: str) -> ScanSession:
+    scanner = Scanner(target_path)
+    session = scanner.run_scan()
+    
+    if ai and session.findings:
+        if ai_provider == "mock":
+            provider = MockProvider()
+        elif ai_provider == "ollama":
+            provider = OllamaProvider()
+        elif ai_provider == "openai":
+            api_key = os.environ.get("OPENAI_API_KEY", "")
+            if not api_key:
+                raise HTTPException(status_code=500, detail="OPENAI_API_KEY environment variable not set")
+            provider = OpenAICompatibleProvider(api_key=api_key, model="gpt-4o-mini")
+        else:
+            raise HTTPException(status_code=400, detail=f"Unknown AI provider '{ai_provider}'")
+            
+        verifier = AIVerifier(provider=provider)
+        verifier.verify_session(session)
+        
+    return session
 
 @app.post("/scan", response_model=ScanSession)
 def perform_scan(request: ScanRequest):
@@ -30,23 +70,56 @@ def perform_scan(request: ScanRequest):
     if not target_path.exists():
         raise HTTPException(status_code=404, detail="Target path does not exist")
         
-    scanner = Scanner(target_path)
-    session = scanner.run_scan()
-    
-    if request.ai and session.findings:
-        if request.ai_provider == "mock":
-            provider = MockProvider()
-        elif request.ai_provider == "ollama":
-            provider = OllamaProvider()
-        elif request.ai_provider == "openai":
-            api_key = os.environ.get("OPENAI_API_KEY", "")
-            if not api_key:
-                raise HTTPException(status_code=500, detail="OPENAI_API_KEY environment variable not set")
-            provider = OpenAICompatibleProvider(api_key=api_key, model="gpt-4o-mini")
-        else:
-            raise HTTPException(status_code=400, detail=f"Unknown AI provider '{request.ai_provider}'")
-            
-        verifier = AIVerifier(provider=provider)
-        verifier.verify_session(session)
+    return _run_scanner_and_ai(target_path, request.ai, request.ai_provider)
+
+@app.post("/scan/github", response_model=ScanSession)
+def perform_github_scan(request: GitHubScanRequest):
+    try:
+        owner, repo = GitHubArchiveAcquirer.validate_url(request.repository_url)
         
-    return session
+        # Determine branch if not provided
+        ref = request.ref
+        if not ref:
+            ref = GitHubArchiveAcquirer.get_default_branch(owner, repo)
+            
+        # Create a temporary workspace
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_path = Path(tmpdir)
+            archive_path = tmp_path / "archive.zip"
+            extract_path = tmp_path / "source"
+            extract_path.mkdir()
+            
+            # Download and extract safely
+            GitHubArchiveAcquirer.download_archive(owner, repo, ref, archive_path)
+            GitHubArchiveAcquirer.safe_extract(archive_path, extract_path)
+            
+            # The archive usually extracts into a top-level directory (e.g., repo-main/)
+            # We just point the scanner at the entire extraction directory.
+            session = _run_scanner_and_ai(extract_path, request.ai, request.ai_provider)
+            
+            # Update metadata to reflect github source instead of random temp dir
+            session.project.source_type = "github"
+            session.project.repository_url = f"https://github.com/{owner}/{repo}"
+            session.project.ref = ref
+            session.project.path = f"{owner}/{repo}" # Mask the underlying temp dir
+            
+            return session
+            
+    except InvalidGitHubURLError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except ResourceLimitExceededError as e:
+        raise HTTPException(status_code=413, detail=str(e))
+    except SafeExtractionError as e:
+        logger.warning(f"Malicious archive rejected: {e}")
+        raise HTTPException(status_code=400, detail="Invalid archive contents rejected for security")
+    except GitHubUpstreamError as e:
+        msg = str(e)
+        if "not found" in msg.lower():
+            raise HTTPException(status_code=404, detail=msg)
+        elif "rate limit" in msg.lower():
+            raise HTTPException(status_code=403, detail=msg)
+        raise HTTPException(status_code=502, detail=msg)
+    except Exception as e:
+        logger.error(f"Unexpected error during github scan: {e}")
+        raise HTTPException(status_code=500, detail="Internal scanning failure")
+

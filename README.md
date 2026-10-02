@@ -65,12 +65,32 @@ Launch the FastAPI backend:
 ```bash
 codesentinel serve --host 127.0.0.1 --port 8000
 ```
-Then send a POST request:
+Then send a POST request to scan a local directory:
 ```bash
 curl -X POST "http://127.0.0.1:8000/scan" \
      -H "Content-Type: application/json" \
      -d '{"target": "./my_project", "ai": true, "ai_provider": "openai"}'
 ```
+
+### Remote GitHub Scanning
+
+You can scan public GitHub repositories securely without cloning them to your local disk. The scanner will fetch an archive, analyze it in memory/temporary storage, and automatically delete the repository source.
+
+```bash
+curl -X POST "http://127.0.0.1:8000/scan/github" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "repository_url": "https://github.com/HiddenPlayer024/CodeSentinel",
+       "ref": "main",
+       "ai": false
+     }'
+```
+
+**Security & Limitations:**
+* **Public Repositories Only:** CodeSentinel will not ask for or store GitHub authentication tokens.
+* **No Code Execution:** CodeSentinel only reads and statically analyzes the repository via AST. It will never run the target repository's build scripts, Makefiles, setup.py, or Docker builds.
+* **Limits:** To protect the service, remote repositories are limited to a 50MB downloaded archive, 120MB extracted size, and a maximum of 5,000 files.
+* **AI Privacy:** AI integration remains optional. If enabled, only narrow file snippets containing findings are sent to the AI context. Complete repository files are never uploaded to the AI provider.
 
 ## 🎓 Examples
 
