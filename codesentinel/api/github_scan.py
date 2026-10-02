@@ -114,8 +114,9 @@ class GitHubArchiveAcquirer:
         Downloads the repository archive to dest_file using codeload.github.com.
         Enforces MAX_ARCHIVE_SIZE limit during download.
         """
-        # Codeload URL gives a standard zip file
-        archive_url = f"https://codeload.github.com/{owner}/{repo}/zip/refs/heads/{urllib.parse.quote(ref)}"
+        # Codeload URL gives a standard zip file.
+        # Using /{ref} directly allows branch names, tags, and commits.
+        archive_url = f"https://codeload.github.com/{owner}/{repo}/zip/{urllib.parse.quote(ref)}"
         
         try:
             with requests.get(
@@ -177,7 +178,7 @@ class GitHubArchiveAcquirer:
                     
                     # Resolve destination and check if it stays within boundary
                     target_path = (dest_dir_resolved / member.filename).resolve()
-                    if not str(target_path).startswith(str(dest_dir_resolved)):
+                    if not target_path.is_relative_to(dest_dir_resolved):
                         raise SafeExtractionError(f"Archive entry attempts to escape destination: {member.filename}")
                         
                     # 3. Safe Extraction
