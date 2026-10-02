@@ -1,0 +1,11 @@
+# Example .pre-commit-config.yaml for CodeSentinel
+
+repos:
+  - repo: local
+    hooks:
+      - id: codesentinel
+        name: CodeSentinel Security Scanner
+        entry: codesentinel scan . --fail-on HIGH
+        language: system
+        pass_filenames: false
+        always_run: true

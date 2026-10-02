@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeSentinel Security Report</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 20px; color: #333; background-color: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { border-bottom: 2px solid #333; padding-bottom: 10px; }
+        .summary-cards { display: flex; gap: 20px; margin-bottom: 30px; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); flex: 1; }
+        .card h3 { margin-top: 0; color: #666; font-size: 14px; text-transform: uppercase; }
+        .card .value { font-size: 28px; font-weight: bold; }
+        .severity-badges { display: flex; gap: 10px; flex-wrap: wrap; }
+        .badge { padding: 4px 12px; border-radius: 16px; font-size: 14px; font-weight: bold; color: white; }
+        .badge.critical { background: #dc3545; }
+        .badge.high { background: #fd7e14; }
+        .badge.medium { background: #ffc107; color: #333; }
+        .badge.low { background: #17a2b8; }
+        .badge.info { background: #6c757d; }
+        table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background-color: #f1f3f5; font-weight: 600; color: #495057; }
+        tr:last-child td { border-bottom: none; }
+        .finding-details { background: #fdfdfd; display: none; }
+        .finding-details.open { display: table-row; }
+        .code-snippet { background: #2d2d2d; color: #ccc; padding: 15px; border-radius: 4px; overflow-x: auto; font-family: monospace; }
+        .toggle-row { cursor: pointer; }
+        .toggle-row:hover { background-color: #f8f9fa; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CodeSentinel Security Report</h1>
+        
+        <div class="summary-cards">
+            <div class="card">
+                <h3>Target</h3>
+                <div class="value" style="font-size: 18px;">{{ project.path }}</div>
+            </div>
+            <div class="card">
+                <h3>Files Scanned</h3>
+                <div class="value">{{ project.file_count }}</div>
+            </div>
+            <div class="card">
+                <h3>Total Findings</h3>
+                <div class="value">{{ findings|length }}</div>
+            </div>
+            <div class="card">
+                <h3>Duration</h3>
+                <div class="value">{{ "%.2f"|format(session.duration_seconds) }}s</div>
+            </div>
+        </div>
+
+        <h2>Severity Distribution</h2>
+        <div class="severity-badges" style="margin-bottom: 30px;">
+            <span class="badge critical">CRITICAL: {{ severities['CRITICAL'] }}</span>
+            <span class="badge high">HIGH: {{ severities['HIGH'] }}</span>
+            <span class="badge medium">MEDIUM: {{ severities['MEDIUM'] }}</span>
+            <span class="badge low">LOW: {{ severities['LOW'] }}</span>
+        </div>
+
+        <h2>Findings</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Severity</th>
+                    <th>Rule</th>
+                    <th>Confidence</th>
+                    <th>File</th>
+                    <th>Line</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for f in findings %}
+                <tr class="toggle-row" onclick="toggleDetails('details-{{ loop.index }}')">
+                    <td><span class="badge {{ f.severity.value|lower }}">{{ f.severity.value }}</span></td>
+                    <td>{{ f.title }}</td>
+                    <td>{{ "%.0f"|format(f.confidence * 100) }}%</td>
+                    <td>{{ f.file }}</td>
+                    <td>{{ f.line_start }}</td>
+                </tr>
+                <tr id="details-{{ loop.index }}" class="finding-details">
+                    <td colspan="5" style="padding: 20px;">
+                        <strong>Explanation:</strong>
+                        <p>{{ f.remediation.explanation }}</p>
+                        
+                        {% if f.ai_assessment %}
+                        <div style="background-color: #e9ecef; padding: 10px; border-left: 4px solid #007bff; margin-bottom: 10px;">
+                            <strong>AI Assessment:</strong>
+                            {% if f.ai_assessment.is_likely_vulnerable %}
+                                <p>{{ f.ai_assessment.explanation }}</p>
+                            {% else %}
+                                <p><em>Likely False Positive:</em> {{ f.ai_assessment.false_positive_reason }}</p>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                        
+                        <strong>Remediation:</strong>
+                        <p>{{ f.remediation.recommended_fix }}</p>
+
+                        <strong>Code Context:</strong>
+                        <pre class="code-snippet"><code>{{ f.context.surrounding_code if f.context.surrounding_code else f.context.snippet }}</code></pre>
+                        
+                        {% if f.data_flow.sinks %}
+                        <strong>Data Flow Context:</strong>
+                        <ul>
+                            <li><strong>Sources:</strong> {{ f.data_flow.sources | join(', ') }}</li>
+                            <li><strong>Sinks:</strong> {{ f.data_flow.sinks | join(', ') }}</li>
+                        </ul>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function toggleDetails(id) {
+            const el = document.getElementById(id);
+            if (el.classList.contains('open')) {
+                el.classList.remove('open');
+            } else {
+                el.classList.add('open');
+            }
+        }
+    </script>
+</body>
+</html>
