@@ -25,7 +25,13 @@ export async function scanGithub(request: GitHubScanRequest): Promise<ScanSessio
     
     // Convert to readable messages
     if (response.status === 400) throw new Error(`Invalid request: ${errorMessage}`);
-    if (response.status === 403) throw new Error(`Rate limit exceeded or access denied: ${errorMessage}`);
+    if (response.status === 403) {
+      if (errorMessage.toLowerCase().includes('rate limit')) {
+        throw new Error(`GitHub API Rate Limit Exceeded. Please try again later. (${errorMessage})`);
+      } else {
+        throw new Error(`Access Denied: Repository may be private. (${errorMessage})`);
+      }
+    }
     if (response.status === 404) throw new Error(`Repository Not Found: ${errorMessage}`);
     if (response.status === 413) throw new Error(`Repository exceeds scan limits: ${errorMessage}`);
     if (response.status === 422) throw new Error(`Validation Error: ${errorMessage}`);

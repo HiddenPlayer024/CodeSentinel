@@ -101,10 +101,10 @@ def perform_github_scan(request: GitHubScanRequest):
     try:
         owner, repo = GitHubArchiveAcquirer.validate_url(request.repository_url)
         
-        # Determine branch if not provided
-        ref = request.ref
-        if not ref:
-            ref = GitHubArchiveAcquirer.get_default_branch(owner, repo)
+        # Avoid GitHub REST API default-branch lookup.
+        # Unauthenticated REST requests are rate-limited, so use Git's
+        # symbolic HEAD ref when the caller doesn't provide a ref.
+        ref = request.ref.strip() if request.ref else "HEAD"
             
         # Create a temporary workspace
         with tempfile.TemporaryDirectory() as tmpdir:

@@ -88,7 +88,7 @@ def test_end_to_end_github_scan(mock_get_branch, mock_download):
     data = response.json()
     assert data["project"]["source_type"] == "github"
     assert data["project"]["repository_url"] == "https://github.com/testowner/testrepo"
-    assert data["project"]["ref"] == "main"
+    assert data["project"]["ref"] == "HEAD"
     assert len(data["findings"]) > 0
     assert data["findings"][0]["identity"]["rule_id"] == "python.command.injection"
 
