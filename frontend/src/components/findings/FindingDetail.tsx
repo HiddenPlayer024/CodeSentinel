@@ -23,6 +23,15 @@ export function FindingDetail({ finding, repositoryUrl, refName }: Props) {
             <span className="text-xs font-mono text-gray-400 border border-dark-600 px-2 py-0.5 rounded">
               {finding.identity.rule_id}
             </span>
+            {finding.analysis_source && finding.analysis_source.length > 0 && (
+              <div className="flex gap-1">
+                {finding.analysis_source.map(src => (
+                  <span key={src} className="text-[10px] px-1.5 py-0.5 rounded bg-dark-700 text-gray-300 font-mono border border-dark-500">
+                    {src}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
           {githubUrl && (
             <a 

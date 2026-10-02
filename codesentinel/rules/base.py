@@ -25,6 +25,7 @@ class RuleContext:
         self.current_class: Optional[str] = None
         self.current_function: Optional[str] = None
         self.variable_traces: Dict[str, VariableTrace] = {}
+        self.import_aliases: Dict[str, str] = {}
 
     def get_line(self, line_number: int) -> str:
         if 1 <= line_number <= len(self.lines):

@@ -8,7 +8,7 @@ export function ScannerForm() {
   const navigate = useNavigate();
   const [url, setUrl] = useState('');
   const [ref, setRef] = useState('');
-  const [aiEnabled, setAiEnabled] = useState(false);
+  const [aiAnalysis, setAiAnalysis] = useState('off');
   const [aiProvider, setAiProvider] = useState('mock');
   const [status, setStatus] = useState<'idle' | 'scanning' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
@@ -29,7 +29,8 @@ export function ScannerForm() {
       const response: ScanSession = await scanGithub({
         repository_url: url.trim(),
         ref: ref.trim() || undefined,
-        ai: aiEnabled,
+        ai: aiAnalysis !== 'off',
+        ai_mode: aiAnalysis !== 'off' ? aiAnalysis : undefined,
         ai_provider: aiProvider
       });
       
@@ -88,27 +89,32 @@ export function ScannerForm() {
         </div>
 
         <div className="p-4 rounded-lg bg-dark-900 border border-dark-600">
-          <label className="flex items-center gap-3 cursor-pointer">
-            <input 
-              type="checkbox" 
-              checked={aiEnabled} 
-              onChange={e => setAiEnabled(e.target.checked)}
-              className="w-5 h-5 rounded border-dark-500 text-primary focus:ring-primary focus:ring-offset-dark-900 bg-dark-800"
-              disabled={status === 'scanning'}
-            />
-            <div className="flex items-center gap-2">
+          <div className="mb-4">
+            <label className="flex items-center gap-2 mb-2">
               <BrainCircuit className="w-5 h-5 text-primary" />
-              <span className="font-medium text-white">Enable AI Verification</span>
-            </div>
-          </label>
+              <span className="font-medium text-white">AI Analysis</span>
+            </label>
+            <select
+              value={aiAnalysis}
+              onChange={e => setAiAnalysis(e.target.value)}
+              className="bg-dark-800 border border-dark-600 rounded px-3 py-2 text-white text-sm outline-none focus:border-primary w-full max-w-xs block mb-2"
+              disabled={status === 'scanning'}
+            >
+              <option value="off">Off</option>
+              <option value="verify">Verify findings</option>
+              <option value="discover">Discover vulnerabilities</option>
+              <option value="hybrid">Hybrid analysis</option>
+            </select>
+            <p className="text-xs text-gray-400 italic">AI analysis is an auxiliary review layer. Deterministic findings remain independently identified.</p>
+          </div>
           
-          {aiEnabled && (
-            <div className="mt-4 pl-8">
+          {aiAnalysis !== 'off' && (
+            <div className="mt-4">
               <label className="block text-xs font-medium text-gray-400 mb-1 uppercase tracking-wider">AI Provider</label>
               <select 
                 value={aiProvider}
                 onChange={e => setAiProvider(e.target.value)}
-                className="bg-dark-800 border border-dark-600 rounded px-3 py-2 text-white text-sm outline-none focus:border-primary w-full max-w-xs"
+                className="bg-dark-800 border border-dark-600 rounded px-3 py-2 text-white text-sm outline-none focus:border-primary w-full max-w-xs block"
                 disabled={status === 'scanning'}
               >
                 <option value="mock">Mock (Testing)</option>

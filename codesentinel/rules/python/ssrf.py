@@ -1,0 +1,27 @@
+import ast
+from typing import List, Any
+from codesentinel.rules.base import SecurityRule, RuleContext, Finding
+
+class SsrfRule(SecurityRule):
+    id = "python.ssrf"
+    name = "SSRF vulnerability via unvalidated URL requests"
+    description = "Checks for ssrf vulnerabilities."
+    language = "python"
+    severity = "HIGH"
+    default_confidence = 0.8
+    remediation = "Fix the vulnerable usage."
+
+    def analyze(self, node: Any, context: RuleContext) -> List[Finding]:
+        findings = []
+        if isinstance(node, ast.Call):
+            func_name = ""
+            if isinstance(node.func, ast.Attribute) and isinstance(node.func.value, ast.Name):
+                func_name = f"{node.func.value.id}.{node.func.attr}"
+            elif isinstance(node.func, ast.Name):
+                func_name = node.func.id
+                
+            ssrf_sinks = {"requests.get", "requests.post", "httpx.get", "httpx.post", "urlopen", "urllib.request.urlopen"}
+            if func_name in ssrf_sinks:
+                if node.args and not isinstance(node.args[0], ast.Constant):
+                    findings.append(self.create_finding(node, context))
+        return findings

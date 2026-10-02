@@ -2,6 +2,7 @@ export interface GitHubScanRequest {
   repository_url: string;
   ref?: string;
   ai?: boolean;
+  ai_mode?: string;
   ai_provider?: string;
 }
 
@@ -80,4 +81,12 @@ export interface ScanSession {
   duration_seconds?: number;
   findings: Finding[];
   status: string;
+  analysis_version?: string;
+  static_rule_count?: number;
+  ai_enabled?: boolean;
+  ai_mode?: string;
+  ai_provider?: string;
+  ai_findings_count?: number;
+  static_findings_count?: number;
+  verified_findings_count?: number;
 }

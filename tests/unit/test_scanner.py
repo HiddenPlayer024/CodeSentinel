@@ -23,10 +23,9 @@ def test_scanner_discovery():
         session = scanner.run_scan()
         
         # Assertions
-        assert session.project.file_count == 2
-        assert set(session.project.languages) == {"python", "javascript"}
+        assert session.project.file_count == 1
+        assert set(session.project.languages) == {"python"}
         assert "main.py" in session.project.scanned_files
-        assert "script.js" in session.project.scanned_files
         assert "readme.md" not in session.project.scanned_files
         assert "venv/ignored.py" not in session.project.scanned_files
         

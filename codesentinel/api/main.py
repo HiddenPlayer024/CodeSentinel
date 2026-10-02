@@ -43,12 +43,14 @@ class ScanRequest(BaseModel):
     target: str
     ai: bool = False
     ai_provider: str = "mock"
+    ai_mode: str = "hybrid"
 
 class GitHubScanRequest(BaseModel):
     repository_url: str
     ref: Optional[str] = None
     ai: bool = False
     ai_provider: str = "mock"
+    ai_mode: str = "hybrid"
 
 @app.get("/")
 def read_root():
@@ -65,25 +67,50 @@ def read_root():
 def health_check():
     return {"status": "healthy"}
 
-def _run_scanner_and_ai(target_path: Path, ai: bool, ai_provider: str) -> ScanSession:
+def _run_scanner_and_ai(target_path: Path, ai: bool, ai_provider: str, ai_mode: str = "hybrid") -> ScanSession:
+    # Always run static scanner unless we are explicitly skipping it or only discovering
+    # (assuming scanner is always run for 'hybrid' and 'verify', maybe skipped for 'discover' if we want, but let's run it anyway or just not use its findings)
+    
     scanner = Scanner(target_path)
     session = scanner.run_scan()
+    static_findings = session.findings
     
-    if ai and session.findings:
+    if ai:
         if ai_provider == "mock":
             provider = MockProvider()
         elif ai_provider == "ollama":
             provider = OllamaProvider()
         elif ai_provider == "openai":
-            api_key = os.environ.get("OPENAI_API_KEY", "")
-            if not api_key:
-                raise HTTPException(status_code=500, detail="OPENAI_API_KEY environment variable not set")
-            provider = OpenAICompatibleProvider(api_key=api_key, model="gpt-4o-mini")
+            provider = OpenAICompatibleProvider()
         else:
             raise HTTPException(status_code=400, detail=f"Unknown AI provider '{ai_provider}'")
             
-        verifier = AIVerifier(provider=provider)
-        verifier.verify_session(session)
+        session.ai_enabled = True
+        session.ai_mode = ai_mode
+        session.ai_provider = ai_provider
+        
+        discovered_findings = []
+        if ai_mode in ["discover", "hybrid"]:
+            from codesentinel.ai.discovery import AIDiscoveryEngine
+            from codesentinel.analysis.correlator import Correlator
+            
+            discovery_engine = AIDiscoveryEngine(provider=provider, project_path=str(target_path))
+            discovered_findings = discovery_engine.run_discovery(session)
+            
+            if ai_mode == "discover":
+                session.findings = discovered_findings
+            else:
+                correlator = Correlator()
+                session.findings = correlator.correlate(static_findings, discovered_findings)
+                
+        if ai_mode in ["verify", "hybrid"]:
+            verifier = AIVerifier(provider=provider)
+            verifier.verify_session(session)
+            
+        # Update metadata
+        session.static_findings_count = len(static_findings)
+        session.ai_findings_count = len(discovered_findings)
+        session.verified_findings_count = sum(1 for f in session.findings if "ai-verified" in f.analysis_source)
         
     return session
 
@@ -94,7 +121,7 @@ def perform_scan(request: ScanRequest):
     if not target_path.exists():
         raise HTTPException(status_code=404, detail="Target path does not exist")
         
-    return _run_scanner_and_ai(target_path, request.ai, request.ai_provider)
+    return _run_scanner_and_ai(target_path, request.ai, request.ai_provider, request.ai_mode)
 
 @app.post("/scan/github", response_model=ScanSession)
 def perform_github_scan(request: GitHubScanRequest):
@@ -119,7 +146,7 @@ def perform_github_scan(request: GitHubScanRequest):
             
             # The archive usually extracts into a top-level directory (e.g., repo-main/)
             # We just point the scanner at the entire extraction directory.
-            session = _run_scanner_and_ai(extract_path, request.ai, request.ai_provider)
+            session = _run_scanner_and_ai(extract_path, request.ai, request.ai_provider, request.ai_mode)
             
             # Update metadata to reflect github source instead of random temp dir
             session.project.source_type = "github"

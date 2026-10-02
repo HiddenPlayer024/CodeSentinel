@@ -15,6 +15,61 @@ class DataFlowVisitor(ast.NodeVisitor):
         
         self.class_stack = []
         self.func_stack = []
+        
+        # Sinks mapping category to common sink function patterns
+        self.sinks = {
+            "subprocess": {"subprocess.run", "subprocess.Popen", "subprocess.call", "subprocess.check_call", "os.system", "os.popen", "os.execv"},
+            "filesystem": {"open", "os.open", "os.remove", "os.rename", "shutil.rmtree"},
+            "networking": {"requests.get", "requests.post", "urllib.request.urlopen", "httpx.get", "httpx.post", "aiohttp.ClientSession.get"},
+            "rendering": {"render_template_string", "jinja2.Template"}
+        }
+
+    def _resolve_name(self, name: str) -> str:
+        """Resolve a name using import aliases."""
+        parts = name.split('.')
+        base = parts[0]
+        if base in self.context.import_aliases:
+            parts[0] = self.context.import_aliases[base]
+            return ".".join(parts)
+        return name
+
+    def is_sink(self, node: ast.Call, category: str = None) -> bool:
+        """Check if a call node is a recognized sink, optionally filtering by category."""
+        if not isinstance(node, ast.Call):
+            return False
+            
+        func_name = ""
+        if isinstance(node.func, ast.Name):
+            func_name = node.func.id
+        elif isinstance(node.func, ast.Attribute):
+            if isinstance(node.func.value, ast.Name):
+                func_name = f"{node.func.value.id}.{node.func.attr}"
+            else:
+                func_name = node.func.attr
+                
+        resolved_name = self._resolve_name(func_name)
+        
+        if category and category in self.sinks:
+            return resolved_name in self.sinks[category] or func_name in self.sinks[category]
+            
+        for cat_sinks in self.sinks.values():
+            if resolved_name in cat_sinks or func_name in cat_sinks:
+                return True
+                
+        return False
+
+    def visit_Import(self, node: ast.Import):
+        for alias in node.names:
+            name = alias.asname if alias.asname else alias.name
+            self.context.import_aliases[name] = alias.name
+        self.generic_visit(node)
+
+    def visit_ImportFrom(self, node: ast.ImportFrom):
+        module = node.module or ""
+        for alias in node.names:
+            name = alias.asname if alias.asname else alias.name
+            self.context.import_aliases[name] = f"{module}.{alias.name}" if module else alias.name
+        self.generic_visit(node)
 
     def visit_ClassDef(self, node: ast.ClassDef):
         self.class_stack.append(node.name)

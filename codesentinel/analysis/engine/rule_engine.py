@@ -51,3 +51,19 @@ class RuleEngine:
         visitor = DataFlowVisitor(active_rules, context)
         visitor.visit(tree)
         return visitor.findings
+
+    def analyze_config(self, context: RuleContext) -> List[Finding]:
+        """Run config rules against the file content directly."""
+        findings = []
+        active_rules = self.get_rules_for_language("config")
+        
+        for rule in active_rules:
+            try:
+                rule_findings = rule.analyze(None, context)
+                if rule_findings:
+                    findings.extend(rule_findings)
+            except Exception as e:
+                import traceback
+                traceback.print_exc()
+                
+        return findings

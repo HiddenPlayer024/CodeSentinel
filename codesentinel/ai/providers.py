@@ -1,6 +1,8 @@
 import json
+import os
 import requests
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, Type
+from pydantic import BaseModel
 from .base import AIProvider
 
 class OllamaProvider(AIProvider):
@@ -27,12 +29,21 @@ class OllamaProvider(AIProvider):
             print(f"Ollama API Error: {e}")
             return {}
 
+    def generate_structured_response(self, prompt: str, schema: Type[BaseModel], system_prompt: Optional[str] = None) -> Dict[str, Any]:
+        # Ollama doesn't have native structured output that guarantees schema match in older versions,
+        # but we can pass the JSON schema in the prompt.
+        schema_json = schema.schema_json()
+        augmented_prompt = f"{prompt}\n\nPlease output ONLY JSON that matches this schema:\n{schema_json}"
+        return self.generate_response(augmented_prompt, system_prompt)
+
 class OpenAICompatibleProvider(AIProvider):
     """Provider for any OpenAI-compatible API (e.g., vLLM, LMStudio, OpenAI)."""
-    def __init__(self, api_key: str, model: str, endpoint: str = "https://api.openai.com/v1/chat/completions"):
-        self.api_key = api_key
-        self.model = model
-        self.endpoint = endpoint
+    def __init__(self, api_key: str = None, model: str = None, endpoint: str = None):
+        self.api_key = api_key or os.environ.get("OPENAI_API_KEY", "")
+        self.model = model or os.environ.get("OPENAI_MODEL", "gpt-4o-mini")
+        self.endpoint = endpoint or os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1")
+        if not self.endpoint.endswith("/chat/completions"):
+            self.endpoint = self.endpoint.rstrip("/") + "/chat/completions"
 
     def generate_response(self, prompt: str, system_prompt: Optional[str] = None) -> Dict[str, Any]:
         headers = {
@@ -61,6 +72,44 @@ class OpenAICompatibleProvider(AIProvider):
         except (requests.RequestException, json.JSONDecodeError, KeyError) as e:
             print(f"OpenAI API Error: {e}")
             return {}
+            
+    def generate_structured_response(self, prompt: str, schema: Type[BaseModel], system_prompt: Optional[str] = None) -> Dict[str, Any]:
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        messages = []
+        if system_prompt:
+            messages.append({"role": "system", "content": system_prompt})
+        messages.append({"role": "user", "content": prompt})
+        
+        schema_dict = schema.model_json_schema()
+        
+        payload = {
+            "model": self.model,
+            "messages": messages,
+            "response_format": {
+                "type": "json_schema",
+                "json_schema": {
+                    "name": schema.__name__,
+                    "strict": True,
+                    "schema": schema_dict
+                }
+            },
+            "temperature": 0.1
+        }
+        
+        try:
+            response = requests.post(self.endpoint, json=payload, headers=headers, timeout=30)
+            response.raise_for_status()
+            result = response.json()
+            content = result["choices"][0]["message"]["content"]
+            return json.loads(content)
+        except (requests.RequestException, json.JSONDecodeError, KeyError) as e:
+            print(f"OpenAI API Error (structured): {e}")
+            # Fallback to standard JSON format if structured output is not supported by this specific endpoint/model
+            return self.generate_response(f"{prompt}\n\nPlease output ONLY JSON that matches this schema: {schema_dict}", system_prompt)
 
 class MockProvider(AIProvider):
     """Mock provider for testing."""
@@ -75,4 +124,24 @@ class MockProvider(AIProvider):
         
     def generate_response(self, prompt: str, system_prompt: Optional[str] = None) -> Dict[str, Any]:
         self.calls.append({"prompt": prompt, "system_prompt": system_prompt})
+        return self.mock_response
+
+    def generate_structured_response(self, prompt: str, schema: Type[BaseModel], system_prompt: Optional[str] = None) -> Dict[str, Any]:
+        self.calls.append({"prompt": prompt, "system_prompt": system_prompt, "schema": schema.__name__})
+        # Try to return a valid object matching the schema for the discovery test
+        if schema.__name__ == "DiscoveryResult":
+            return {
+                "vulnerabilities": [{
+                    "title": "Mock AI Vulnerability",
+                    "category": "Injection",
+                    "severity": "HIGH",
+                    "confidence": 0.9,
+                    "file": "mock.py",
+                    "line_start": 1,
+                    "line_end": 1,
+                    "evidence": "mock_evidence()",
+                    "explanation": "Mock AI discovered this.",
+                    "recommended_fix": "Fix it."
+                }]
+            }
         return self.mock_response

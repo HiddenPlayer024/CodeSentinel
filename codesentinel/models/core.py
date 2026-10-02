@@ -111,3 +111,13 @@ class ScanSession(BaseModel):
     duration_seconds: Optional[float] = None
     findings: List[Finding] = []
     status: str = "running"
+    
+    # Metadata
+    analysis_version: str = "2.0.0"
+    static_rule_count: int = 0
+    ai_enabled: bool = False
+    ai_mode: Optional[str] = None
+    ai_provider: Optional[str] = None
+    ai_findings_count: int = 0
+    static_findings_count: int = 0
+    verified_findings_count: int = 0

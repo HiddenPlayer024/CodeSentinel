@@ -43,6 +43,7 @@ def scan(
     output: str = typer.Option(None, "--output", "-o", help="Output file path (required for json/sarif/html)"),
     ai: bool = typer.Option(False, "--ai", help="Enable AI-assisted verification"),
     ai_provider: str = typer.Option("mock", "--ai-provider", help="AI provider (mock, ollama, openai)"),
+    ai_mode: str = typer.Option("hybrid", "--ai-mode", help="AI mode (verify, discover, hybrid)"),
     fail_on: str = typer.Option("LOW", "--fail-on", help="Minimum severity to exit with non-zero status (INFO, LOW, MEDIUM, HIGH, CRITICAL)"),
 ):
     """
@@ -70,29 +71,50 @@ def scan(
             console.print("[yellow]Warning: No scannable files found.[/yellow]")
             raise typer.Exit(code=0)
             
-        # --- PHASE 6: AI Verification ---
-        if ai and session.findings:
-            console.print(f"[bold blue]Running AI verification via {ai_provider}...[/bold blue]")
-            import os
-            from codesentinel.ai.verifier import AIVerifier
+        # --- PHASE 6: AI Verification and Discovery ---
+        if ai:
+            console.print(f"[bold blue]Running AI ({ai_mode}) via {ai_provider}...[/bold blue]")
             from codesentinel.ai.providers import MockProvider, OllamaProvider, OpenAICompatibleProvider
+            from codesentinel.ai.discovery import AIDiscoveryEngine
+            from codesentinel.ai.verifier import AIVerifier
+            from codesentinel.analysis.correlator import Correlator
             
             if ai_provider == "mock":
                 provider = MockProvider()
             elif ai_provider == "ollama":
                 provider = OllamaProvider()
             elif ai_provider == "openai":
-                api_key = os.environ.get("OPENAI_API_KEY", "")
-                if not api_key:
-                    console.print("[yellow]Warning: OPENAI_API_KEY environment variable not set. API will fail.[/yellow]")
-                provider = OpenAICompatibleProvider(api_key=api_key, model="gpt-4o-mini")
+                provider = OpenAICompatibleProvider()
             else:
                 console.print(f"[bold red]Error:[/bold red] Unknown AI provider '{ai_provider}'")
                 raise typer.Exit(code=2)
                 
-            verifier = AIVerifier(provider=provider)
-            verifier.verify_session(session)
-            console.print("[bold green]AI verification complete.[/bold green]")
+            session.ai_enabled = True
+            session.ai_mode = ai_mode
+            session.ai_provider = ai_provider
+            
+            static_findings = session.findings
+            discovered_findings = []
+            
+            if ai_mode in ["discover", "hybrid"]:
+                discovery_engine = AIDiscoveryEngine(provider=provider, project_path=target)
+                discovered_findings = discovery_engine.run_discovery(session)
+                
+                if ai_mode == "discover":
+                    session.findings = discovered_findings
+                else:
+                    correlator = Correlator()
+                    session.findings = correlator.correlate(static_findings, discovered_findings)
+                    
+            if ai_mode in ["verify", "hybrid"]:
+                verifier = AIVerifier(provider=provider)
+                verifier.verify_session(session)
+                
+            session.static_findings_count = len(static_findings)
+            session.ai_findings_count = len(discovered_findings)
+            session.verified_findings_count = sum(1 for f in session.findings if "ai-verified" in f.analysis_source)
+
+            console.print("[bold green]AI processing complete.[/bold green]")
 
         # --- Determine Exit Code ---
         severity_rank = {"INFO": 0, "LOW": 1, "MEDIUM": 2, "HIGH": 3, "CRITICAL": 4}

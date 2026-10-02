@@ -13,6 +13,7 @@ export function Results() {
   const [selectedFinding, setSelectedFinding] = useState<Finding | null>(null);
   const [search, setSearch] = useState('');
   const [severityFilter, setSeverityFilter] = useState<string>('ALL');
+  const [sourceFilter, setSourceFilter] = useState<string>('ALL');
 
   if (!session) {
     return <Navigate to="/" replace />;
@@ -30,13 +31,14 @@ export function Results() {
 
   const filteredFindings = findings.filter(f => {
     const matchesSeverity = severityFilter === 'ALL' || f.classification.severity === severityFilter;
+    const matchesSource = sourceFilter === 'ALL' || (f.analysis_source && f.analysis_source.includes(sourceFilter));
     const searchLower = search.toLowerCase();
     const matchesSearch = 
       f.identity.title.toLowerCase().includes(searchLower) ||
       f.identity.rule_id.toLowerCase().includes(searchLower) ||
       f.location.file.toLowerCase().includes(searchLower);
     
-    return matchesSeverity && matchesSearch;
+    return matchesSeverity && matchesSearch && matchesSource;
   }).sort((a, b) => b.classification.confidence - a.classification.confidence);
 
   const handleDownload = () => {
@@ -72,22 +74,26 @@ export function Results() {
       </div>
 
       {/* Summary Metrics */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <div className="bg-dark-800 border border-dark-600 rounded-xl p-4">
           <div className="text-gray-400 text-sm mb-1 flex items-center gap-2"><FileCode className="w-4 h-4"/> Files</div>
-          <div className="text-2xl font-bold text-white">{project.file_count}</div>
+          <div className="text-xl font-bold text-white">{project.file_count}</div>
         </div>
         <div className="bg-dark-800 border border-dark-600 rounded-xl p-4">
           <div className="text-gray-400 text-sm mb-1 flex items-center gap-2"><Clock className="w-4 h-4"/> Duration</div>
-          <div className="text-2xl font-bold text-white">{duration_seconds?.toFixed(2) || '0.00'}s</div>
+          <div className="text-xl font-bold text-white">{duration_seconds?.toFixed(2) || '0.00'}s</div>
         </div>
         <div className="bg-dark-800 border border-dark-600 rounded-xl p-4">
-          <div className="text-gray-400 text-sm mb-1">Languages</div>
-          <div className="text-xl font-bold text-white uppercase">{project.languages.join(', ') || 'N/A'}</div>
+          <div className="text-gray-400 text-sm mb-1">Rules Run</div>
+          <div className="text-xl font-bold text-white">{session.static_rule_count ?? 'N/A'}</div>
+        </div>
+        <div className="bg-dark-800 border border-dark-600 rounded-xl p-4">
+          <div className="text-gray-400 text-sm mb-1">AI Findings</div>
+          <div className="text-xl font-bold text-white">{session.ai_findings_count ?? '0'}</div>
         </div>
         <div className="bg-dark-800 border border-dark-600 rounded-xl p-4">
           <div className="text-gray-400 text-sm mb-1">Total Findings</div>
-          <div className="text-2xl font-bold text-white">{findings.length}</div>
+          <div className="text-xl font-bold text-white">{findings.length}</div>
         </div>
       </div>
 
@@ -143,6 +149,16 @@ export function Results() {
                 <option value="LOW">Low</option>
                 <option value="INFO">Info</option>
               </select>
+              <select 
+                value={sourceFilter}
+                onChange={e => setSourceFilter(e.target.value)}
+                className="bg-dark-900 border border-dark-600 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-primary"
+              >
+                <option value="ALL">All Sources</option>
+                <option value="STATIC">Static</option>
+                <option value="AI_DISCOVERED">AI Discovered</option>
+                <option value="AI_VERIFIED">AI Verified</option>
+              </select>
             </div>
 
             <div className="flex flex-col gap-2 max-h-[800px] overflow-y-auto pr-2">
@@ -156,7 +172,16 @@ export function Results() {
                   )}
                 >
                   <div className="flex justify-between items-start mb-2">
-                    <SeverityBadge severity={f.classification.severity} />
+                    <div className="flex gap-2">
+                      <SeverityBadge severity={f.classification.severity} />
+                      <div className="flex gap-1 flex-wrap">
+                        {f.analysis_source?.map(src => (
+                          <span key={src} className="text-[10px] px-1.5 py-0.5 rounded bg-dark-700 text-gray-300 font-mono border border-dark-500">
+                            {src}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                     <span className="text-xs font-mono text-gray-500">{Math.round(f.classification.confidence * 100)}% Conf</span>
                   </div>
                   <h4 className="text-white font-bold mb-1 truncate">{f.identity.title}</h4>
