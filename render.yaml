@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: CodeSentinel
+    env: python
+    buildCommand: pip install -e .
+    startCommand: uvicorn codesentinel.api.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
