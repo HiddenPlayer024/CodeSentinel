@@ -32,6 +32,11 @@ export function FindingDetail({ finding, repositoryUrl, refName }: Props) {
                 ))}
               </div>
             )}
+            {finding.relationship && (
+              <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary/20 text-primary font-mono border border-primary/30">
+                {finding.relationship}
+              </span>
+            )}
           </div>
           {githubUrl && (
             <a 

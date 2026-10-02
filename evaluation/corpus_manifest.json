@@ -1,0 +1,157 @@
+[
+  {
+    "file": "cors_vuln.py",
+    "label": "vulnerable",
+    "family": "unknown"
+  },
+  {
+    "file": "logging_secrets_vuln.py",
+    "label": "vulnerable",
+    "family": "unknown"
+  },
+  {
+    "file": "tls_verify_vuln.py",
+    "label": "vulnerable",
+    "family": "unknown"
+  },
+  {
+    "file": "debug_mode_vuln.py",
+    "label": "vulnerable",
+    "family": "unknown"
+  },
+  {
+    "file": "unsafe_redirect_vuln.py",
+    "label": "vulnerable",
+    "family": "unknown"
+  },
+  {
+    "file": "ssti_vuln.py",
+    "label": "vulnerable",
+    "family": "ssti"
+  },
+  {
+    "file": "ssrf_vuln.py",
+    "label": "vulnerable",
+    "family": "ssrf"
+  },
+  {
+    "file": "password_storage_vuln.py",
+    "label": "vulnerable",
+    "family": "unknown"
+  },
+  {
+    "file": "xxe_vuln.py",
+    "label": "vulnerable",
+    "family": "xxe"
+  },
+  {
+    "file": "jwt_vuln.py",
+    "label": "vulnerable",
+    "family": "unknown"
+  },
+  {
+    "file": "xss_vuln.py",
+    "label": "vulnerable",
+    "family": "xss"
+  },
+  {
+    "file": "file_permissions_vuln.py",
+    "label": "vulnerable",
+    "family": "unknown"
+  },
+  {
+    "file": "archive_traversal_vuln.py",
+    "label": "vulnerable",
+    "family": "unknown"
+  },
+  {
+    "file": "temp_files_vuln.py",
+    "label": "vulnerable",
+    "family": "unknown"
+  },
+  {
+    "file": "eval_exec_vuln.py",
+    "label": "vulnerable",
+    "family": "unknown"
+  },
+  {
+    "file": "ci/gh_actions/safe/example1.yml",
+    "label": "safe",
+    "family": "gh_actions"
+  },
+  {
+    "file": "ci/gh_actions/false_positive/example1.yml",
+    "label": "safe",
+    "family": "gh_actions"
+  },
+  {
+    "file": "ci/gh_actions/variant/example1.yml",
+    "label": "vulnerable",
+    "family": "gh_actions"
+  },
+  {
+    "file": "ci/gh_actions/vulnerable/example1.yml",
+    "label": "vulnerable",
+    "family": "gh_actions"
+  },
+  {
+    "file": "python/command_injection/safe/example1.py",
+    "label": "safe",
+    "family": "command_injection"
+  },
+  {
+    "file": "python/command_injection/false_positive/example1.py",
+    "label": "safe",
+    "family": "command_injection"
+  },
+  {
+    "file": "python/command_injection/variant/example1.py",
+    "label": "vulnerable",
+    "family": "command_injection"
+  },
+  {
+    "file": "python/command_injection/vulnerable/example1.py",
+    "label": "vulnerable",
+    "family": "command_injection"
+  },
+  {
+    "file": "python/ssrf/safe/example1.py",
+    "label": "safe",
+    "family": "ssrf"
+  },
+  {
+    "file": "python/ssrf/false_positive/example1.py",
+    "label": "safe",
+    "family": "ssrf"
+  },
+  {
+    "file": "python/ssrf/variant/example1.py",
+    "label": "vulnerable",
+    "family": "ssrf"
+  },
+  {
+    "file": "python/ssrf/vulnerable/example1.py",
+    "label": "vulnerable",
+    "family": "ssrf"
+  },
+  {
+    "file": "python/sqli/variant/indirect_sqli.py",
+    "label": "vulnerable",
+    "family": "sqli"
+  },
+  {
+    "file": "python/sqli/safe/indirect_sqli.py",
+    "label": "safe",
+    "family": "sqli"
+  },
+  {
+    "file": "python/ssti/variant/template_renderer.py",
+    "label": "vulnerable",
+    "family": "ssti"
+  },
+  {
+    "file": "python/ssti/safe/template_renderer.py",
+    "label": "safe",
+    "family": "ssti"
+  }
+]

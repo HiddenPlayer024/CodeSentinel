@@ -1,0 +1,1939 @@
+{
+  "id": "ab2c9cd6-5e6d-43e2-a7cb-a152dade6e5d",
+  "project": {
+    "path": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus",
+    "languages": [
+      "python",
+      "config"
+    ],
+    "file_count": 17,
+    "scanned_files": [
+      "cors_vuln.py",
+      "logging_secrets_vuln.py",
+      "tls_verify_vuln.py",
+      "config_vuln.env",
+      "debug_mode_vuln.py",
+      "unsafe_redirect_vuln.py",
+      "ssti_vuln.py",
+      "ssrf_vuln.py",
+      "password_storage_vuln.py",
+      "Dockerfile",
+      "xxe_vuln.py",
+      "jwt_vuln.py",
+      "xss_vuln.py",
+      "file_permissions_vuln.py",
+      "archive_traversal_vuln.py",
+      "temp_files_vuln.py",
+      "eval_exec_vuln.py"
+    ],
+    "source_type": "local",
+    "repository_url": null,
+    "ref": null
+  },
+  "start_time": "2026-10-02T12:22:57.156333Z",
+  "end_time": "2026-10-02T12:22:57.169693Z",
+  "duration_seconds": 0.01336,
+  "findings": [
+    {
+      "identity": {
+        "id": "python.cors_wildcard-4",
+        "rule_id": "python.cors_wildcard",
+        "title": "CORS configured with wildcard origin"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/cors_vuln.py",
+        "line_start": 4,
+        "line_end": 7
+      },
+      "classification": {
+        "category": "cors_wildcard",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "app.add_middleware(",
+        "surrounding_code": "from fastapi.middleware.cors import CORSMiddleware\napp = FastAPI()\napp.add_middleware(\n    CORSMiddleware,\n    allow_origins=[\"*\"],"
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for cors_wildcard vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.logging_secrets-4",
+        "rule_id": "python.logging_secrets",
+        "title": "Sensitive information logged"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/logging_secrets_vuln.py",
+        "line_start": 4,
+        "line_end": 4
+      },
+      "classification": {
+        "category": "logging_secrets",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "log_creds",
+        "class_name": null,
+        "snippet": "logging.debug(secret_token)",
+        "surrounding_code": "def log_creds(password, secret_token):\n    logging.info(f\"User logged in with password {password}\")\n    logging.debug(secret_token)"
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for logging_secrets vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.tls_verify-4",
+        "rule_id": "python.tls_verify",
+        "title": "Insecure TLS validation"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/tls_verify_vuln.py",
+        "line_start": 4,
+        "line_end": 4
+      },
+      "classification": {
+        "category": "tls_verify",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "insecure_request",
+        "class_name": null,
+        "snippet": "requests.get(\"https://example.com\", verify=False)",
+        "surrounding_code": "import ssl\ndef insecure_request():\n    requests.get(\"https://example.com\", verify=False)\n    ssl._create_unverified_context()"
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for tls_verify vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.tls_verify-5",
+        "rule_id": "python.tls_verify",
+        "title": "Insecure TLS validation"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/tls_verify_vuln.py",
+        "line_start": 5,
+        "line_end": 5
+      },
+      "classification": {
+        "category": "tls_verify",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "insecure_request",
+        "class_name": null,
+        "snippet": "ssl._create_unverified_context()",
+        "surrounding_code": "def insecure_request():\n    requests.get(\"https://example.com\", verify=False)\n    ssl._create_unverified_context()"
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for tls_verify vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "config.hardcoded_secrets-1",
+        "rule_id": "config.hardcoded_secrets",
+        "title": "Hardcoded Secrets in Config"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/config_vuln.env",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "hardcoded_secrets",
+        "severity": "CRITICAL",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "AWS_ACCESS_KEY_ID=\"AKIAIOSFODNN7EXAMPLE\"",
+        "surrounding_code": "AWS_ACCESS_KEY_ID=\"AKIAIOSFODNN7EXAMPLE\"\nAWS_SECRET_ACCESS_KEY=\"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\"\nDB_PASSWORD=\"super_secret_password\""
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for hardcoded secrets in config files.",
+        "recommended_fix": "Use environment variables or a secret manager."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "config.hardcoded_secrets-2",
+        "rule_id": "config.hardcoded_secrets",
+        "title": "Hardcoded Secrets in Config"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/config_vuln.env",
+        "line_start": 2,
+        "line_end": 2
+      },
+      "classification": {
+        "category": "hardcoded_secrets",
+        "severity": "CRITICAL",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "AWS_SECRET_ACCESS_KEY=\"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\"",
+        "surrounding_code": "AWS_ACCESS_KEY_ID=\"AKIAIOSFODNN7EXAMPLE\"\nAWS_SECRET_ACCESS_KEY=\"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\"\nDB_PASSWORD=\"super_secret_password\""
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for hardcoded secrets in config files.",
+        "recommended_fix": "Use environment variables or a secret manager."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "config.hardcoded_secrets-3",
+        "rule_id": "config.hardcoded_secrets",
+        "title": "Hardcoded Secrets in Config"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/config_vuln.env",
+        "line_start": 3,
+        "line_end": 3
+      },
+      "classification": {
+        "category": "hardcoded_secrets",
+        "severity": "CRITICAL",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "DB_PASSWORD=\"super_secret_password\"",
+        "surrounding_code": "AWS_ACCESS_KEY_ID=\"AKIAIOSFODNN7EXAMPLE\"\nAWS_SECRET_ACCESS_KEY=\"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\"\nDB_PASSWORD=\"super_secret_password\""
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for hardcoded secrets in config files.",
+        "recommended_fix": "Use environment variables or a secret manager."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.debug_mode-4",
+        "rule_id": "python.debug_mode",
+        "title": "Running framework in Debug mode"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/debug_mode_vuln.py",
+        "line_start": 4,
+        "line_end": 4
+      },
+      "classification": {
+        "category": "debug_mode",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "app.run(debug=True)",
+        "surrounding_code": "app = Flask(__name__)\nif __name__ == \"__main__\":\n    app.run(debug=True)"
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for debug_mode vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.unsafe_redirect-3",
+        "rule_id": "python.unsafe_redirect",
+        "title": "Unvalidated redirects or forwards"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/unsafe_redirect_vuln.py",
+        "line_start": 3,
+        "line_end": 3
+      },
+      "classification": {
+        "category": "unsafe_redirect",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "login",
+        "class_name": null,
+        "snippet": "return redirect(next_url)",
+        "surrounding_code": "from flask import redirect\ndef login(next_url):\n    return redirect(next_url)"
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for unsafe_redirect vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.ssti-4",
+        "rule_id": "python.ssti",
+        "title": "Server-Side Template Injection"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ssti_vuln.py",
+        "line_start": 4,
+        "line_end": 4
+      },
+      "classification": {
+        "category": "ssti",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "render",
+        "class_name": null,
+        "snippet": "render_template_string(user_input)",
+        "surrounding_code": "from jinja2 import Template\ndef render(user_input):\n    render_template_string(user_input)\n    Template(user_input).render()"
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for ssti vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.ssti-5",
+        "rule_id": "python.ssti",
+        "title": "Server-Side Template Injection"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ssti_vuln.py",
+        "line_start": 5,
+        "line_end": 5
+      },
+      "classification": {
+        "category": "ssti",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "render",
+        "class_name": null,
+        "snippet": "Template(user_input).render()",
+        "surrounding_code": "def render(user_input):\n    render_template_string(user_input)\n    Template(user_input).render()"
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for ssti vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.ssrf-5",
+        "rule_id": "python.ssrf",
+        "title": "SSRF vulnerability via unvalidated URL requests"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ssrf_vuln.py",
+        "line_start": 5,
+        "line_end": 5
+      },
+      "classification": {
+        "category": "ssrf",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "fetch_url",
+        "class_name": null,
+        "snippet": "requests.get(url)",
+        "surrounding_code": "import urllib.request\ndef fetch_url(url):\n    requests.get(url)\n    httpx.post(url)\n    urllib.request.urlopen(url)"
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for ssrf vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.ssrf-6",
+        "rule_id": "python.ssrf",
+        "title": "SSRF vulnerability via unvalidated URL requests"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ssrf_vuln.py",
+        "line_start": 6,
+        "line_end": 6
+      },
+      "classification": {
+        "category": "ssrf",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "fetch_url",
+        "class_name": null,
+        "snippet": "httpx.post(url)",
+        "surrounding_code": "def fetch_url(url):\n    requests.get(url)\n    httpx.post(url)\n    urllib.request.urlopen(url)"
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for ssrf vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.crypto.insecure_hash-3",
+        "rule_id": "python.crypto.insecure_hash",
+        "title": "Insecure Cryptographic Hash"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/password_storage_vuln.py",
+        "line_start": 3,
+        "line_end": 3
+      },
+      "classification": {
+        "category": "crypto",
+        "severity": "MEDIUM",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": "hash_pass",
+        "class_name": null,
+        "snippet": "hashlib.md5(password.encode())",
+        "surrounding_code": "import hashlib\ndef hash_pass(password):\n    hashlib.md5(password.encode())\n    hashlib.sha1(password.encode())"
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Use of weak or broken cryptographic hash functions (e.g., MD5, SHA1).",
+        "recommended_fix": "Use stronger hashing algorithms like SHA-256 or SHA-3. For passwords, use bcrypt, argon2, or scrypt."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.password_storage-3",
+        "rule_id": "python.password_storage",
+        "title": "Insecure password hashing/storage"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/password_storage_vuln.py",
+        "line_start": 3,
+        "line_end": 3
+      },
+      "classification": {
+        "category": "password_storage",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "hash_pass",
+        "class_name": null,
+        "snippet": "hashlib.md5(password.encode())",
+        "surrounding_code": "import hashlib\ndef hash_pass(password):\n    hashlib.md5(password.encode())\n    hashlib.sha1(password.encode())"
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for password_storage vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.crypto.insecure_hash-4",
+        "rule_id": "python.crypto.insecure_hash",
+        "title": "Insecure Cryptographic Hash"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/password_storage_vuln.py",
+        "line_start": 4,
+        "line_end": 4
+      },
+      "classification": {
+        "category": "crypto",
+        "severity": "MEDIUM",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": "hash_pass",
+        "class_name": null,
+        "snippet": "hashlib.sha1(password.encode())",
+        "surrounding_code": "def hash_pass(password):\n    hashlib.md5(password.encode())\n    hashlib.sha1(password.encode())"
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Use of weak or broken cryptographic hash functions (e.g., MD5, SHA1).",
+        "recommended_fix": "Use stronger hashing algorithms like SHA-256 or SHA-3. For passwords, use bcrypt, argon2, or scrypt."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.password_storage-4",
+        "rule_id": "python.password_storage",
+        "title": "Insecure password hashing/storage"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/password_storage_vuln.py",
+        "line_start": 4,
+        "line_end": 4
+      },
+      "classification": {
+        "category": "password_storage",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "hash_pass",
+        "class_name": null,
+        "snippet": "hashlib.sha1(password.encode())",
+        "surrounding_code": "def hash_pass(password):\n    hashlib.md5(password.encode())\n    hashlib.sha1(password.encode())"
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for password_storage vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "config.docker_root-1",
+        "rule_id": "config.docker_root",
+        "title": "Dockerfile runs as root"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/Dockerfile",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "docker_root",
+        "severity": "MEDIUM",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "FROM ubuntu:latest",
+        "surrounding_code": "FROM ubuntu:latest\nRUN apt-get update\n# Missing USER instruction"
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks if Dockerfile runs as root without USER instruction.",
+        "recommended_fix": "Add a USER instruction to change to a non-root user."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.xxe-3",
+        "rule_id": "python.xxe",
+        "title": "XML External Entity injection"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/xxe_vuln.py",
+        "line_start": 3,
+        "line_end": 3
+      },
+      "classification": {
+        "category": "xxe",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "parse_xml",
+        "class_name": null,
+        "snippet": "ET.fromstring(xml_string)",
+        "surrounding_code": "import xml.etree.ElementTree as ET\ndef parse_xml(xml_string):\n    ET.fromstring(xml_string)"
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for xxe vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.jwt_insecure-3",
+        "rule_id": "python.jwt_insecure",
+        "title": "Insecure JWT validation"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/jwt_vuln.py",
+        "line_start": 3,
+        "line_end": 3
+      },
+      "classification": {
+        "category": "jwt_insecure",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "decode_token",
+        "class_name": null,
+        "snippet": "jwt.decode(token, verify_signature=False)",
+        "surrounding_code": "import jwt\ndef decode_token(token):\n    jwt.decode(token, verify_signature=False)\n    jwt.decode(token, algorithms=['none'])"
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for jwt_insecure vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.jwt_insecure-4",
+        "rule_id": "python.jwt_insecure",
+        "title": "Insecure JWT validation"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/jwt_vuln.py",
+        "line_start": 4,
+        "line_end": 4
+      },
+      "classification": {
+        "category": "jwt_insecure",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "decode_token",
+        "class_name": null,
+        "snippet": "jwt.decode(token, algorithms=['none'])",
+        "surrounding_code": "def decode_token(token):\n    jwt.decode(token, verify_signature=False)\n    jwt.decode(token, algorithms=['none'])"
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for jwt_insecure vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.xss-3",
+        "rule_id": "python.xss",
+        "title": "Cross-Site Scripting via unescaped rendering"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/xss_vuln.py",
+        "line_start": 3,
+        "line_end": 3
+      },
+      "classification": {
+        "category": "xss",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "show_html",
+        "class_name": null,
+        "snippet": "Markup(user_input)",
+        "surrounding_code": "from markupsafe import Markup\ndef show_html(user_input):\n    Markup(user_input)"
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for xss vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.file_permissions-3",
+        "rule_id": "python.file_permissions",
+        "title": "Insecure file permissions"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/file_permissions_vuln.py",
+        "line_start": 3,
+        "line_end": 3
+      },
+      "classification": {
+        "category": "file_permissions",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "change_perms",
+        "class_name": null,
+        "snippet": "os.chmod(path, 0o777)",
+        "surrounding_code": "import os\ndef change_perms(path):\n    os.chmod(path, 0o777)"
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for file_permissions vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.archive_traversal-4",
+        "rule_id": "python.archive_traversal",
+        "title": "Unsafe archive extraction (ZipSlip)"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/archive_traversal_vuln.py",
+        "line_start": 4,
+        "line_end": 4
+      },
+      "classification": {
+        "category": "archive_traversal",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "extract",
+        "class_name": null,
+        "snippet": "tar.extractall()",
+        "surrounding_code": "def extract(tar_path):\n    with tarfile.open(tar_path) as tar:\n        tar.extractall()"
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for archive_traversal vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.temp_files-3",
+        "rule_id": "python.temp_files",
+        "title": "Insecure temporary file creation"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/temp_files_vuln.py",
+        "line_start": 3,
+        "line_end": 3
+      },
+      "classification": {
+        "category": "temp_files",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "create_temp",
+        "class_name": null,
+        "snippet": "tempfile.mktemp()",
+        "surrounding_code": "import tempfile\ndef create_temp():\n    tempfile.mktemp()"
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for temp_files vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.eval_exec-2",
+        "rule_id": "python.eval_exec",
+        "title": "eval, exec, compile or __import__ used safely?"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/eval_exec_vuln.py",
+        "line_start": 2,
+        "line_end": 2
+      },
+      "classification": {
+        "category": "eval_exec",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "run_code",
+        "class_name": null,
+        "snippet": "eval(user_input)",
+        "surrounding_code": "def run_code(user_input):\n    eval(user_input)\n    exec(user_input)\n    compile(user_input, '<string>', 'exec')"
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for eval_exec vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.eval_exec-3",
+        "rule_id": "python.eval_exec",
+        "title": "eval, exec, compile or __import__ used safely?"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/eval_exec_vuln.py",
+        "line_start": 3,
+        "line_end": 3
+      },
+      "classification": {
+        "category": "eval_exec",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "run_code",
+        "class_name": null,
+        "snippet": "exec(user_input)",
+        "surrounding_code": "def run_code(user_input):\n    eval(user_input)\n    exec(user_input)\n    compile(user_input, '<string>', 'exec')\n    __import__(user_input)"
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for eval_exec vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.eval_exec-4",
+        "rule_id": "python.eval_exec",
+        "title": "eval, exec, compile or __import__ used safely?"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/eval_exec_vuln.py",
+        "line_start": 4,
+        "line_end": 4
+      },
+      "classification": {
+        "category": "eval_exec",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "run_code",
+        "class_name": null,
+        "snippet": "compile(user_input, '<string>', 'exec')",
+        "surrounding_code": "    eval(user_input)\n    exec(user_input)\n    compile(user_input, '<string>', 'exec')\n    __import__(user_input)"
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for eval_exec vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.eval_exec-5",
+        "rule_id": "python.eval_exec",
+        "title": "eval, exec, compile or __import__ used safely?"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/eval_exec_vuln.py",
+        "line_start": 5,
+        "line_end": 5
+      },
+      "classification": {
+        "category": "eval_exec",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "run_code",
+        "class_name": null,
+        "snippet": "__import__(user_input)",
+        "surrounding_code": "    exec(user_input)\n    compile(user_input, '<string>', 'exec')\n    __import__(user_input)"
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for eval_exec vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "d4263678-b144-403c-a15a-a85b911baac9",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability"
+      },
+      "location": {
+        "file": "cors_vuln.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "mock_evidence()",
+        "surrounding_code": null
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "ai-discovery",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "20d143c8-044b-4477-a979-f90c5749b42e",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability"
+      },
+      "location": {
+        "file": "logging_secrets_vuln.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "mock_evidence()",
+        "surrounding_code": null
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "ai-discovery",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "23d81302-1449-4a7a-971f-1d2d47d45541",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability"
+      },
+      "location": {
+        "file": "tls_verify_vuln.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "mock_evidence()",
+        "surrounding_code": null
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "ai-discovery",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "24e4cdd6-9462-4ec3-a16b-26770077a73a",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability"
+      },
+      "location": {
+        "file": "debug_mode_vuln.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "mock_evidence()",
+        "surrounding_code": null
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "ai-discovery",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "242d724d-27ea-4f73-b1f4-012dc8588626",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability"
+      },
+      "location": {
+        "file": "unsafe_redirect_vuln.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "mock_evidence()",
+        "surrounding_code": null
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "ai-discovery",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "90bd48f3-47fa-4138-b63e-46f0ca9813d2",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability"
+      },
+      "location": {
+        "file": "ssti_vuln.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "mock_evidence()",
+        "surrounding_code": null
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "ai-discovery",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "51126638-d968-443e-a0a6-b3c5da50ebbe",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability"
+      },
+      "location": {
+        "file": "ssrf_vuln.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "mock_evidence()",
+        "surrounding_code": null
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "ai-discovery",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "cdaef875-330b-4f00-b6aa-c14601823b36",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability"
+      },
+      "location": {
+        "file": "password_storage_vuln.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "mock_evidence()",
+        "surrounding_code": null
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "ai-discovery",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "0c93f95e-5b98-4549-9f4b-37599ece22a6",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability"
+      },
+      "location": {
+        "file": "xxe_vuln.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "mock_evidence()",
+        "surrounding_code": null
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "ai-discovery",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "3d1d7ace-3e5f-49fb-9492-26044c2324a3",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability"
+      },
+      "location": {
+        "file": "jwt_vuln.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "mock_evidence()",
+        "surrounding_code": null
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "ai-discovery",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "55c06697-51a5-4c77-924b-c50b15d0c63d",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability"
+      },
+      "location": {
+        "file": "xss_vuln.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "mock_evidence()",
+        "surrounding_code": null
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "ai-discovery",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "92c09035-399c-4486-bfa0-8aa1502cefae",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability"
+      },
+      "location": {
+        "file": "file_permissions_vuln.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "mock_evidence()",
+        "surrounding_code": null
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "ai-discovery",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "793b90da-8641-42b2-af38-9075db9a6033",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability"
+      },
+      "location": {
+        "file": "archive_traversal_vuln.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "mock_evidence()",
+        "surrounding_code": null
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "ai-discovery",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "b72d20b6-2649-4513-a7ee-6ccd3befecbe",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability"
+      },
+      "location": {
+        "file": "temp_files_vuln.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "mock_evidence()",
+        "surrounding_code": null
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "ai-discovery",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "f5db541e-5209-4fe9-897e-0a129c036739",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability"
+      },
+      "location": {
+        "file": "eval_exec_vuln.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "mock_evidence()",
+        "surrounding_code": null
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "ai-discovery",
+        "ai-verified"
+      ]
+    }
+  ],
+  "status": "completed",
+  "analysis_version": "2.0.0",
+  "static_rule_count": 0,
+  "ai_enabled": true,
+  "ai_mode": "hybrid",
+  "ai_provider": "mock",
+  "ai_findings_count": 15,
+  "static_findings_count": 29,
+  "verified_findings_count": 44
+}

@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import List
 import ast
 from pathlib import Path
+from codesentinel.config import AI_MAX_REVIEW_LINES
 
 @dataclass
 class ReviewUnit:
@@ -11,7 +12,7 @@ class ReviewUnit:
     context_type: str
     code_chunk: str
 
-def get_review_units_for_file(file_path: Path, max_lines: int = 100, min_lines: int = 20) -> List[ReviewUnit]:
+def get_review_units_for_file(file_path: Path, max_lines: int = AI_MAX_REVIEW_LINES, min_lines: int = 20) -> List[ReviewUnit]:
     try:
         content = file_path.read_text(encoding='utf-8')
         lines = content.splitlines()

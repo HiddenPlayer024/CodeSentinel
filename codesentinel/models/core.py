@@ -58,6 +58,7 @@ class Finding(BaseModel):
     remediation: FindingRemediation
     ai_assessment: Optional[AIAssessment] = None
     analysis_source: List[str] = ["static-rule"]
+    relationship: str = "standalone"
 
     # Properties to maintain backward compatibility with CLI
     @property
@@ -115,7 +116,7 @@ class ScanSession(BaseModel):
     status: str = "running"
     
     # Metadata
-    analysis_version: str = "2.1.0"
+    analysis_version: str = "2.2.0"
     static_rule_count: int = 0
     ai_enabled: bool = False
     ai_mode: Optional[str] = None
@@ -127,9 +128,38 @@ class ScanSession(BaseModel):
     verified_findings_count: int = 0
     
     # AI Telemetry
+    ai_files_considered: int = 0
+    ai_files_selected: int = 0
+    ai_review_units_created: int = 0
+    ai_review_units_scanned: int = 0
     ai_candidate_findings: int = 0
+    ai_valid_findings: int = 0
     ai_rejected_findings: int = 0
-    correlated_findings: int = 0
-    duplicate_ai_findings: int = 0
-    invalid_ai_locations: int = 0
-    provider_errors: int = 0
+    ai_added_findings: int = 0
+    ai_correlated_findings: int = 0
+    ai_duplicate_findings: int = 0
+    ai_invalid_locations: int = 0
+    ai_provider_calls: int = 0
+    ai_provider_errors: int = 0
+    ai_timeout_count: int = 0
+    ai_redacted_secrets: int = 0
+    ai_input_tokens: int = 0
+    ai_output_tokens: int = 0
+    
+    # Legacy metric mappings to prevent breakages
+    @property
+    def correlated_findings(self): return self.ai_correlated_findings
+    @correlated_findings.setter
+    def correlated_findings(self, v): self.ai_correlated_findings = v
+    @property
+    def duplicate_ai_findings(self): return self.ai_duplicate_findings
+    @duplicate_ai_findings.setter
+    def duplicate_ai_findings(self, v): self.ai_duplicate_findings = v
+    @property
+    def invalid_ai_locations(self): return self.ai_invalid_locations
+    @invalid_ai_locations.setter
+    def invalid_ai_locations(self, v): self.ai_invalid_locations = v
+    @property
+    def provider_errors(self): return self.ai_provider_errors
+    @provider_errors.setter
+    def provider_errors(self, v): self.ai_provider_errors = v

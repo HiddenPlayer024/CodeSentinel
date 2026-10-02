@@ -10,13 +10,13 @@ class AIValidator:
         session.ai_candidate_findings += 1
         
         file_path_str = finding_dict.get('file')
-        if not file_path_str:
+        if not file_path_str or '..' in file_path_str:
             self._reject(session)
             return None
             
         try:
             full_path = (self.project_path / file_path_str).resolve()
-            if not str(full_path).startswith(str(self.project_path.resolve())):
+            if not full_path.is_relative_to(self.project_path.resolve()):
                 self._reject(session)
                 return None
             if not full_path.exists() or not full_path.is_file():
@@ -36,7 +36,7 @@ class AIValidator:
         line_end = finding_dict.get('line_end', 1)
         
         total_lines = len(lines)
-        if not (1 <= line_start <= line_end <= total_lines):
+        if line_start <= 0 or line_end <= 0 or not (1 <= line_start <= line_end <= total_lines):
             self._reject(session)
             return None
             

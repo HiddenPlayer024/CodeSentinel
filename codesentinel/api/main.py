@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 app = FastAPI(
     title="CodeSentinel API",
     description="AI-assisted static analysis API",
-    version="0.1.0"
+    version="2.2.0"
 )
 
 # CORS Configuration
@@ -39,11 +39,25 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+from pydantic import BaseModel, field_validator
+
 class ScanRequest(BaseModel):
     target: str
     ai: bool = False
     ai_provider: str = "mock"
     ai_mode: str = "hybrid"
+
+    @field_validator('ai_provider')
+    def validate_ai_provider(cls, v):
+        if v not in ('mock', 'ollama', 'openai'):
+            raise ValueError("ai_provider must be mock, ollama, or openai")
+        return v
+
+    @field_validator('ai_mode')
+    def validate_ai_mode(cls, v):
+        if v not in ('verify', 'discover', 'hybrid'):
+            raise ValueError("ai_mode must be verify, discover, or hybrid")
+        return v
 
 class GitHubScanRequest(BaseModel):
     repository_url: str
@@ -52,11 +66,23 @@ class GitHubScanRequest(BaseModel):
     ai_provider: str = "mock"
     ai_mode: str = "hybrid"
 
+    @field_validator('ai_provider')
+    def validate_ai_provider(cls, v):
+        if v not in ('mock', 'ollama', 'openai'):
+            raise ValueError("ai_provider must be mock, ollama, or openai")
+        return v
+
+    @field_validator('ai_mode')
+    def validate_ai_mode(cls, v):
+        if v not in ('verify', 'discover', 'hybrid'):
+            raise ValueError("ai_mode must be verify, discover, or hybrid")
+        return v
+
 @app.get("/")
 def read_root():
     return {
         "name": "CodeSentinel API",
-        "version": "0.1.0",
+        "version": "2.2.0",
         "status": "online",
         "docs": "/docs",
         "health": "/health",

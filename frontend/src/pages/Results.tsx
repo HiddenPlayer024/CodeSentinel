@@ -14,6 +14,7 @@ export function Results() {
   const [search, setSearch] = useState('');
   const [severityFilter, setSeverityFilter] = useState<string>('ALL');
   const [sourceFilter, setSourceFilter] = useState<string>('ALL');
+  const [relationshipFilter, setRelationshipFilter] = useState<string>('ALL');
 
   if (!session) {
     return <Navigate to="/" replace />;
@@ -32,13 +33,14 @@ export function Results() {
   const filteredFindings = findings.filter(f => {
     const matchesSeverity = severityFilter === 'ALL' || f.classification.severity === severityFilter;
     const matchesSource = sourceFilter === 'ALL' || (f.analysis_source && f.analysis_source.includes(sourceFilter));
+    const matchesRelationship = relationshipFilter === 'ALL' || f.relationship === relationshipFilter;
     const searchLower = search.toLowerCase();
     const matchesSearch = 
       f.identity.title.toLowerCase().includes(searchLower) ||
       f.identity.rule_id.toLowerCase().includes(searchLower) ||
       f.location.file.toLowerCase().includes(searchLower);
     
-    return matchesSeverity && matchesSearch && matchesSource;
+    return matchesSeverity && matchesSearch && matchesSource && matchesRelationship;
   }).sort((a, b) => b.classification.confidence - a.classification.confidence);
 
   const handleDownload = () => {
@@ -88,8 +90,8 @@ export function Results() {
           <div className="text-xl font-bold text-white">{session.static_rule_count ?? 'N/A'}</div>
         </div>
         <div className="bg-dark-800 border border-dark-600 rounded-xl p-4">
-          <div className="text-gray-400 text-sm mb-1">AI Findings</div>
-          <div className="text-xl font-bold text-white">{session.ai_findings_count ?? '0'}</div>
+          <div className="text-gray-400 text-sm mb-1">AI-Added Findings</div>
+          <div className="text-xl font-bold text-white">{session.ai_added_findings ?? '0'}</div>
         </div>
         <div className="bg-dark-800 border border-dark-600 rounded-xl p-4">
           <div className="text-gray-400 text-sm mb-1">Total Findings</div>
@@ -103,10 +105,13 @@ export function Results() {
           <div className="text-primary font-bold text-sm uppercase tracking-wider">AI Telemetry</div>
           <div className="flex gap-4 text-sm font-mono text-gray-400">
             <div>Candidates: <span className="text-white">{session.ai_candidate_findings ?? 0}</span></div>
+            <div>Validated: <span className="text-white">{session.ai_valid_findings ?? 0}</span></div>
             <div>Rejected: <span className="text-warning">{session.ai_rejected_findings ?? 0}</span></div>
-            <div>Correlated: <span className="text-success">{session.correlated_findings ?? 0}</span></div>
-            <div>Invalid Locs: <span className="text-danger">{session.invalid_ai_locations ?? 0}</span></div>
-            <div>Errors: <span className="text-danger">{session.provider_errors ?? 0}</span></div>
+            <div>AI-Added: <span className="text-success">{session.ai_added_findings ?? 0}</span></div>
+            <div>Correlated: <span className="text-success">{session.ai_correlated_findings ?? session.correlated_findings ?? 0}</span></div>
+            <div>Duplicates: <span className="text-warning">{session.ai_duplicate_findings ?? 0}</span></div>
+            <div>Provider Errors: <span className="text-danger">{session.ai_provider_errors ?? session.provider_errors ?? 0}</span></div>
+            <div>Latency: <span className="text-white">{session.duration_seconds ? `${(session.duration_seconds).toFixed(2)}s` : 'N/A'}</span></div>
           </div>
         </div>
       )}
@@ -173,6 +178,18 @@ export function Results() {
                 <option value="AI_DISCOVERED">AI Discovered</option>
                 <option value="AI_VERIFIED">AI Verified</option>
               </select>
+              <select 
+                value={relationshipFilter}
+                onChange={e => setRelationshipFilter(e.target.value)}
+                className="bg-dark-900 border border-dark-600 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-primary"
+              >
+                <option value="ALL">All Relationships</option>
+                <option value="standalone">Standalone</option>
+                <option value="correlated">Correlated</option>
+                <option value="duplicate">Duplicate</option>
+                <option value="verified">Verified</option>
+                <option value="ai-added">AI-Added</option>
+              </select>
             </div>
 
             <div className="flex flex-col gap-2 max-h-[800px] overflow-y-auto pr-2">
@@ -194,6 +211,11 @@ export function Results() {
                             {src}
                           </span>
                         ))}
+                        {f.relationship && (
+                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary/20 text-primary font-mono border border-primary/30">
+                            {f.relationship}
+                          </span>
+                        )}
                       </div>
                     </div>
                     <span className="text-xs font-mono text-gray-500">{Math.round(f.classification.confidence * 100)}% Conf</span>

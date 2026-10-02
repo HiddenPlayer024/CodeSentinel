@@ -44,11 +44,22 @@ def scan(
     ai: bool = typer.Option(False, "--ai", help="Enable AI-assisted verification"),
     ai_provider: str = typer.Option("mock", "--ai-provider", help="AI provider (mock, ollama, openai)"),
     ai_mode: str = typer.Option("hybrid", "--ai-mode", help="AI mode (verify, discover, hybrid)"),
+    ai_max_files: int = typer.Option(None, "--ai-max-files", help="Maximum files for AI to analyze"),
+    ai_max_review_units: int = typer.Option(None, "--ai-max-review-units", help="Maximum review units"),
+    ai_max_findings: int = typer.Option(None, "--ai-max-findings", help="Maximum total AI findings"),
     fail_on: str = typer.Option("LOW", "--fail-on", help="Minimum severity to exit with non-zero status (INFO, LOW, MEDIUM, HIGH, CRITICAL)"),
 ):
     """
     Scan a repository for security vulnerabilities.
     """
+    import codesentinel.config as config
+    if ai_max_files is not None:
+        config.AI_MAX_FILES = ai_max_files
+    if ai_max_review_units is not None:
+        config.AI_MAX_REVIEW_UNITS = ai_max_review_units
+    if ai_max_findings is not None:
+        config.AI_MAX_TOTAL_AI_FINDINGS = ai_max_findings
+    
     console.print(f"[bold blue]CodeSentinel initializing scan on:[/bold blue] {target}")
     
     try:
@@ -115,6 +126,18 @@ def scan(
             session.verified_findings_count = sum(1 for f in session.findings if "ai-verified" in f.analysis_source)
 
             console.print("[bold green]AI processing complete.[/bold green]")
+            
+            ai_table = Table(title="AI Telemetry")
+            ai_table.add_column("Metric", style="cyan")
+            ai_table.add_column("Value", style="magenta")
+            ai_table.add_row("Candidates", str(session.ai_candidate_findings))
+            ai_table.add_row("Validated", str(session.ai_valid_findings))
+            ai_table.add_row("Rejected", str(session.ai_rejected_findings))
+            ai_table.add_row("AI-Added", str(session.ai_added_findings))
+            ai_table.add_row("Correlated", str(session.ai_correlated_findings))
+            ai_table.add_row("Duplicates", str(session.ai_duplicate_findings))
+            ai_table.add_row("Provider Errors", str(session.ai_provider_errors))
+            console.print(ai_table)
 
         # --- Determine Exit Code ---
         severity_rank = {"INFO": 0, "LOW": 1, "MEDIUM": 2, "HIGH": 3, "CRITICAL": 4}

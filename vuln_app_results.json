@@ -1,0 +1,787 @@
+{
+  "id": "fa994351-855c-4bda-9cc4-aad86382d82d",
+  "project": {
+    "path": "/home/unknown/Projects_II/CodeSentinel/examples/vulnerable-python-app",
+    "languages": [
+      "python"
+    ],
+    "file_count": 3,
+    "scanned_files": [
+      "low_only.py",
+      "app.py",
+      "data_flow.py"
+    ],
+    "source_type": "local",
+    "repository_url": null,
+    "ref": null
+  },
+  "start_time": "2026-10-02T12:48:36.194798Z",
+  "end_time": "2026-10-02T12:48:36.203156Z",
+  "duration_seconds": 0.008358,
+  "findings": [
+    {
+      "identity": {
+        "id": "python.crypto.insecure_random-1",
+        "rule_id": "python.crypto.insecure_random",
+        "title": "Insecure Randomness",
+        "fingerprint": "-683054287144570333"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/vulnerable-python-app/low_only.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "crypto",
+        "severity": "LOW",
+        "confidence": 0.5
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "import random; random.randint(1,10)",
+        "surrounding_code": "import random; random.randint(1,10)",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "The standard 'random' module is not cryptographically secure.",
+        "recommended_fix": "Use the 'secrets' module for cryptographically secure random numbers."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.command.injection-8",
+        "rule_id": "python.command.injection",
+        "title": "Potential Command Injection",
+        "fingerprint": "2363971762065572167"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/vulnerable-python-app/app.py",
+        "line_start": 8,
+        "line_end": 8
+      },
+      "classification": {
+        "category": "command",
+        "severity": "HIGH",
+        "confidence": 0.7
+      },
+      "context": {
+        "function_name": "dangerous_command",
+        "class_name": null,
+        "snippet": "os.system(\"ping -c 4 \" + user_input)",
+        "surrounding_code": "\ndef dangerous_command(user_input):\n    os.system(\"ping -c 4 \" + user_input)\n    subprocess.run(f\"ls -la {user_input}\", shell=True)\n",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Executing OS commands with untrusted or dynamically constructed input can lead to command injection.",
+        "recommended_fix": "Use subprocess.run with shell=False and pass arguments as a list. Avoid os.system and os.popen."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.command.injection-9",
+        "rule_id": "python.command.injection",
+        "title": "Potential Command Injection",
+        "fingerprint": "-4479115600741569801"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/vulnerable-python-app/app.py",
+        "line_start": 9,
+        "line_end": 9
+      },
+      "classification": {
+        "category": "command",
+        "severity": "HIGH",
+        "confidence": 0.85
+      },
+      "context": {
+        "function_name": "dangerous_command",
+        "class_name": null,
+        "snippet": "subprocess.run(f\"ls -la {user_input}\", shell=True)",
+        "surrounding_code": "def dangerous_command(user_input):\n    os.system(\"ping -c 4 \" + user_input)\n    subprocess.run(f\"ls -la {user_input}\", shell=True)\n\ndef weak_crypto(password):",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Executing OS commands with untrusted or dynamically constructed input can lead to command injection.",
+        "recommended_fix": "Use subprocess.run with shell=False and pass arguments as a list. Avoid os.system and os.popen."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.crypto.insecure_hash-12",
+        "rule_id": "python.crypto.insecure_hash",
+        "title": "Insecure Cryptographic Hash",
+        "fingerprint": "50395773501452397"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/vulnerable-python-app/app.py",
+        "line_start": 12,
+        "line_end": 12
+      },
+      "classification": {
+        "category": "crypto",
+        "severity": "MEDIUM",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": "weak_crypto",
+        "class_name": null,
+        "snippet": "m = hashlib.md5()",
+        "surrounding_code": "\ndef weak_crypto(password):\n    m = hashlib.md5()\n    m.update(password.encode())\n    return m.hexdigest()",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Use of weak or broken cryptographic hash functions (e.g., MD5, SHA1).",
+        "recommended_fix": "Use stronger hashing algorithms like SHA-256 or SHA-3. For passwords, use bcrypt, argon2, or scrypt."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.password_storage-12",
+        "rule_id": "python.password_storage",
+        "title": "Insecure password hashing/storage",
+        "fingerprint": "-8726991245461757465"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/vulnerable-python-app/app.py",
+        "line_start": 12,
+        "line_end": 12
+      },
+      "classification": {
+        "category": "password_storage",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "weak_crypto",
+        "class_name": null,
+        "snippet": "m = hashlib.md5()",
+        "surrounding_code": "\ndef weak_crypto(password):\n    m = hashlib.md5()\n    m.update(password.encode())\n    return m.hexdigest()",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for password_storage vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.deserialization.unsafe-17",
+        "rule_id": "python.deserialization.unsafe",
+        "title": "Unsafe Deserialization",
+        "fingerprint": "6993307179876982963"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/vulnerable-python-app/app.py",
+        "line_start": 17,
+        "line_end": 17
+      },
+      "classification": {
+        "category": "deserialization",
+        "severity": "CRITICAL",
+        "confidence": 0.85
+      },
+      "context": {
+        "function_name": "unsafe_load",
+        "class_name": null,
+        "snippet": "return yaml.load(payload)",
+        "surrounding_code": "\ndef unsafe_load(payload):\n    return yaml.load(payload)\n\ndef sql_inject(user_id):",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Deserializing untrusted data can lead to arbitrary code execution.",
+        "recommended_fix": "Avoid using pickle or marshal for untrusted data. Use JSON or safe loaders like yaml.safe_load."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.sql.injection-22",
+        "rule_id": "python.sql.injection",
+        "title": "Potential SQL Injection",
+        "fingerprint": "-7085672846216250213"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/vulnerable-python-app/app.py",
+        "line_start": 22,
+        "line_end": 22
+      },
+      "classification": {
+        "category": "sql",
+        "severity": "HIGH",
+        "confidence": 0.75
+      },
+      "context": {
+        "function_name": "sql_inject",
+        "class_name": null,
+        "snippet": "cursor.execute(f\"SELECT * FROM users WHERE id={user_id}\")",
+        "surrounding_code": "    conn = sqlite3.connect('test.db')\n    cursor = conn.cursor()\n    cursor.execute(f\"SELECT * FROM users WHERE id={user_id}\")\n\ndef expose_secret():",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [
+          "inline_formatting"
+        ],
+        "sinks": [
+          "execute"
+        ],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Constructing SQL queries by concatenating or formatting strings with untrusted input.",
+        "recommended_fix": "Use parameterized queries or prepared statements (e.g., execute('SELECT * FROM users WHERE id=?', (user_id,)))."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.secret.hardcoded-25",
+        "rule_id": "python.secret.hardcoded",
+        "title": "Hardcoded Secret",
+        "fingerprint": "8925100298202948039"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/vulnerable-python-app/app.py",
+        "line_start": 25,
+        "line_end": 25
+      },
+      "classification": {
+        "category": "secret",
+        "severity": "CRITICAL",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "expose_secret",
+        "class_name": null,
+        "snippet": "api_key = \"AKIA***\" # Hardcoded secret",
+        "surrounding_code": "\ndef expose_secret():\n    api_key = \"AKIA***\" # Hardcoded secret\n    return api_key\n",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Hardcoded credentials or API keys found in source code.",
+        "recommended_fix": "Use environment variables or a secure secret management system instead of hardcoding secrets."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.crypto.insecure_random-30",
+        "rule_id": "python.crypto.insecure_random",
+        "title": "Insecure Randomness",
+        "fingerprint": "2034735317684852726"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/vulnerable-python-app/app.py",
+        "line_start": 30,
+        "line_end": 30
+      },
+      "classification": {
+        "category": "crypto",
+        "severity": "LOW",
+        "confidence": 0.5
+      },
+      "context": {
+        "function_name": "insecure_randomness",
+        "class_name": null,
+        "snippet": "return random.randint(1000, 9999) # Insecure crypto",
+        "surrounding_code": "def insecure_randomness():\n    import random\n    return random.randint(1000, 9999) # Insecure crypto\n\ndef use_weak_cipher(key):",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "The standard 'random' module is not cryptographically secure.",
+        "recommended_fix": "Use the 'secrets' module for cryptographically secure random numbers."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.crypto.weak_cipher-34",
+        "rule_id": "python.crypto.weak_cipher",
+        "title": "Weak Cryptographic Cipher",
+        "fingerprint": "-1631355528111417854"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/vulnerable-python-app/app.py",
+        "line_start": 34,
+        "line_end": 34
+      },
+      "classification": {
+        "category": "crypto",
+        "severity": "HIGH",
+        "confidence": 0.95
+      },
+      "context": {
+        "function_name": "use_weak_cipher",
+        "class_name": null,
+        "snippet": "cipher = DES.new(key, DES.MODE_ECB) # Weak cryptography",
+        "surrounding_code": "def use_weak_cipher(key):\n    from Crypto.Cipher import DES\n    cipher = DES.new(key, DES.MODE_ECB) # Weak cryptography\n    return cipher\n",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Use of a broken or weak cryptographic algorithm (e.g., DES, RC4).",
+        "recommended_fix": "Use AES (Advanced Encryption Standard) with a secure mode like GCM."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.path.traversal-38",
+        "rule_id": "python.path.traversal",
+        "title": "Potential Path Traversal",
+        "fingerprint": "3428451598318866856"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/vulnerable-python-app/app.py",
+        "line_start": 38,
+        "line_end": 38
+      },
+      "classification": {
+        "category": "path",
+        "severity": "HIGH",
+        "confidence": 0.6
+      },
+      "context": {
+        "function_name": "path_traversal",
+        "class_name": null,
+        "snippet": "f = open(\"/var/www/html/images/\" + filename, \"r\") # Path traversal",
+        "surrounding_code": "\ndef path_traversal(filename):\n    f = open(\"/var/www/html/images/\" + filename, \"r\") # Path traversal\n    return f.read()\n",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Opening files using dynamically constructed paths may allow attackers to read arbitrary files.",
+        "recommended_fix": "Validate and sanitize user input before using it in file paths. Use os.path.abspath and os.path.commonprefix to restrict paths."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.sql.injection-10",
+        "rule_id": "python.sql.injection",
+        "title": "Potential SQL Injection",
+        "fingerprint": "2671838526455770800"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/vulnerable-python-app/data_flow.py",
+        "line_start": 10,
+        "line_end": 10
+      },
+      "classification": {
+        "category": "sql",
+        "severity": "HIGH",
+        "confidence": 0.75
+      },
+      "context": {
+        "function_name": "direct_vulnerability",
+        "class_name": null,
+        "snippet": "cursor.execute(\"SELECT * FROM users WHERE id=\" + user_id)",
+        "surrounding_code": "    cursor = conn.cursor()\n    # Direct vulnerability\n    cursor.execute(\"SELECT * FROM users WHERE id=\" + user_id)\n\ndef var_vulnerability(user_id):",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [
+          "inline_formatting"
+        ],
+        "sinks": [
+          "execute"
+        ],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Constructing SQL queries by concatenating or formatting strings with untrusted input.",
+        "recommended_fix": "Use parameterized queries or prepared statements (e.g., execute('SELECT * FROM users WHERE id=?', (user_id,)))."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.sql.injection-17",
+        "rule_id": "python.sql.injection",
+        "title": "Potential SQL Injection",
+        "fingerprint": "4151168756139908658"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/vulnerable-python-app/data_flow.py",
+        "line_start": 17,
+        "line_end": 17
+      },
+      "classification": {
+        "category": "sql",
+        "severity": "HIGH",
+        "confidence": 0.8500000000000001
+      },
+      "context": {
+        "function_name": "var_vulnerability",
+        "class_name": null,
+        "snippet": "cursor.execute(query)",
+        "surrounding_code": "    # Vulnerability through variable\n    query = \"SELECT * FROM users WHERE id=\" + user_id\n    cursor.execute(query)\n\ndef safe_parameterized(user_id):",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [
+          "user_id"
+        ],
+        "sinks": [
+          "execute"
+        ],
+        "sanitizers": [],
+        "propagation_path": [
+          "query",
+          "user_id"
+        ]
+      },
+      "remediation": {
+        "explanation": "Constructing SQL queries by concatenating or formatting strings with untrusted input.",
+        "recommended_fix": "Use parameterized queries or prepared statements (e.g., execute('SELECT * FROM users WHERE id=?', (user_id,)))."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.sql.injection-30",
+        "rule_id": "python.sql.injection",
+        "title": "Potential SQL Injection",
+        "fingerprint": "-4493649335921900428"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/vulnerable-python-app/data_flow.py",
+        "line_start": 30,
+        "line_end": 30
+      },
+      "classification": {
+        "category": "sql",
+        "severity": "HIGH",
+        "confidence": 0.15000000000000002
+      },
+      "context": {
+        "function_name": "constant_input",
+        "class_name": null,
+        "snippet": "cursor.execute(query)",
+        "surrounding_code": "    # Constant input\n    query = \"SELECT * FROM users WHERE id=42\"\n    cursor.execute(query)\n\ndef sanitized_input(user_id):",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [
+          "constant"
+        ],
+        "sinks": [
+          "execute"
+        ],
+        "sanitizers": [],
+        "propagation_path": [
+          "query"
+        ]
+      },
+      "remediation": {
+        "explanation": "Constructing SQL queries by concatenating or formatting strings with untrusted input.",
+        "recommended_fix": "Use parameterized queries or prepared statements (e.g., execute('SELECT * FROM users WHERE id=?', (user_id,)))."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.sql.injection-38",
+        "rule_id": "python.sql.injection",
+        "title": "Potential SQL Injection",
+        "fingerprint": "4746606085393412411"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/vulnerable-python-app/data_flow.py",
+        "line_start": 38,
+        "line_end": 38
+      },
+      "classification": {
+        "category": "sql",
+        "severity": "HIGH",
+        "confidence": 0.25
+      },
+      "context": {
+        "function_name": "sanitized_input",
+        "class_name": null,
+        "snippet": "cursor.execute(query)",
+        "surrounding_code": "    user_id = sanitize(user_id)\n    query = \"SELECT * FROM users WHERE id=\" + user_id\n    cursor.execute(query)\n\ndef multi_hop(request_data):",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [
+          "user_id"
+        ],
+        "sinks": [
+          "execute"
+        ],
+        "sanitizers": [
+          "sanitized"
+        ],
+        "propagation_path": [
+          "query",
+          "user_id"
+        ]
+      },
+      "remediation": {
+        "explanation": "Constructing SQL queries by concatenating or formatting strings with untrusted input.",
+        "recommended_fix": "Use parameterized queries or prepared statements (e.g., execute('SELECT * FROM users WHERE id=?', (user_id,)))."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.sql.injection-47",
+        "rule_id": "python.sql.injection",
+        "title": "Potential SQL Injection",
+        "fingerprint": "-3112316778072605068"
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/vulnerable-python-app/data_flow.py",
+        "line_start": 47,
+        "line_end": 47
+      },
+      "classification": {
+        "category": "sql",
+        "severity": "HIGH",
+        "confidence": 0.8500000000000001
+      },
+      "context": {
+        "function_name": "multi_hop",
+        "class_name": null,
+        "snippet": "cursor.execute(var_c)",
+        "surrounding_code": "    var_b = var_a + \" extra\"\n    var_c = \"SELECT * FROM users WHERE id=\" + var_b\n    cursor.execute(var_c)",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [
+          "var_b",
+          "var_a",
+          "request_data"
+        ],
+        "sinks": [
+          "execute"
+        ],
+        "sanitizers": [],
+        "propagation_path": [
+          "var_c",
+          "var_b",
+          "var_a",
+          "request_data"
+        ]
+      },
+      "remediation": {
+        "explanation": "Constructing SQL queries by concatenating or formatting strings with untrusted input.",
+        "recommended_fix": "Use parameterized queries or prepared statements (e.g., execute('SELECT * FROM users WHERE id=?', (user_id,)))."
+      },
+      "ai_assessment": {
+        "is_likely_vulnerable": true,
+        "confidence_adjustment": 0.1,
+        "explanation": "Mock AI verified this vulnerability.",
+        "false_positive_reason": null
+      },
+      "analysis_source": [
+        "static-rule",
+        "ai-verified"
+      ]
+    }
+  ],
+  "status": "completed",
+  "analysis_version": "2.1.0",
+  "static_rule_count": 0,
+  "ai_enabled": true,
+  "ai_mode": "hybrid",
+  "ai_provider": "mock",
+  "static_findings_count": 16,
+  "ai_findings_count": 0,
+  "verified_findings_count": 14,
+  "ai_candidate_findings": 0,
+  "ai_rejected_findings": 0,
+  "correlated_findings": 0,
+  "duplicate_ai_findings": 0,
+  "invalid_ai_locations": 0,
+  "provider_errors": 0
+}

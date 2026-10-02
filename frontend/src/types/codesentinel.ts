@@ -72,6 +72,7 @@ export interface Finding {
   remediation: FindingRemediation;
   ai_assessment?: AIAssessment;
   analysis_source: string[];
+  relationship?: string;
 }
 
 export interface ScanSession {
@@ -91,9 +92,14 @@ export interface ScanSession {
   static_findings_count?: number;
   verified_findings_count?: number;
   ai_candidate_findings?: number;
+  ai_valid_findings?: number;
   ai_rejected_findings?: number;
+  ai_added_findings?: number;
   correlated_findings?: number;
+  ai_correlated_findings?: number;
   duplicate_ai_findings?: number;
+  ai_duplicate_findings?: number;
   invalid_ai_locations?: number;
   provider_errors?: number;
+  ai_provider_errors?: number;
 }
