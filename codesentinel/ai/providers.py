@@ -130,18 +130,27 @@ class MockProvider(AIProvider):
         self.calls.append({"prompt": prompt, "system_prompt": system_prompt, "schema": schema.__name__})
         # Try to return a valid object matching the schema for the discovery test
         if schema.__name__ == "DiscoveryResult":
-            return {
-                "vulnerabilities": [{
-                    "title": "Mock AI Vulnerability",
-                    "category": "Injection",
-                    "severity": "HIGH",
-                    "confidence": 0.9,
-                    "file": "mock.py",
-                    "line_start": 1,
-                    "line_end": 1,
-                    "evidence": "mock_evidence()",
-                    "explanation": "Mock AI discovered this.",
-                    "recommended_fix": "Fix it."
-                }]
-            }
+            # Extract file from prompt if possible: "File: examples/security-corpus/python/vulnerable/app.py"
+            file_name = "mock.py"
+            for line in prompt.split('\n'):
+                if line.startswith('File:'):
+                    file_name = line.split('File:')[1].strip()
+                    break
+                    
+            if "vulnerable" in file_name or "variant" in file_name:
+                return {
+                    "vulnerabilities": [{
+                        "title": "Mock AI Vulnerability",
+                        "category": "Injection",
+                        "severity": "HIGH",
+                        "confidence": 0.9,
+                        "file": file_name,
+                        "line_start": 1,
+                        "line_end": 1,
+                        "evidence": "mock_evidence()",
+                        "explanation": "Mock AI discovered this.",
+                        "recommended_fix": "Fix it."
+                    }]
+                }
+            return {"vulnerabilities": []}
         return self.mock_response

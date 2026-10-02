@@ -1,4 +1,6 @@
 import ast
+from codesentinel.analysis.ast_utils import resolve_call_name, is_dynamic_string
+from codesentinel.analysis.taint import TaintConfig
 from typing import List, Any
 from codesentinel.rules.base import SecurityRule, RuleContext, Finding
 
@@ -14,8 +16,8 @@ class FilePermissionsRule(SecurityRule):
     def analyze(self, node: Any, context: RuleContext) -> List[Finding]:
         findings = []
         if isinstance(node, ast.Call):
-            func_name = getattr(node.func, 'attr', getattr(node.func, 'id', ''))
-            if func_name == 'chmod':
+            func_name = resolve_call_name(node)
+            if func_name.endswith('chmod'):
                 if len(node.args) >= 2:
                     mode = node.args[1]
                     if isinstance(mode, ast.Constant) and mode.value == 0o777:

@@ -1,0 +1,1313 @@
+{
+  "id": "ee4ba15f-12cf-4acb-8cff-da6758781f3d",
+  "project": {
+    "path": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus",
+    "languages": [
+      "python",
+      "config"
+    ],
+    "file_count": 29,
+    "scanned_files": [
+      "cors_vuln.py",
+      "logging_secrets_vuln.py",
+      "tls_verify_vuln.py",
+      "config_vuln.env",
+      "debug_mode_vuln.py",
+      "unsafe_redirect_vuln.py",
+      "ssti_vuln.py",
+      "ssrf_vuln.py",
+      "password_storage_vuln.py",
+      "Dockerfile",
+      "xxe_vuln.py",
+      "jwt_vuln.py",
+      "xss_vuln.py",
+      "file_permissions_vuln.py",
+      "archive_traversal_vuln.py",
+      "temp_files_vuln.py",
+      "eval_exec_vuln.py",
+      "ci/gh_actions/safe/example1.yml",
+      "ci/gh_actions/false_positive/example1.yml",
+      "ci/gh_actions/variant/example1.yml",
+      "ci/gh_actions/vulnerable/example1.yml",
+      "python/command_injection/safe/example1.py",
+      "python/command_injection/false_positive/example1.py",
+      "python/command_injection/variant/example1.py",
+      "python/command_injection/vulnerable/example1.py",
+      "python/ssrf/safe/example1.py",
+      "python/ssrf/false_positive/example1.py",
+      "python/ssrf/variant/example1.py",
+      "python/ssrf/vulnerable/example1.py"
+    ],
+    "source_type": "local",
+    "repository_url": null,
+    "ref": null
+  },
+  "start_time": "2026-10-02T12:48:13.293528Z",
+  "end_time": "2026-10-02T12:48:13.305908Z",
+  "duration_seconds": 0.01238,
+  "findings": [
+    {
+      "identity": {
+        "id": "python.tls_verify-4",
+        "rule_id": "python.tls_verify",
+        "title": "Insecure TLS validation",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/tls_verify_vuln.py",
+        "line_start": 4,
+        "line_end": 4
+      },
+      "classification": {
+        "category": "tls_verify",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "insecure_request",
+        "class_name": null,
+        "snippet": "requests.get(\"https://example.com\", verify=False)",
+        "surrounding_code": "import ssl\ndef insecure_request():\n    requests.get(\"https://example.com\", verify=False)\n    ssl._create_unverified_context()",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for tls_verify vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.tls_verify-5",
+        "rule_id": "python.tls_verify",
+        "title": "Insecure TLS validation",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/tls_verify_vuln.py",
+        "line_start": 5,
+        "line_end": 5
+      },
+      "classification": {
+        "category": "tls_verify",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "insecure_request",
+        "class_name": null,
+        "snippet": "ssl._create_unverified_context()",
+        "surrounding_code": "def insecure_request():\n    requests.get(\"https://example.com\", verify=False)\n    ssl._create_unverified_context()",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for tls_verify vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "config.hardcoded_secrets-1",
+        "rule_id": "config.hardcoded_secrets",
+        "title": "Hardcoded Secrets in Config",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/config_vuln.env",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "hardcoded_secrets",
+        "severity": "CRITICAL",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "AWS_ACCESS_KEY_ID=\"AKIAIOSFODNN7EXAMPLE\"",
+        "surrounding_code": "AWS_ACCESS_KEY_ID=\"AKIAIOSFODNN7EXAMPLE\"\nAWS_SECRET_ACCESS_KEY=\"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\"\nDB_PASSWORD=\"super_secret_password\"",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for hardcoded secrets in config files.",
+        "recommended_fix": "Use environment variables or a secret manager."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "config.hardcoded_secrets-2",
+        "rule_id": "config.hardcoded_secrets",
+        "title": "Hardcoded Secrets in Config",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/config_vuln.env",
+        "line_start": 2,
+        "line_end": 2
+      },
+      "classification": {
+        "category": "hardcoded_secrets",
+        "severity": "CRITICAL",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "AWS_SECRET_ACCESS_KEY=\"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\"",
+        "surrounding_code": "AWS_ACCESS_KEY_ID=\"AKIAIOSFODNN7EXAMPLE\"\nAWS_SECRET_ACCESS_KEY=\"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\"\nDB_PASSWORD=\"super_secret_password\"",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for hardcoded secrets in config files.",
+        "recommended_fix": "Use environment variables or a secret manager."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "config.hardcoded_secrets-3",
+        "rule_id": "config.hardcoded_secrets",
+        "title": "Hardcoded Secrets in Config",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/config_vuln.env",
+        "line_start": 3,
+        "line_end": 3
+      },
+      "classification": {
+        "category": "hardcoded_secrets",
+        "severity": "CRITICAL",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "DB_PASSWORD=\"super_secret_password\"",
+        "surrounding_code": "AWS_ACCESS_KEY_ID=\"AKIAIOSFODNN7EXAMPLE\"\nAWS_SECRET_ACCESS_KEY=\"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\"\nDB_PASSWORD=\"super_secret_password\"",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for hardcoded secrets in config files.",
+        "recommended_fix": "Use environment variables or a secret manager."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.debug_mode-4",
+        "rule_id": "python.debug_mode",
+        "title": "Running framework in Debug mode",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/debug_mode_vuln.py",
+        "line_start": 4,
+        "line_end": 4
+      },
+      "classification": {
+        "category": "debug_mode",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "app.run(debug=True)",
+        "surrounding_code": "app = Flask(__name__)\nif __name__ == \"__main__\":\n    app.run(debug=True)",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for debug_mode vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.unsafe_redirect-3",
+        "rule_id": "python.unsafe_redirect",
+        "title": "Unvalidated redirects or forwards",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/unsafe_redirect_vuln.py",
+        "line_start": 3,
+        "line_end": 3
+      },
+      "classification": {
+        "category": "unsafe_redirect",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "login",
+        "class_name": null,
+        "snippet": "return redirect(next_url)",
+        "surrounding_code": "from flask import redirect\ndef login(next_url):\n    return redirect(next_url)",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for unsafe_redirect vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.ssti-4",
+        "rule_id": "python.ssti",
+        "title": "Server-Side Template Injection",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ssti_vuln.py",
+        "line_start": 4,
+        "line_end": 4
+      },
+      "classification": {
+        "category": "ssti",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "render",
+        "class_name": null,
+        "snippet": "render_template_string(user_input)",
+        "surrounding_code": "from jinja2 import Template\ndef render(user_input):\n    render_template_string(user_input)\n    Template(user_input).render()",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for ssti vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.ssti-5",
+        "rule_id": "python.ssti",
+        "title": "Server-Side Template Injection",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ssti_vuln.py",
+        "line_start": 5,
+        "line_end": 5
+      },
+      "classification": {
+        "category": "ssti",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "render",
+        "class_name": null,
+        "snippet": "Template(user_input).render()",
+        "surrounding_code": "def render(user_input):\n    render_template_string(user_input)\n    Template(user_input).render()",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for ssti vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.ssrf-5",
+        "rule_id": "python.ssrf",
+        "title": "SSRF vulnerability via unvalidated URL requests",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ssrf_vuln.py",
+        "line_start": 5,
+        "line_end": 5
+      },
+      "classification": {
+        "category": "ssrf",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "fetch_url",
+        "class_name": null,
+        "snippet": "requests.get(url)",
+        "surrounding_code": "import urllib.request\ndef fetch_url(url):\n    requests.get(url)\n    httpx.post(url)\n    urllib.request.urlopen(url)",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for ssrf vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.ssrf-6",
+        "rule_id": "python.ssrf",
+        "title": "SSRF vulnerability via unvalidated URL requests",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ssrf_vuln.py",
+        "line_start": 6,
+        "line_end": 6
+      },
+      "classification": {
+        "category": "ssrf",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "fetch_url",
+        "class_name": null,
+        "snippet": "httpx.post(url)",
+        "surrounding_code": "def fetch_url(url):\n    requests.get(url)\n    httpx.post(url)\n    urllib.request.urlopen(url)",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for ssrf vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.ssrf-7",
+        "rule_id": "python.ssrf",
+        "title": "SSRF vulnerability via unvalidated URL requests",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ssrf_vuln.py",
+        "line_start": 7,
+        "line_end": 7
+      },
+      "classification": {
+        "category": "ssrf",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "fetch_url",
+        "class_name": null,
+        "snippet": "urllib.request.urlopen(url)",
+        "surrounding_code": "    requests.get(url)\n    httpx.post(url)\n    urllib.request.urlopen(url)",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for ssrf vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.crypto.insecure_hash-3",
+        "rule_id": "python.crypto.insecure_hash",
+        "title": "Insecure Cryptographic Hash",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/password_storage_vuln.py",
+        "line_start": 3,
+        "line_end": 3
+      },
+      "classification": {
+        "category": "crypto",
+        "severity": "MEDIUM",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": "hash_pass",
+        "class_name": null,
+        "snippet": "hashlib.md5(password.encode())",
+        "surrounding_code": "import hashlib\ndef hash_pass(password):\n    hashlib.md5(password.encode())\n    hashlib.sha1(password.encode())",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Use of weak or broken cryptographic hash functions (e.g., MD5, SHA1).",
+        "recommended_fix": "Use stronger hashing algorithms like SHA-256 or SHA-3. For passwords, use bcrypt, argon2, or scrypt."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.password_storage-3",
+        "rule_id": "python.password_storage",
+        "title": "Insecure password hashing/storage",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/password_storage_vuln.py",
+        "line_start": 3,
+        "line_end": 3
+      },
+      "classification": {
+        "category": "password_storage",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "hash_pass",
+        "class_name": null,
+        "snippet": "hashlib.md5(password.encode())",
+        "surrounding_code": "import hashlib\ndef hash_pass(password):\n    hashlib.md5(password.encode())\n    hashlib.sha1(password.encode())",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for password_storage vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.crypto.insecure_hash-4",
+        "rule_id": "python.crypto.insecure_hash",
+        "title": "Insecure Cryptographic Hash",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/password_storage_vuln.py",
+        "line_start": 4,
+        "line_end": 4
+      },
+      "classification": {
+        "category": "crypto",
+        "severity": "MEDIUM",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": "hash_pass",
+        "class_name": null,
+        "snippet": "hashlib.sha1(password.encode())",
+        "surrounding_code": "def hash_pass(password):\n    hashlib.md5(password.encode())\n    hashlib.sha1(password.encode())",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Use of weak or broken cryptographic hash functions (e.g., MD5, SHA1).",
+        "recommended_fix": "Use stronger hashing algorithms like SHA-256 or SHA-3. For passwords, use bcrypt, argon2, or scrypt."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.password_storage-4",
+        "rule_id": "python.password_storage",
+        "title": "Insecure password hashing/storage",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/password_storage_vuln.py",
+        "line_start": 4,
+        "line_end": 4
+      },
+      "classification": {
+        "category": "password_storage",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "hash_pass",
+        "class_name": null,
+        "snippet": "hashlib.sha1(password.encode())",
+        "surrounding_code": "def hash_pass(password):\n    hashlib.md5(password.encode())\n    hashlib.sha1(password.encode())",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for password_storage vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "config.docker_root-1",
+        "rule_id": "config.docker_root",
+        "title": "Dockerfile runs as root",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/Dockerfile",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "docker_root",
+        "severity": "MEDIUM",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "FROM ubuntu:latest",
+        "surrounding_code": "FROM ubuntu:latest\nRUN apt-get update\n# Missing USER instruction",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks if Dockerfile runs as root without USER instruction.",
+        "recommended_fix": "Add a USER instruction to change to a non-root user."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.xss-3",
+        "rule_id": "python.xss",
+        "title": "Cross-Site Scripting via unescaped rendering",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/xss_vuln.py",
+        "line_start": 3,
+        "line_end": 3
+      },
+      "classification": {
+        "category": "xss",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "show_html",
+        "class_name": null,
+        "snippet": "Markup(user_input)",
+        "surrounding_code": "from markupsafe import Markup\ndef show_html(user_input):\n    Markup(user_input)",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for xss vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.file_permissions-3",
+        "rule_id": "python.file_permissions",
+        "title": "Insecure file permissions",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/file_permissions_vuln.py",
+        "line_start": 3,
+        "line_end": 3
+      },
+      "classification": {
+        "category": "file_permissions",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "change_perms",
+        "class_name": null,
+        "snippet": "os.chmod(path, 0o777)",
+        "surrounding_code": "import os\ndef change_perms(path):\n    os.chmod(path, 0o777)",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for file_permissions vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.archive_traversal-4",
+        "rule_id": "python.archive_traversal",
+        "title": "Unsafe archive extraction (ZipSlip)",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/archive_traversal_vuln.py",
+        "line_start": 4,
+        "line_end": 4
+      },
+      "classification": {
+        "category": "archive_traversal",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "extract",
+        "class_name": null,
+        "snippet": "tar.extractall()",
+        "surrounding_code": "def extract(tar_path):\n    with tarfile.open(tar_path) as tar:\n        tar.extractall()",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for archive_traversal vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.temp_files-3",
+        "rule_id": "python.temp_files",
+        "title": "Insecure temporary file creation",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/temp_files_vuln.py",
+        "line_start": 3,
+        "line_end": 3
+      },
+      "classification": {
+        "category": "temp_files",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "create_temp",
+        "class_name": null,
+        "snippet": "tempfile.mktemp()",
+        "surrounding_code": "import tempfile\ndef create_temp():\n    tempfile.mktemp()",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for temp_files vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.eval_exec-2",
+        "rule_id": "python.eval_exec",
+        "title": "eval, exec, compile or __import__ used safely?",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/eval_exec_vuln.py",
+        "line_start": 2,
+        "line_end": 2
+      },
+      "classification": {
+        "category": "eval_exec",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "run_code",
+        "class_name": null,
+        "snippet": "eval(user_input)",
+        "surrounding_code": "def run_code(user_input):\n    eval(user_input)\n    exec(user_input)\n    compile(user_input, '<string>', 'exec')",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for eval_exec vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.eval_exec-3",
+        "rule_id": "python.eval_exec",
+        "title": "eval, exec, compile or __import__ used safely?",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/eval_exec_vuln.py",
+        "line_start": 3,
+        "line_end": 3
+      },
+      "classification": {
+        "category": "eval_exec",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "run_code",
+        "class_name": null,
+        "snippet": "exec(user_input)",
+        "surrounding_code": "def run_code(user_input):\n    eval(user_input)\n    exec(user_input)\n    compile(user_input, '<string>', 'exec')\n    __import__(user_input)",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for eval_exec vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.eval_exec-4",
+        "rule_id": "python.eval_exec",
+        "title": "eval, exec, compile or __import__ used safely?",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/eval_exec_vuln.py",
+        "line_start": 4,
+        "line_end": 4
+      },
+      "classification": {
+        "category": "eval_exec",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "run_code",
+        "class_name": null,
+        "snippet": "compile(user_input, '<string>', 'exec')",
+        "surrounding_code": "    eval(user_input)\n    exec(user_input)\n    compile(user_input, '<string>', 'exec')\n    __import__(user_input)",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for eval_exec vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.eval_exec-5",
+        "rule_id": "python.eval_exec",
+        "title": "eval, exec, compile or __import__ used safely?",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/eval_exec_vuln.py",
+        "line_start": 5,
+        "line_end": 5
+      },
+      "classification": {
+        "category": "eval_exec",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "run_code",
+        "class_name": null,
+        "snippet": "__import__(user_input)",
+        "surrounding_code": "    exec(user_input)\n    compile(user_input, '<string>', 'exec')\n    __import__(user_input)",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for eval_exec vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "ci.gh_actions_untrusted_data-7",
+        "rule_id": "ci.gh_actions_untrusted_data",
+        "title": "Untrusted PR Data in GitHub Actions",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ci/gh_actions/vulnerable/example1.yml",
+        "line_start": 7,
+        "line_end": 7
+      },
+      "classification": {
+        "category": "gh_actions_untrusted_data",
+        "severity": "HIGH",
+        "confidence": 0.85
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "- run: echo \"PR title is ${{ github.event.pull_request.title }}\"",
+        "surrounding_code": "    runs-on: ubuntu-latest\n    steps:\n      - run: echo \"PR title is ${{ github.event.pull_request.title }}\"",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for untrusted pull request data interpolated directly into shell commands.",
+        "recommended_fix": "Bind untrusted data to an intermediate environment variable rather than inline string interpolation."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.command.injection-5",
+        "rule_id": "python.command.injection",
+        "title": "Potential Command Injection",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/command_injection/variant/example1.py",
+        "line_start": 5,
+        "line_end": 5
+      },
+      "classification": {
+        "category": "command",
+        "severity": "HIGH",
+        "confidence": 0.85
+      },
+      "context": {
+        "function_name": "execute_user_command",
+        "class_name": null,
+        "snippet": "subprocess.Popen(f\"ping -c 1 {user_input}\", shell=True)",
+        "surrounding_code": "def execute_user_command(user_input):\n    # Using Popen with shell=True is also vulnerable\n    subprocess.Popen(f\"ping -c 1 {user_input}\", shell=True)",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Executing OS commands with untrusted or dynamically constructed input can lead to command injection.",
+        "recommended_fix": "Use subprocess.run with shell=False and pass arguments as a list. Avoid os.system and os.popen."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.command.injection-4",
+        "rule_id": "python.command.injection",
+        "title": "Potential Command Injection",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/command_injection/vulnerable/example1.py",
+        "line_start": 4,
+        "line_end": 4
+      },
+      "classification": {
+        "category": "command",
+        "severity": "HIGH",
+        "confidence": 0.7
+      },
+      "context": {
+        "function_name": "execute_user_command",
+        "class_name": null,
+        "snippet": "os.system(f\"ping -c 1 {user_input}\")",
+        "surrounding_code": "\ndef execute_user_command(user_input):\n    os.system(f\"ping -c 1 {user_input}\")",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Executing OS commands with untrusted or dynamically constructed input can lead to command injection.",
+        "recommended_fix": "Use subprocess.run with shell=False and pass arguments as a list. Avoid os.system and os.popen."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.ssrf-13",
+        "rule_id": "python.ssrf",
+        "title": "SSRF vulnerability via unvalidated URL requests",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/ssrf/safe/example1.py",
+        "line_start": 13,
+        "line_end": 13
+      },
+      "classification": {
+        "category": "ssrf",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "fetch",
+        "class_name": null,
+        "snippet": "response = requests.get(url)",
+        "surrounding_code": "    if not any(url.startswith(f\"https://{d}/\") for d in ALLOWED_DOMAINS):\n        return \"Invalid domain\", 403\n    response = requests.get(url)\n    return response.text",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for ssrf vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.ssrf-6",
+        "rule_id": "python.ssrf",
+        "title": "SSRF vulnerability via unvalidated URL requests",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/ssrf/false_positive/example1.py",
+        "line_start": 6,
+        "line_end": 6
+      },
+      "classification": {
+        "category": "ssrf",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "fetch_internal",
+        "class_name": null,
+        "snippet": "response = requests.get(url)",
+        "surrounding_code": "    # Hardcoded, no user input\n    url = \"https://api.internal.service/data\"\n    response = requests.get(url)\n    return response.text",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for ssrf vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.ssrf-10",
+        "rule_id": "python.ssrf",
+        "title": "SSRF vulnerability via unvalidated URL requests",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/ssrf/variant/example1.py",
+        "line_start": 10,
+        "line_end": 10
+      },
+      "classification": {
+        "category": "ssrf",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "fetch",
+        "class_name": null,
+        "snippet": "with urllib.request.urlopen(url) as response:",
+        "surrounding_code": "    url = request.args.get(\"url\")\n    # using urllib instead of requests\n    with urllib.request.urlopen(url) as response:\n        return response.read()",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for ssrf vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    },
+    {
+      "identity": {
+        "id": "python.ssrf-9",
+        "rule_id": "python.ssrf",
+        "title": "SSRF vulnerability via unvalidated URL requests",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/ssrf/vulnerable/example1.py",
+        "line_start": 9,
+        "line_end": 9
+      },
+      "classification": {
+        "category": "ssrf",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "fetch",
+        "class_name": null,
+        "snippet": "response = requests.get(url)",
+        "surrounding_code": "def fetch():\n    url = request.args.get(\"url\")\n    response = requests.get(url)\n    return response.text",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for ssrf vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ]
+    }
+  ],
+  "status": "completed",
+  "analysis_version": "2.1.0",
+  "static_rule_count": 0,
+  "ai_enabled": false,
+  "ai_mode": null,
+  "ai_provider": null,
+  "static_findings_count": 0,
+  "ai_findings_count": 0,
+  "verified_findings_count": 0,
+  "ai_candidate_findings": 0,
+  "ai_rejected_findings": 0,
+  "correlated_findings": 0,
+  "duplicate_ai_findings": 0,
+  "invalid_ai_locations": 0,
+  "provider_errors": 0
+}

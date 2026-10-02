@@ -1,4 +1,6 @@
 import ast
+from codesentinel.analysis.ast_utils import resolve_call_name, is_dynamic_string
+from codesentinel.analysis.taint import TaintConfig
 from typing import List, Any
 
 from codesentinel.rules.base import SecurityRule, RuleContext
@@ -19,7 +21,7 @@ class CommandInjectionRule(SecurityRule):
             return findings
 
         # Check for os.system or os.popen
-        func_name = self._get_func_name(node.func)
+        func_name = resolve_call_name(node)
         if func_name in ("os.system", "os.popen"):
             # Check if argument is dynamic (not a simple string literal)
             if node.args and not isinstance(node.args[0], ast.Constant):
@@ -40,10 +42,4 @@ class CommandInjectionRule(SecurityRule):
 
         return findings
 
-    def _get_func_name(self, node: ast.expr) -> str:
-        if isinstance(node, ast.Name):
-            return node.id
-        elif isinstance(node, ast.Attribute):
-            if isinstance(node.value, ast.Name):
-                return f"{node.value.id}.{node.attr}"
-        return ""
+    

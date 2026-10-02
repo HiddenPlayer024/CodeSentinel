@@ -41,3 +41,14 @@ def test_scanner_single_file():
         assert session.project.file_count == 1
         assert session.project.languages == ["python"]
         assert "main.py" in session.project.scanned_files
+
+def test_scanner_findings():
+    vuln_path = Path(__file__).parent.parent / "rules/python/vulnerable"
+    scanner = Scanner(target_path=str(vuln_path))
+    session = scanner.run_scan()
+    
+    assert len(session.findings) > 0
+    rule_ids = [f.rule_id for f in session.findings]
+    assert "python.command.injection" in rule_ids
+    assert "python.sql.injection" in rule_ids
+    assert "python.crypto.insecure_hash" in rule_ids

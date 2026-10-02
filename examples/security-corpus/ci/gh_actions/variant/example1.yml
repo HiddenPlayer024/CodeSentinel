@@ -1,0 +1,8 @@
+name: PR Comment
+on: issue_comment
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "User said: ${{ github.event.comment.body }}"

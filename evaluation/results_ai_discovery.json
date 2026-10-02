@@ -1,0 +1,221 @@
+{
+  "id": "3a85487d-a5ea-4cfb-9af7-46d9e1788370",
+  "project": {
+    "path": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus",
+    "languages": [
+      "python",
+      "config"
+    ],
+    "file_count": 29,
+    "scanned_files": [
+      "cors_vuln.py",
+      "logging_secrets_vuln.py",
+      "tls_verify_vuln.py",
+      "config_vuln.env",
+      "debug_mode_vuln.py",
+      "unsafe_redirect_vuln.py",
+      "ssti_vuln.py",
+      "ssrf_vuln.py",
+      "password_storage_vuln.py",
+      "Dockerfile",
+      "xxe_vuln.py",
+      "jwt_vuln.py",
+      "xss_vuln.py",
+      "file_permissions_vuln.py",
+      "archive_traversal_vuln.py",
+      "temp_files_vuln.py",
+      "eval_exec_vuln.py",
+      "ci/gh_actions/safe/example1.yml",
+      "ci/gh_actions/false_positive/example1.yml",
+      "ci/gh_actions/variant/example1.yml",
+      "ci/gh_actions/vulnerable/example1.yml",
+      "python/command_injection/safe/example1.py",
+      "python/command_injection/false_positive/example1.py",
+      "python/command_injection/variant/example1.py",
+      "python/command_injection/vulnerable/example1.py",
+      "python/ssrf/safe/example1.py",
+      "python/ssrf/false_positive/example1.py",
+      "python/ssrf/variant/example1.py",
+      "python/ssrf/vulnerable/example1.py"
+    ],
+    "source_type": "local",
+    "repository_url": null,
+    "ref": null
+  },
+  "start_time": "2026-10-02T12:48:13.510516Z",
+  "end_time": "2026-10-02T12:48:13.529014Z",
+  "duration_seconds": 0.018498,
+  "findings": [
+    {
+      "identity": {
+        "id": "70ad0209-6c1a-4a3a-9675-e504a40e22be",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/command_injection/variant/example1.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "import subprocess",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ]
+    },
+    {
+      "identity": {
+        "id": "72695b3e-d496-4b70-bdbd-8741bae1c376",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/command_injection/vulnerable/example1.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "import os, sys",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ]
+    },
+    {
+      "identity": {
+        "id": "786baa2b-85b7-4dc2-a419-b62b993acaa4",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/ssrf/variant/example1.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "import urllib.request",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ]
+    },
+    {
+      "identity": {
+        "id": "cd45f6fc-893b-48d1-89f2-ca2f8d4871a1",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/ssrf/vulnerable/example1.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "import requests",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ]
+    }
+  ],
+  "status": "completed",
+  "analysis_version": "2.1.0",
+  "static_rule_count": 0,
+  "ai_enabled": true,
+  "ai_mode": "discover",
+  "ai_provider": "mock",
+  "static_findings_count": 32,
+  "ai_findings_count": 4,
+  "verified_findings_count": 0,
+  "ai_candidate_findings": 4,
+  "ai_rejected_findings": 0,
+  "correlated_findings": 0,
+  "duplicate_ai_findings": 0,
+  "invalid_ai_locations": 0,
+  "provider_errors": 0
+}

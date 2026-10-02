@@ -44,7 +44,14 @@ export function FindingDetail({ finding, repositoryUrl, refName }: Props) {
             </a>
           )}
         </div>
-        <h2 className="text-xl font-bold text-white mb-2">{finding.identity.title}</h2>
+        <h2 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
+          {finding.identity.title}
+          {finding.context.is_test_fixture && (
+            <span className="text-xs bg-dark-600 text-gray-300 px-2 py-0.5 rounded-full uppercase tracking-wider font-bold">
+              Test Fixture
+            </span>
+          )}
+        </h2>
         <div className="text-sm font-mono text-gray-400 bg-dark-900 px-3 py-2 rounded-lg border border-dark-700 overflow-x-auto">
           {finding.location.file}:{finding.location.line_start}
         </div>

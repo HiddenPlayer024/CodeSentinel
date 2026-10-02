@@ -1,4 +1,6 @@
 import ast
+from codesentinel.analysis.ast_utils import resolve_call_name, is_dynamic_string
+from codesentinel.analysis.taint import TaintConfig
 from typing import List, Any
 from codesentinel.rules.base import SecurityRule, RuleContext, Finding
 
@@ -15,7 +17,7 @@ class DebugModeRule(SecurityRule):
         findings = []
         if isinstance(node, ast.Call):
             func_name = getattr(node.func, 'attr', '')
-            if func_name == 'run':
+            if func_name.endswith('run'):
                 for kw in node.keywords:
                     if kw.arg == 'debug' and isinstance(kw.value, ast.Constant) and kw.value.value is True:
                         findings.append(self.create_finding(node, context))

@@ -125,7 +125,8 @@ class Scanner:
             if analyzer_data["type"] == "ast" and lang in parsers:
                 try:
                     tree, source = parsers[lang].parse(f)
-                    context = RuleContext(file_path=str(f), source_code=source)
+                    is_test = "tests/" in str(f) or "examples/" in str(f)
+                    context = RuleContext(file_path=str(f), source_code=source, is_test_fixture=is_test)
                     file_findings = engine.analyze_python_ast(tree, context)
                     all_findings.extend(file_findings)
                 except SyntaxError:
@@ -136,10 +137,17 @@ class Scanner:
                 try:
                     with open(f, "r", encoding="utf-8") as file_obj:
                         source = file_obj.read()
-                    context = RuleContext(file_path=str(f), source_code=source)
+                    is_test = "tests/" in str(f) or "examples/" in str(f)
+                    context = RuleContext(file_path=str(f), source_code=source, is_test_fixture=is_test)
                     # We will implement analyze_config in RuleEngine
                     file_findings = engine.analyze_config(context)
                     all_findings.extend(file_findings)
+                    
+                    if f.name in ["requirements.txt", "package.json"]:
+                        from codesentinel.analysis.dependencies import DependencyAnalyzer
+                        dep_analyzer = DependencyAnalyzer()
+                        dep_findings = dep_analyzer.analyze(str(f), source)
+                        all_findings.extend(dep_findings)
                 except Exception as e:
                     print(f"Error analyzing config {f}: {e}")
 

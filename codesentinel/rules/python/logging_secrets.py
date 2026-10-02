@@ -1,4 +1,6 @@
 import ast
+from codesentinel.analysis.ast_utils import resolve_call_name, is_dynamic_string
+from codesentinel.analysis.taint import TaintConfig
 from typing import List, Any
 from codesentinel.rules.base import SecurityRule, RuleContext, Finding
 
@@ -14,7 +16,7 @@ class LoggingSecretsRule(SecurityRule):
     def analyze(self, node: Any, context: RuleContext) -> List[Finding]:
         findings = []
         if isinstance(node, ast.Call):
-            func_name = getattr(node.func, 'attr', getattr(node.func, 'id', ''))
+            func_name = resolve_call_name(node)
             if func_name in ('debug', 'info', 'warning', 'error', 'critical', 'exception'):
                 # Heuristic: Check if arguments contain password/secret
                 for arg in node.args:

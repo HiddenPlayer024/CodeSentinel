@@ -18,9 +18,10 @@ class VariableTrace:
 
 class RuleContext:
     """Context passed to rules containing file metadata and traversal state."""
-    def __init__(self, file_path: str, source_code: str):
+    def __init__(self, file_path: str, source_code: str, is_test_fixture: bool = False):
         self.file_path = file_path
         self.source_code = source_code
+        self.is_test_fixture = is_test_fixture
         self.lines = source_code.splitlines()
         self.current_class: Optional[str] = None
         self.current_function: Optional[str] = None
@@ -94,7 +95,8 @@ class SecurityRule(ABC):
                 function_name=context.current_function,
                 class_name=context.current_class,
                 snippet=snippet,
-                surrounding_code=surrounding
+                surrounding_code=surrounding,
+                is_test_fixture=context.is_test_fixture
             ),
             data_flow=df_info,
             remediation=FindingRemediation(

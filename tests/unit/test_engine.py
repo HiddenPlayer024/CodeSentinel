@@ -14,7 +14,7 @@ def parser():
     return PythonParser()
 
 def test_python_vulnerable_app(engine, parser):
-    vuln_path = Path("tests/rules/python/vulnerable/app.py")
+    vuln_path = Path(__file__).parent.parent / "rules/python/vulnerable/app.py"
     tree, source = parser.parse(vuln_path)
     context = RuleContext(str(vuln_path), source)
     
@@ -30,7 +30,7 @@ def test_python_vulnerable_app(engine, parser):
     assert "python.sql.injection" in rule_ids
 
 def test_python_safe_app(engine, parser):
-    safe_path = Path("tests/rules/python/safe/app.py")
+    safe_path = Path(__file__).parent.parent / "rules/python/safe/app.py"
     tree, source = parser.parse(safe_path)
     context = RuleContext(str(safe_path), source)
     

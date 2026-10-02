@@ -14,6 +14,7 @@ class FindingIdentity(BaseModel):
     id: str
     rule_id: str
     title: str
+    fingerprint: Optional[str] = None
 
 class FindingLocation(BaseModel):
     file: str
@@ -30,6 +31,7 @@ class FindingContext(BaseModel):
     class_name: Optional[str] = None
     snippet: str
     surrounding_code: Optional[str] = None
+    is_test_fixture: bool = False
 
 class DataFlowInfo(BaseModel):
     sources: List[str] = []
@@ -113,11 +115,21 @@ class ScanSession(BaseModel):
     status: str = "running"
     
     # Metadata
-    analysis_version: str = "2.0.0"
+    analysis_version: str = "2.1.0"
     static_rule_count: int = 0
     ai_enabled: bool = False
     ai_mode: Optional[str] = None
     ai_provider: Optional[str] = None
-    ai_findings_count: int = 0
+    
+    # Basic Metrics
     static_findings_count: int = 0
+    ai_findings_count: int = 0
     verified_findings_count: int = 0
+    
+    # AI Telemetry
+    ai_candidate_findings: int = 0
+    ai_rejected_findings: int = 0
+    correlated_findings: int = 0
+    duplicate_ai_findings: int = 0
+    invalid_ai_locations: int = 0
+    provider_errors: int = 0

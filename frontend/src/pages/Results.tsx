@@ -97,6 +97,20 @@ export function Results() {
         </div>
       </div>
 
+      {/* AI Telemetry */}
+      {session.ai_enabled && (
+        <div className="bg-dark-800 border border-primary/20 rounded-xl p-4 flex flex-wrap gap-6 items-center">
+          <div className="text-primary font-bold text-sm uppercase tracking-wider">AI Telemetry</div>
+          <div className="flex gap-4 text-sm font-mono text-gray-400">
+            <div>Candidates: <span className="text-white">{session.ai_candidate_findings ?? 0}</span></div>
+            <div>Rejected: <span className="text-warning">{session.ai_rejected_findings ?? 0}</span></div>
+            <div>Correlated: <span className="text-success">{session.correlated_findings ?? 0}</span></div>
+            <div>Invalid Locs: <span className="text-danger">{session.invalid_ai_locations ?? 0}</span></div>
+            <div>Errors: <span className="text-danger">{session.provider_errors ?? 0}</span></div>
+          </div>
+        </div>
+      )}
+
       {/* Severity Distribution */}
       {findings.length > 0 && (
         <div className="bg-dark-800 border border-dark-600 rounded-xl p-6">

@@ -41,6 +41,7 @@ export interface FindingContext {
   class_name?: string;
   snippet: string;
   surrounding_code?: string;
+  is_test_fixture?: boolean;
 }
 
 export interface DataFlowInfo {
@@ -89,4 +90,10 @@ export interface ScanSession {
   ai_findings_count?: number;
   static_findings_count?: number;
   verified_findings_count?: number;
+  ai_candidate_findings?: number;
+  ai_rejected_findings?: number;
+  correlated_findings?: number;
+  duplicate_ai_findings?: number;
+  invalid_ai_locations?: number;
+  provider_errors?: number;
 }

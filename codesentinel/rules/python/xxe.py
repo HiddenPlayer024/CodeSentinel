@@ -1,4 +1,6 @@
 import ast
+from codesentinel.analysis.ast_utils import resolve_call_name, is_dynamic_string
+from codesentinel.analysis.taint import TaintConfig
 from typing import List, Any
 from codesentinel.rules.base import SecurityRule, RuleContext, Finding
 
@@ -14,7 +16,7 @@ class XxeRule(SecurityRule):
     def analyze(self, node: Any, context: RuleContext) -> List[Finding]:
         findings = []
         if isinstance(node, ast.Call):
-            func_name = getattr(node.func, 'id', getattr(node.func, 'attr', ''))
+            func_name = resolve_call_name(node)
             if func_name in ('parse', 'parseString', 'fromstring'):
                 # Many standard lib XML parsers are vulnerable by default
                 findings.append(self.create_finding(node, context))
