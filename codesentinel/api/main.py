@@ -5,6 +5,7 @@ from pydantic import BaseModel
 from typing import Optional
 import tempfile
 import logging
+from fastapi.middleware.cors import CORSMiddleware
 
 from codesentinel.core.scanner import Scanner
 from codesentinel.models.core import ScanSession
@@ -26,6 +27,18 @@ app = FastAPI(
     version="0.1.0"
 )
 
+# CORS Configuration
+cors_origins_str = os.environ.get("CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173")
+cors_origins = [origin.strip() for origin in cors_origins_str.split(",") if origin.strip()]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=cors_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 class ScanRequest(BaseModel):
     target: str
     ai: bool = False
@@ -36,6 +49,17 @@ class GitHubScanRequest(BaseModel):
     ref: Optional[str] = None
     ai: bool = False
     ai_provider: str = "mock"
+
+@app.get("/")
+def read_root():
+    return {
+        "name": "CodeSentinel API",
+        "version": "0.1.0",
+        "status": "online",
+        "docs": "/docs",
+        "health": "/health",
+        "github_scan": "/scan/github"
+    }
 
 @app.get("/health")
 def health_check():

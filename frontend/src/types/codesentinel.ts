@@ -1,0 +1,83 @@
+export interface GitHubScanRequest {
+  repository_url: string;
+  ref?: string;
+  ai?: boolean;
+  ai_provider?: string;
+}
+
+export interface Project {
+  path: string;
+  languages: string[];
+  file_count: number;
+  scanned_files: string[];
+  source_type: string;
+  repository_url?: string;
+  ref?: string;
+}
+
+export type Severity = "CRITICAL" | "HIGH" | "MEDIUM" | "LOW" | "INFO";
+
+export interface FindingIdentity {
+  id: string;
+  rule_id: string;
+  title: string;
+}
+
+export interface FindingLocation {
+  file: string;
+  line_start: number;
+  line_end: number;
+}
+
+export interface FindingClassification {
+  category: string;
+  severity: Severity;
+  confidence: number;
+}
+
+export interface FindingContext {
+  function_name?: string;
+  class_name?: string;
+  snippet: string;
+  surrounding_code?: string;
+}
+
+export interface DataFlowInfo {
+  sources: string[];
+  sinks: string[];
+  sanitizers: string[];
+  propagation_path: any[]; // Using any for propagation for simplicity
+}
+
+export interface FindingRemediation {
+  explanation: string;
+  recommended_fix: string;
+}
+
+export interface AIAssessment {
+  is_likely_vulnerable: boolean;
+  confidence_adjustment: number;
+  explanation: string;
+  false_positive_reason?: string;
+}
+
+export interface Finding {
+  identity: FindingIdentity;
+  location: FindingLocation;
+  classification: FindingClassification;
+  context: FindingContext;
+  data_flow: DataFlowInfo;
+  remediation: FindingRemediation;
+  ai_assessment?: AIAssessment;
+  analysis_source: string[];
+}
+
+export interface ScanSession {
+  id: string;
+  project: Project;
+  start_time: string;
+  end_time?: string;
+  duration_seconds?: number;
+  findings: Finding[];
+  status: string;
+}
