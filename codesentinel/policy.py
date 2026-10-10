@@ -43,12 +43,15 @@ class Policy:
                 continue
                 
             if sev in ["HIGH", "CRITICAL"]:
-                new_high_count += 1
+                if sev in self.fail_on or "HIGH" in self.fail_on:
+                    new_high_count += 1
                 
             if sev in self.fail_on:
+                
                 return False
 
-        if new_high_count > self.max_new_high:
+        if new_high_count > self.max_new_high and ("HIGH" in self.fail_on or "CRITICAL" in self.fail_on):
+            
             return False
 
         return True

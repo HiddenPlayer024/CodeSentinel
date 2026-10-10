@@ -1,3 +1,4 @@
+from typing import List, Optional
 import typer
 from rich.console import Console
 from rich.table import Table
@@ -72,6 +73,7 @@ def scan(
     ai_max_review_units: int = typer.Option(None, "--ai-max-review-units", help="Maximum review units"),
     ai_max_findings: int = typer.Option(None, "--ai-max-findings", help="Maximum total AI findings"),
     fail_on: str = typer.Option("LOW", "--fail-on", help="Minimum severity to exit with non-zero status (INFO, LOW, MEDIUM, HIGH, CRITICAL)"),
+    exclude: List[str] = typer.Option(None, "--exclude", "-e", help="Paths to exclude from the scan"),
     changed: bool = typer.Option(False, "--changed", help="Enable incremental scan"),
     base: str = typer.Option("HEAD~1", "--base", help="Git base ref for incremental scan"),
     head: str = typer.Option("HEAD", "--head", help="Git head ref for incremental scan"),
@@ -92,7 +94,7 @@ def scan(
     console.print(f"[bold blue]CodeSentinel initializing scan on:[/bold blue] {target}")
     
     try:
-        scanner = Scanner(target_path=target)
+        scanner = Scanner(target_path=target, exclude_paths=exclude)
         session = scanner.run_scan()
         
         # Display the results
