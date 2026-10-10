@@ -59,6 +59,10 @@ class Finding(BaseModel):
     ai_assessment: Optional[AIAssessment] = None
     analysis_source: List[str] = ["static-rule"]
     relationship: str = "standalone"
+    evidence_fingerprint: Optional[str] = None
+    source_fingerprint: Optional[str] = None
+    review_unit_id: Optional[str] = None
+    correlation_reason: List[str] = []
 
     # Properties to maintain backward compatibility with CLI
     @property
@@ -116,7 +120,7 @@ class ScanSession(BaseModel):
     status: str = "running"
     
     # Metadata
-    analysis_version: str = "2.2.0"
+    analysis_version: str = "2.2.1"
     static_rule_count: int = 0
     ai_enabled: bool = False
     ai_mode: Optional[str] = None

@@ -127,7 +127,7 @@ def _run_scanner_and_ai(target_path: Path, ai: bool, ai_provider: str, ai_mode: 
                 session.findings = discovered_findings
             else:
                 correlator = Correlator()
-                session.findings = correlator.correlate(static_findings, discovered_findings)
+                session.findings = correlator.correlate(session, static_findings, discovered_findings)
                 
         if ai_mode in ["verify", "hybrid"]:
             verifier = AIVerifier(provider=provider)

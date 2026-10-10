@@ -52,13 +52,13 @@ def scan(
     """
     Scan a repository for security vulnerabilities.
     """
-    import codesentinel.config as config
+    from codesentinel.config import settings
     if ai_max_files is not None:
-        config.AI_MAX_FILES = ai_max_files
+        settings.AI_MAX_FILES = ai_max_files
     if ai_max_review_units is not None:
-        config.AI_MAX_REVIEW_UNITS = ai_max_review_units
+        settings.AI_MAX_REVIEW_UNITS = ai_max_review_units
     if ai_max_findings is not None:
-        config.AI_MAX_TOTAL_AI_FINDINGS = ai_max_findings
+        settings.AI_MAX_TOTAL_AI_FINDINGS = ai_max_findings
     
     console.print(f"[bold blue]CodeSentinel initializing scan on:[/bold blue] {target}")
     
@@ -91,7 +91,9 @@ def scan(
             from codesentinel.analysis.correlator import Correlator
             
             if ai_provider == "mock":
-                provider = MockProvider()
+                import os, json
+                fixtures = json.loads(os.environ.get("MOCK_FIXTURES", "{}"))
+                provider = MockProvider(fixtures=fixtures)
             elif ai_provider == "ollama":
                 provider = OllamaProvider()
             elif ai_provider == "openai":
@@ -115,7 +117,7 @@ def scan(
                     session.findings = discovered_findings
                 else:
                     correlator = Correlator()
-                    session.findings = correlator.correlate(static_findings, discovered_findings)
+                    session.findings = correlator.correlate(session, static_findings, discovered_findings)
                     
             if ai_mode in ["verify", "hybrid"]:
                 verifier = AIVerifier(provider=provider)

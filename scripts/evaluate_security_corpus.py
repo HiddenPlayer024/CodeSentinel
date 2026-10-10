@@ -3,7 +3,50 @@ import os
 import json
 import subprocess
 import argparse
+import time
+import random
 from pathlib import Path
+from datetime import datetime
+
+def bootstrap_ci(expected_vuln, expected_safe, found_files, n_iterations=1000, seed=42):
+    random.seed(seed)
+    precisions = []
+    recalls = []
+    
+    all_files = expected_vuln + expected_safe
+    labels = {f: "vulnerable" for f in expected_vuln}
+    labels.update({f: "safe" for f in expected_safe})
+    
+    for _ in range(n_iterations):
+        sample = random.choices(all_files, k=len(all_files))
+        sample_tp = sum(1 for f in sample if labels[f] == "vulnerable" and f in found_files)
+        sample_fp = sum(1 for f in sample if labels[f] == "safe" and f in found_files)
+        sample_fn = sum(1 for f in sample if labels[f] == "vulnerable" and f not in found_files)
+        
+        p = sample_tp / (sample_tp + sample_fp) if (sample_tp + sample_fp) > 0 else 0.0
+        r = sample_tp / (sample_tp + sample_fn) if (sample_tp + sample_fn) > 0 else 0.0
+        precisions.append(p)
+        recalls.append(r)
+        
+    precisions.sort()
+    recalls.sort()
+    p_lower = precisions[int(n_iterations * 0.025)]
+    p_upper = precisions[int(n_iterations * 0.975)]
+    r_lower = recalls[int(n_iterations * 0.025)]
+    r_upper = recalls[int(n_iterations * 0.975)]
+    
+    return (p_lower, p_upper), (r_lower, r_upper)
+
+def calculate_metrics(expected_vuln, expected_safe, found_files):
+    tp = sum(1 for v in expected_vuln if v in found_files)
+    fn = len(expected_vuln) - tp
+    fp = sum(1 for s in expected_safe if s in found_files)
+    tn = len(expected_safe) - fp
+    
+    precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
+    recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0
+    f1 = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0.0
+    return tp, fn, fp, tn, precision, recall, f1
 
 def run_evaluation():
     parser = argparse.ArgumentParser(description="Evaluate security corpus")
@@ -23,6 +66,16 @@ def run_evaluation():
     with open(manifest_file, "r") as f:
         manifest = json.load(f)
         
+    fixtures = {item["file"]: item["label"] for item in manifest}
+    
+    if args.provider == "openai" and not os.environ.get("OPENAI_API_KEY"):
+        print("Error: OPENAI_API_KEY environment variable is required when using the 'openai' provider.")
+        sys.exit(1)
+        
+    run_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    run_dir = eval_dir / "runs" / run_timestamp
+    run_dir.mkdir(parents=True, exist_ok=True)
+        
     results = {}
     
     modes = [
@@ -31,26 +84,50 @@ def run_evaluation():
         {"name": "HYBRID", "args": ["--ai", "--ai-provider", args.provider, "--ai-mode", "hybrid", "--ai-max-files", "100", "--ai-max-review-units", "200"]}
     ]
     
+    openai_telemetry = {"latency": {}, "errors": {}, "timeouts": {}}
+    
     for mode in modes:
         mode_name = mode["name"]
         print(f"Evaluating mode: {mode_name}")
         
-        output_file = eval_dir / f"results_{mode_name.lower()}.json"
+        output_file = run_dir / f"{mode_name.lower()}.json"
         
         env = os.environ.copy()
         env["AI_MAX_FILES"] = "100"
         env["PYTHONPATH"] = str(base_dir)
         env["AI_MAX_REVIEW_UNITS"] = "200"
+        env["MOCK_FIXTURES"] = json.dumps(fixtures)
         
+        venv_python = str(base_dir / ".venv" / "bin" / "python")
+        if not os.path.exists(venv_python):
+            venv_python = sys.executable
+
         cmd = [
-            sys.executable, "-m", "codesentinel.cli.main",
+            venv_python, "-m", "codesentinel.cli.main",
             "scan",
             str(corpus_dir),
             "--format", "json",
             "--output", str(output_file)
         ] + mode["args"]
         
-        subprocess.run(cmd, cwd=str(base_dir), env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        start_time = time.time()
+        process = subprocess.run(cmd, cwd=str(base_dir), env=env, capture_output=True, text=True)
+        end_time = time.time()
+        duration = end_time - start_time
+        
+        if process.returncode != 0 and process.returncode != 1:  # 1 is returned when findings fail threshold
+            print(f"Error running mode {mode_name}:")
+            print(process.stderr)
+        
+        if args.provider == "openai" and mode_name != "STATIC":
+            openai_telemetry["latency"][mode_name] = duration
+            stderr = process.stderr
+            stdout = process.stdout
+            out = stdout + stderr
+            error_count = out.count("OpenAI API Error")
+            timeout_count = out.count("ReadTimeout") + out.count("TimeoutError") + out.count("timeout")
+            openai_telemetry["errors"][mode_name] = error_count
+            openai_telemetry["timeouts"][mode_name] = timeout_count
         
         if output_file.exists():
             with open(output_file, "r") as f:
@@ -74,53 +151,101 @@ def run_evaluation():
             except ValueError:
                 found_files.add(file_path)
                 
-        tp = sum(1 for v in expected_vulnerable if v in found_files)
-        fn = len(expected_vulnerable) - tp
-        fp = sum(1 for s in expected_safe if s in found_files)
-        tn = len(expected_safe) - fp
+        tp, fn, fp, tn, precision, recall, f1 = calculate_metrics(expected_vulnerable, expected_safe, found_files)
+        p_ci, r_ci = bootstrap_ci(expected_vulnerable, expected_safe, list(found_files))
         
-        precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
-        recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0
-        f1 = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0.0
+        # Family level
+        family_metrics = {}
+        families = set(item.get("family", "unknown") for item in manifest)
+        for family in families:
+            fam_vuln = [item["file"] for item in manifest if item["label"] == "vulnerable" and item.get("family") == family]
+            fam_safe = [item["file"] for item in manifest if item["label"] == "safe" and item.get("family") == family]
+            f_tp, f_fn, f_fp, f_tn, f_precision, f_recall, f_f1 = calculate_metrics(fam_vuln, fam_safe, found_files)
+            family_metrics[family] = {
+                "tp": f_tp, "fn": f_fn, "fp": f_fp, "tn": f_tn,
+                "precision": f_precision, "recall": f_recall, "f1": f_f1
+            }
         
         results[mode_name] = {
             "case_metrics": {
-                "tp": tp,
-                "fp": fp,
-                "fn": fn,
-                "tn": tn,
-                "precision": precision,
-                "recall": recall,
-                "f1": f1
+                "tp": tp, "fp": fp, "fn": fn, "tn": tn,
+                "precision": precision, "recall": recall, "f1": f1,
+                "precision_ci_95": p_ci, "recall_ci_95": r_ci
             },
             "finding_metrics": {
                 "total_findings": finding_count,
             },
-            "found_files": list(found_files)
+            "family_metrics": family_metrics,
+            "found_files": list(found_files),
+            "duration": duration
         }
         
-    static_tp_files = set(expected_vulnerable).intersection(set(results.get("STATIC", {}).get("found_files", [])))
-    hybrid_tp_files = set(expected_vulnerable).intersection(set(results.get("HYBRID", {}).get("found_files", [])))
-    added_files = hybrid_tp_files - static_tp_files
-    hybrid_added_recall = len(added_files) / len(expected_vulnerable) if expected_vulnerable else 0.0
+    static_tp = results.get("STATIC", {}).get("case_metrics", {}).get("tp", 0)
+    static_fp = results.get("STATIC", {}).get("case_metrics", {}).get("fp", 0)
+    hybrid_tp = results.get("HYBRID", {}).get("case_metrics", {}).get("tp", 0)
+    hybrid_fp = results.get("HYBRID", {}).get("case_metrics", {}).get("fp", 0)
+    static_recall = results.get("STATIC", {}).get("case_metrics", {}).get("recall", 0.0)
+    hybrid_recall = results.get("HYBRID", {}).get("case_metrics", {}).get("recall", 0.0)
     
-    summary_file = eval_dir / "summary.md"
+    ai_added_tp = hybrid_tp - static_tp
+    ai_added_fp = hybrid_fp - static_fp
+    hybrid_recall_diff = hybrid_recall - static_recall
+    
+    results["semantic_lift"] = {
+        "ai_added_tp": ai_added_tp,
+        "ai_added_fp": ai_added_fp,
+        "hybrid_recall_diff": hybrid_recall_diff
+    }
+    
+    if args.provider == "openai":
+        results["openai_telemetry"] = openai_telemetry
+        
+    # Write metadata.json
+    metadata = {
+        "timestamp": run_timestamp,
+        "provider": args.provider,
+        "corpus_size": len(manifest),
+        "families": len(families)
+    }
+    with open(run_dir / "metadata.json", "w") as f:
+        json.dump(metadata, f, indent=2)
+        
+    with open(run_dir / "results.json", "w") as f:
+        json.dump(results, f, indent=2)
+        
+    summary_file = run_dir / "summary.md"
     with open(summary_file, "w") as f:
-        f.write("# Security Corpus Evaluation Summary\n\n")
+        f.write(f"# Security Corpus Evaluation Summary (Provider: {args.provider})\n\n")
         f.write("## Case-Level Metrics\n\n")
-        f.write("| Mode | TP | FP | FN | TN | Precision | Recall | F1 Score | Total Findings |\n")
-        f.write("|------|----|----|----|----|-----------|--------|----------|----------------|\n")
-        for mode_name, data in results.items():
+        f.write("| Mode | TP | FP | FN | TN | Precision | Recall | F1 Score | Precision 95% CI | Recall 95% CI | Total Findings |\n")
+        f.write("|------|----|----|----|----|-----------|--------|----------|------------------|---------------|----------------|\n")
+        for mode_name in ["STATIC", "AI_DISCOVERY", "HYBRID"]:
+            data = results[mode_name]
             cm = data["case_metrics"]
             fm = data["finding_metrics"]
-            f.write(f"| {mode_name} | {cm['tp']} | {cm['fp']} | {cm['fn']} | {cm['tn']} | {cm['precision']:.2f} | {cm['recall']:.2f} | {cm['f1']:.2f} | {fm['total_findings']} |\n")
+            p_ci = f"[{cm['precision_ci_95'][0]:.2f}, {cm['precision_ci_95'][1]:.2f}]"
+            r_ci = f"[{cm['recall_ci_95'][0]:.2f}, {cm['recall_ci_95'][1]:.2f}]"
+            f.write(f"| {mode_name} | {cm['tp']} | {cm['fp']} | {cm['fn']} | {cm['tn']} | {cm['precision']:.2f} | {cm['recall']:.2f} | {cm['f1']:.2f} | {p_ci} | {r_ci} | {fm['total_findings']} |\n")
             
-        f.write(f"\n**Hybrid Added Recall**: {hybrid_added_recall:.2%} (Found {len(added_files)} additional vulnerable files over Static)\n")
+        f.write("\n## Semantic Lift\n")
+        f.write(f"- AI-Added TP: {ai_added_tp}\n")
+        f.write(f"- AI-Added FP: {ai_added_fp}\n")
+        f.write(f"- Hybrid Recall Improvement: {hybrid_recall_diff:.2%}\n")
+        
+        f.write("\n## Family-Level Metrics (Hybrid Mode)\n\n")
+        f.write("| Family | TP | FP | FN | TN | Precision | Recall | F1 |\n")
+        f.write("|--------|----|----|----|----|-----------|--------|----|\n")
+        fam_metrics = results["HYBRID"]["family_metrics"]
+        for fam, metrics in fam_metrics.items():
+            f.write(f"| {fam} | {metrics['tp']} | {metrics['fp']} | {metrics['fn']} | {metrics['tn']} | {metrics['precision']:.2f} | {metrics['recall']:.2f} | {metrics['f1']:.2f} |\n")
             
-    with open(eval_dir / "results.json", "w") as f:
-        json.dump(results, f, indent=2)
-
-    print("Evaluation complete. Check evaluation/summary.md for details.")
+        if args.provider == "openai":
+            f.write("\n## OpenAI Telemetry\n")
+            f.write("```json\n")
+            f.write(json.dumps(openai_telemetry, indent=2))
+            f.write("\n```\n")
+            
+    print(f"Evaluation complete. Results stored in {run_dir}/summary.md")
 
 if __name__ == "__main__":
     run_evaluation()

@@ -12,7 +12,7 @@ from codesentinel.ai.providers import AIProvider
 from codesentinel.ai.review_units import get_review_units_for_file
 from codesentinel.ai.validator import AIValidator
 from codesentinel.analysis.risk import sort_files_by_risk
-from codesentinel.config import AI_MAX_FILES, AI_MAX_REVIEW_UNITS, AI_MAX_TOTAL_AI_FINDINGS
+from codesentinel.config import settings
 from codesentinel.ai.redaction import redact_secrets
 
 DISCOVERY_SYSTEM_PROMPT = """[SECURITY TASK]
@@ -55,7 +55,7 @@ class AIDiscoveryEngine:
             for filename in filenames:
                 if filename.endswith(('.py', '.js', '.json', '.yml', '.yaml', '.env')) or 'Dockerfile' in filename:
                     files.append(Path(root) / filename)
-        return sort_files_by_risk(files)[:AI_MAX_FILES]
+        return sort_files_by_risk(files)[:settings.AI_MAX_FILES]
 
     def run_discovery(self, session: ScanSession) -> List[Finding]:
         findings = []
@@ -68,14 +68,14 @@ class AIDiscoveryEngine:
         total_findings = 0
         
         for file_path in files:
-            if total_units_scanned >= AI_MAX_REVIEW_UNITS:
+            if total_units_scanned >= settings.AI_MAX_REVIEW_UNITS:
                 break
                 
             units = get_review_units_for_file(file_path)
             session.ai_review_units_created += len(units)
             
             for unit in units:
-                if total_units_scanned >= AI_MAX_REVIEW_UNITS:
+                if total_units_scanned >= settings.AI_MAX_REVIEW_UNITS:
                     break
                     
                 prompt = f"Analyze the following code for vulnerabilities.\n\nFile: {unit.file_path.relative_to(self.project_path)}\nLines: {unit.start_line}-{unit.end_line}\nContext: {unit.context_type}\n\nCode:\n{unit.code_chunk}"
@@ -98,17 +98,21 @@ class AIDiscoveryEngine:
                         result = result.dict()
                     
                     vulns = result.get('vulnerabilities', [])
+                    unit_findings = 0
                     for v in vulns:
-                        if total_findings >= AI_MAX_TOTAL_AI_FINDINGS:
+                        if total_findings >= settings.AI_MAX_TOTAL_AI_FINDINGS:
+                            break
+                        if unit_findings >= settings.AI_MAX_FINDINGS_PER_UNIT:
                             break
                             
-                        # Validate and ground finding
-                        validated_v = self.validator.validate_finding(v, session)
+                        # Pass unit to validate_finding to verify bounds
+                        validated_v = self.validator.validate_finding(v, session, unit=unit)
                         if not validated_v:
                             continue
                             
                         session.ai_valid_findings += 1
                         total_findings += 1
+                        unit_findings += 1
                             
                         finding = Finding(
                             identity=FindingIdentity(

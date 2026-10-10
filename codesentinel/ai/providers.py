@@ -51,23 +51,19 @@ class OpenAICompatibleProvider(AIProvider):
             "Content-Type": "application/json"
         }
         
-        messages = []
-        if system_prompt:
-            messages.append({"role": "system", "content": system_prompt})
-        messages.append({"role": "user", "content": prompt})
-        
         payload = {
             "model": self.model,
-            "messages": messages,
-            "response_format": {"type": "json_object"},
-            "temperature": 0.1
+            "input": prompt
         }
+        if system_prompt:
+            payload["instructions"] = system_prompt
         
         try:
-            response = requests.post(self.endpoint, json=payload, headers=headers, timeout=30)
+            from codesentinel.config import settings
+            response = requests.post(self.endpoint, json=payload, headers=headers, timeout=settings.AI_TIMEOUT_SECONDS)
             response.raise_for_status()
             result = response.json()
-            content = result["choices"][0]["message"]["content"]
+            content = result.get("output", {}).get("text", "{}")
             return json.loads(content)
         except (requests.RequestException, json.JSONDecodeError, KeyError) as e:
             print(f"OpenAI API Error: {e}")
@@ -79,32 +75,36 @@ class OpenAICompatibleProvider(AIProvider):
             "Content-Type": "application/json"
         }
         
-        messages = []
-        if system_prompt:
-            messages.append({"role": "system", "content": system_prompt})
-        messages.append({"role": "user", "content": prompt})
-        
         schema_dict = schema.model_json_schema()
         
         payload = {
             "model": self.model,
-            "messages": messages,
-            "response_format": {
-                "type": "json_schema",
-                "json_schema": {
+            "input": prompt,
+            "text": {
+                "format": {
+                    "type": "json_schema",
                     "name": schema.__name__,
                     "strict": True,
                     "schema": schema_dict
                 }
-            },
-            "temperature": 0.1
+            }
         }
+        if system_prompt:
+            payload["instructions"] = system_prompt
         
         try:
-            response = requests.post(self.endpoint, json=payload, headers=headers, timeout=30)
+            from codesentinel.config import settings
+            payload["text"]["max_tokens"] = settings.AI_MAX_OUTPUT_TOKENS # Can add this budget here or in payload.
+            response = requests.post(self.endpoint, json=payload, headers=headers, timeout=settings.AI_TIMEOUT_SECONDS)
             response.raise_for_status()
             result = response.json()
-            content = result["choices"][0]["message"]["content"]
+            
+            output = result.get("output", {})
+            if output.get("refusal"):
+                print(f"OpenAI API Refusal: {output['refusal']}")
+                return {}
+                
+            content = output.get("text", "{}")
             return json.loads(content)
         except (requests.RequestException, json.JSONDecodeError, KeyError) as e:
             print(f"OpenAI API Error (structured): {e}")
@@ -113,7 +113,7 @@ class OpenAICompatibleProvider(AIProvider):
 
 class MockProvider(AIProvider):
     """Mock provider for testing."""
-    def __init__(self, mock_response: Dict[str, Any] = None):
+    def __init__(self, mock_response: Dict[str, Any] = None, fixtures: Dict[str, str] = None, scenario: str = None):
         self.mock_response = mock_response or {
             "is_likely_vulnerable": True,
             "confidence_adjustment": 0.1,
@@ -121,22 +121,8 @@ class MockProvider(AIProvider):
             "false_positive_reason": None
         }
         self.calls = []
-        
-        self.manifest_labels = {}
-        try:
-            import json, os
-            base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-            manifest_path = os.path.join(base_dir, "evaluation", "corpus_manifest.json")
-            if os.path.exists(manifest_path):
-                with open(manifest_path, "r") as f:
-                    manifest = json.load(f)
-                    for item in manifest:
-                        # Map full path and base name
-                        self.manifest_labels[item["file"]] = item["label"]
-                        self.manifest_labels[os.path.basename(item["file"])] = item["label"]
-        except Exception as e:
-            print(f"Error loading manifest: {e}")
-            pass
+        self.fixtures = fixtures or {}
+        self.scenario = scenario
         
     def generate_response(self, prompt: str, system_prompt: Optional[str] = None) -> Dict[str, Any]:
         self.calls.append({"prompt": prompt, "system_prompt": system_prompt})
@@ -154,20 +140,20 @@ class MockProvider(AIProvider):
                     break
             
             with open("mock_calls.log", "a") as f:
-                f.write(f"Asked for {file_name}\\n")
+                f.write(f"Asked for {file_name}\n")
                 
             base_name = os.path.basename(file_name)
             is_vuln = False
             
-            if self.manifest_labels:
-                if file_name in self.manifest_labels and self.manifest_labels[file_name] == "vulnerable":
+            if self.fixtures:
+                if file_name in self.fixtures and self.fixtures[file_name] == "vulnerable":
                     is_vuln = True
-                elif base_name in self.manifest_labels and self.manifest_labels[base_name] == "vulnerable":
+                elif base_name in self.fixtures and self.fixtures[base_name] == "vulnerable":
                     is_vuln = True
             
             if is_vuln:
                 with open("mock_calls.log", "a") as f:
-                    f.write(f"VULN for {file_name}\\n")
+                    f.write(f"VULN for {file_name}\n")
                 return {
                     "vulnerabilities": [{
                         "title": "Mock AI Vulnerability",
@@ -178,7 +164,7 @@ class MockProvider(AIProvider):
                         "line_start": 1,
                         "line_end": 1,
                         "evidence": "mock_evidence()",
-                        "explanation": "Mock AI discovered this based on manifest.",
+                        "explanation": "Mock AI discovered this based on fixtures.",
                         "recommended_fix": "Fix it."
                     }]
                 }
