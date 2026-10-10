@@ -16,7 +16,7 @@ Unlike generic LLM wrappers, CodeSentinel is built with a rock-solid, AST-based 
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/yourusername/CodeSentinel.git
+git clone https://github.com/HiddenPlayer024/CodeSentinel.git
 cd CodeSentinel
 python -m venv .venv
 source .venv/bin/activate
