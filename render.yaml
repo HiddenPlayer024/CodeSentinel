@@ -14,6 +14,7 @@ services:
   - type: pserv
     name: codesentinel-inference
     env: docker
+    region: singapore
     dockerContext: inference
     dockerfilePath: inference/Dockerfile
     disk:

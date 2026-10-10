@@ -5,7 +5,9 @@ from unittest.mock import patch, Mock
 from pydantic import BaseModel
 from codesentinel.ai.llama_cpp_provider import LlamaCppProvider
 
+from pydantic import ConfigDict
 class DummySchema(BaseModel):
+    model_config = ConfigDict(extra='forbid')
     message: str
     count: int
 
@@ -125,5 +127,18 @@ def test_schema_validation_malformed():
 def test_schema_validation_transport_failure():
     provider = LlamaCppProvider(endpoint="http://dummy/v1")
     with patch("requests.post", side_effect=requests.exceptions.ConnectionError) as mock_post:
+        result = provider.generate_structured_response("Test prompt", DummySchema)
+        assert result == {"_error": "general"}
+
+def test_schema_validation_extra_field():
+    provider = LlamaCppProvider(endpoint="http://dummy/v1")
+    with patch("requests.post") as mock_post:
+        mock_response = Mock()
+        mock_response.json.return_value = {
+            "choices": [{"message": {"content": '{"message": "hello", "count": 1, "extra_field": "disallowed"}'}}]
+        }
+        mock_response.raise_for_status = Mock()
+        mock_post.return_value = mock_response
+        
         result = provider.generate_structured_response("Test prompt", DummySchema)
         assert result == {"_error": "general"}

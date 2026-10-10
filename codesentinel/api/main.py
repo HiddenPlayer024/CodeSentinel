@@ -114,11 +114,19 @@ def health_check():
         try:
             resp = requests.get(health_url, timeout=2)
             if resp.status_code == 200:
-                data = resp.json()
-                if isinstance(data, dict) and data.get("status") == "loading model":
-                    status_info["model"] = "loading"
-                else:
-                    status_info["model"] = "ready"
+                try:
+                    data = resp.json()
+                    if isinstance(data, dict):
+                        if data.get("status") == "ok":
+                            status_info["model"] = "ready"
+                        elif data.get("status") == "loading model":
+                            status_info["model"] = "loading"
+                        else:
+                            status_info["model"] = "unavailable"
+                    else:
+                        status_info["model"] = "unavailable"
+                except Exception:
+                    status_info["model"] = "unavailable"
             elif resp.status_code == 503:
                 status_info["model"] = "loading"
             else:
@@ -162,14 +170,8 @@ def _run_scanner_and_ai(target_path: Path, ai: bool, ai_provider: str, ai_mode: 
             discovered_findings = discovery_engine.run_discovery(session)
             
             if ai_mode == "discover":
-                # Fall back to static findings if all AI calls failed (or provider unavailable)
-                if len(discovered_findings) == 0 and session.ai_provider_calls > 0 and session.ai_provider_errors == session.ai_provider_calls:
-                    session.findings = static_findings
-                elif len(discovered_findings) == 0 and session.ai_provider_calls == 0:
-                    # Not even one call made? Fallback to static
-                    session.findings = static_findings
-                else:
-                    session.findings = discovered_findings
+                # Always preserve static findings. Just append discovered findings.
+                session.findings = static_findings + discovered_findings
             else:
                 correlator = Correlator()
                 session.findings = correlator.correlate(session, static_findings, discovered_findings)
