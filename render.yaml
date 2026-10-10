@@ -5,3 +5,17 @@ services:
     buildCommand: pip install -e .
     startCommand: uvicorn codesentinel.api.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
+    envVars:
+      - key: LOCAL_LLM_BASE_URL
+        value: "http://codesentinel-inference:8080/v1"
+
+  - type: pserv
+    name: codesentinel-inference
+    env: docker
+    dockerContext: inference
+    dockerfilePath: inference/Dockerfile
+    disk:
+      name: models
+      mountPath: /models
+      sizeGB: 10
+    plan: starter # Free tier lacks RAM. Need at least starter for 1-2GB RAM.

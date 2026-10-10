@@ -2,8 +2,19 @@ import type { GitHubScanRequest, ScanSession } from '../types/codesentinel';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
 
-export async function checkHealth(): Promise<{ status: string }> {
+export interface HealthStatus {
+  api: string;
+  model: string;
+  model_configured: boolean;
+}
+
+export async function checkHealth(): Promise<HealthStatus> {
   const response = await fetch(`${API_URL}/health`);
+  if (!response.ok) {
+    throw new Error('API is unreachable');
+  }
+  return response.json();
+}/health`);
   if (!response.ok) {
     throw new Error('API is unreachable');
   }

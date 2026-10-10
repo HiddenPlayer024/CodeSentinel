@@ -14,7 +14,7 @@
 | jwt_vuln.py | py | unknown | vulnerable | No | Yes | Yes | N/A | ai-discovery,ai-verified | ai-added |
 | xss_vuln.py | py | xss | vulnerable | Yes | No | Yes | N/A | ai-verified,static-rule | standalone |
 | file_permissions_vuln.py | py | unknown | vulnerable | Yes | No | Yes | N/A | ai-verified,static-rule | standalone |
-| archive_traversal_vuln.py | py | unknown | vulnerable | Yes | No | Yes | N/A | ai-verified,static-rule | standalone |
+| archive_traversal_vuln.py | py | unknown | vulnerable | Yes | Yes | Yes | N/A | ai-verified,static-rule | standalone |
 | temp_files_vuln.py | py | unknown | vulnerable | Yes | No | Yes | N/A | ai-verified,static-rule | standalone |
 | eval_exec_vuln.py | py | unknown | vulnerable | Yes | Yes | Yes | N/A | ai-discovery,ai-verified,static-rule | ai-added,standalone |
 | java/sqli/safe/UserDaoSafe.java | java | sqli | safe | No | No | No | N/A | None | None |
@@ -72,7 +72,7 @@
 | python/prompt_injection/safe/llm_app.py | py | prompt_injection | safe | No | No | No | N/A | None | None |
 | python/prompt_injection/vulnerable/llm_app.py | py | prompt_injection | vulnerable | No | No | No | N/A | None | None |
 | python/ssti/safe/template_renderer.py | py | ssti | safe | No | No | No | N/A | None | None |
-| python/ssti/variant/template_renderer.py | py | ssti | vulnerable | Yes | Yes | Yes | N/A | ai-discovery,ai-verified,static-rule | ai-added,standalone |
+| python/ssti/variant/template_renderer.py | py | ssti | vulnerable | Yes | No | Yes | N/A | ai-discovery,ai-verified,static-rule | ai-added,standalone |
 | python/sqli/safe/indirect_sqli.py | py | sqli | safe | Yes | No | Yes | N/A | static-rule | standalone |
 | python/sqli/variant/indirect_sqli.py | py | sqli | vulnerable | Yes | Yes | Yes | N/A | ai-discovery,ai-verified,static-rule | ai-added,standalone |
 | python/complex/vulnerable/weird.py | py | complex | vulnerable | Yes | No | Yes | N/A | ai-verified,static-rule | standalone |

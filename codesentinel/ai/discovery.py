@@ -105,7 +105,15 @@ class AIDiscoveryEngine:
                     total_units_scanned += 1
                     session.ai_review_units_scanned += 1
                 
-                if result:
+                if isinstance(result, dict) and result.get('_error'):
+                    with lock:
+                        if result['_error'] == 'timeout':
+                            session.ai_timeout_count += 1
+                        session.ai_provider_errors += 1
+                elif result == {}:
+                    with lock:
+                        session.ai_provider_errors += 1
+                elif result:
                     if hasattr(result, 'model_dump'):
                         result = result.model_dump()
                     elif hasattr(result, 'dict'):

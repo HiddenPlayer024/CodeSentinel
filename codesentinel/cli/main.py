@@ -66,7 +66,7 @@ def scan(
     format: OutputFormat = typer.Option(OutputFormat.TERMINAL, "--format", "-f", help="Output format"),
     output: str = typer.Option(None, "--output", "-o", help="Output file path (required for json/sarif/html)"),
     ai: bool = typer.Option(False, "--ai", help="Enable AI-assisted verification"),
-    ai_provider: str = typer.Option("mock", "--ai-provider", help="AI provider (mock, ollama, openai)"),
+    ai_provider: str = typer.Option("mock", "--ai-provider", help="AI provider (mock, ollama, openai, llama_cpp)"),
     ai_mode: str = typer.Option("hybrid", "--ai-mode", help="AI mode (verify, discover, hybrid)"),
     ai_max_files: int = typer.Option(None, "--ai-max-files", help="Maximum files for AI to analyze"),
     ai_max_review_units: int = typer.Option(None, "--ai-max-review-units", help="Maximum review units"),
@@ -115,6 +115,7 @@ def scan(
         if ai:
             console.print(f"[bold blue]Running AI ({ai_mode}) via {ai_provider}...[/bold blue]")
             from codesentinel.ai.providers import MockProvider, OllamaProvider, OpenAICompatibleProvider
+            from codesentinel.ai.llama_cpp_provider import LlamaCppProvider
             from codesentinel.ai.discovery import AIDiscoveryEngine
             from codesentinel.ai.verifier import AIVerifier
             from codesentinel.analysis.correlator import Correlator
@@ -127,6 +128,8 @@ def scan(
                 provider = OllamaProvider()
             elif ai_provider == "openai":
                 provider = OpenAICompatibleProvider()
+            elif ai_provider == "llama_cpp":
+                provider = LlamaCppProvider()
             else:
                 console.print(f"[bold red]Error:[/bold red] Unknown AI provider '{ai_provider}'")
                 raise typer.Exit(code=2)
