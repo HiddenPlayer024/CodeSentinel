@@ -1,7 +1,7 @@
 {
   "id": "ed08f6f5-fd2b-4855-af75-0add85c653ce",
   "project": {
-    "path": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus",
+    "path": "examples/security-corpus",
     "languages": [
       "config",
       "python"
@@ -58,7 +58,7 @@
         "fingerprint": "4454f7f9c0b6112390c07d4e55e3112351f650019c234abc0cb863e707a44764"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/tls_verify_vuln.py",
+        "file": "examples/security-corpus/tls_verify_vuln.py",
         "line_start": 4,
         "line_end": 4
       },
@@ -104,7 +104,7 @@
         "fingerprint": "8cbe766738b45c3c4476951eb39dfe3725bb542d69b7798aa5ad77167d9f02cf"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/tls_verify_vuln.py",
+        "file": "examples/security-corpus/tls_verify_vuln.py",
         "line_start": 5,
         "line_end": 5
       },
@@ -150,7 +150,7 @@
         "fingerprint": "c12393cbe3869d290151306c0f13d00c3d1b95b8d197395a418d4dc2a3c288a0"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/config_vuln.env",
+        "file": "examples/security-corpus/config_vuln.env",
         "line_start": 1,
         "line_end": 1
       },
@@ -196,7 +196,7 @@
         "fingerprint": "b8e5e8abd800fc256d526385eaa66af674dad4f07e07e829be325b210fe1b15a"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/config_vuln.env",
+        "file": "examples/security-corpus/config_vuln.env",
         "line_start": 2,
         "line_end": 2
       },
@@ -242,7 +242,7 @@
         "fingerprint": "42b6923324942e56ee2c503599dc1bcf21b76ac8314b980cc4b36c893b303dbb"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/config_vuln.env",
+        "file": "examples/security-corpus/config_vuln.env",
         "line_start": 3,
         "line_end": 3
       },
@@ -288,7 +288,7 @@
         "fingerprint": "3183df16bbb2a12a8eaa1de7b757945d12b0292dff01abad98cc737ef378827c"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/debug_mode_vuln.py",
+        "file": "examples/security-corpus/debug_mode_vuln.py",
         "line_start": 4,
         "line_end": 4
       },
@@ -334,7 +334,7 @@
         "fingerprint": "6a0478f9e11de210f387a4a6b5b5946679611857648bdab3446b5d621d51c633"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/unsafe_redirect_vuln.py",
+        "file": "examples/security-corpus/unsafe_redirect_vuln.py",
         "line_start": 3,
         "line_end": 3
       },
@@ -380,7 +380,7 @@
         "fingerprint": "acc6a2ecb6d54bcb4273cf191db108a6a93af7ad853742be6c0dba647bfb343e"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ssti_vuln.py",
+        "file": "examples/security-corpus/ssti_vuln.py",
         "line_start": 4,
         "line_end": 4
       },
@@ -426,7 +426,7 @@
         "fingerprint": "971726bed3f49341910647677fa56397c22cf86fb16f175a8474755390a73f18"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ssti_vuln.py",
+        "file": "examples/security-corpus/ssti_vuln.py",
         "line_start": 5,
         "line_end": 5
       },
@@ -472,7 +472,7 @@
         "fingerprint": "3862877313f99844066418b1da4d4b4d378d75a511064520cbad92f180afc6b0"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ssrf_vuln.py",
+        "file": "examples/security-corpus/ssrf_vuln.py",
         "line_start": 5,
         "line_end": 5
       },
@@ -518,7 +518,7 @@
         "fingerprint": "49da64b0194c2d245bc6de10b7a2af671343c68e8185e3068425afe8e6de1a9c"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ssrf_vuln.py",
+        "file": "examples/security-corpus/ssrf_vuln.py",
         "line_start": 6,
         "line_end": 6
       },
@@ -564,7 +564,7 @@
         "fingerprint": "e6b8ec4b4add37a14774495afdf519c5acb843ff4a6aaf53caf0f6071421a680"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ssrf_vuln.py",
+        "file": "examples/security-corpus/ssrf_vuln.py",
         "line_start": 7,
         "line_end": 7
       },
@@ -610,7 +610,7 @@
         "fingerprint": "0c5ad241bbd6b3dde28e48959f7b48e3f2abba8ebe131be0d3471116029271e2"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/password_storage_vuln.py",
+        "file": "examples/security-corpus/password_storage_vuln.py",
         "line_start": 3,
         "line_end": 3
       },
@@ -656,7 +656,7 @@
         "fingerprint": "b788012153c2f92b39704b2cd9e84df26dc9ff06f50da77ad6b930af46331e93"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/password_storage_vuln.py",
+        "file": "examples/security-corpus/password_storage_vuln.py",
         "line_start": 3,
         "line_end": 3
       },
@@ -702,7 +702,7 @@
         "fingerprint": "9135c32ffab70e74e99036ae701e1c754b7026a545a578cedc9a698e88802957"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/password_storage_vuln.py",
+        "file": "examples/security-corpus/password_storage_vuln.py",
         "line_start": 4,
         "line_end": 4
       },
@@ -748,7 +748,7 @@
         "fingerprint": "290b9fa2636a134e1b0fdd85568f7cb9ca27a71ad23784ec54b9ce49061d1b0e"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/password_storage_vuln.py",
+        "file": "examples/security-corpus/password_storage_vuln.py",
         "line_start": 4,
         "line_end": 4
       },
@@ -794,7 +794,7 @@
         "fingerprint": "551b9a5c3e3735f70cdf0295c576e432b6f63405a8153e39b9175e2a2fc86e5f"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/Dockerfile",
+        "file": "examples/security-corpus/Dockerfile",
         "line_start": 1,
         "line_end": 1
       },
@@ -840,7 +840,7 @@
         "fingerprint": "39f157b016ebeeec47a3e49f4c05c6272a7d2bdf3f3f2483b6434d5b020801fe"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/xss_vuln.py",
+        "file": "examples/security-corpus/xss_vuln.py",
         "line_start": 3,
         "line_end": 3
       },
@@ -886,7 +886,7 @@
         "fingerprint": "2a9d2f1f940489fd58ecebd0f25e5d7622aede4c126f40ea2b7dbcaad5947ac3"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/file_permissions_vuln.py",
+        "file": "examples/security-corpus/file_permissions_vuln.py",
         "line_start": 3,
         "line_end": 3
       },
@@ -932,7 +932,7 @@
         "fingerprint": "617b3ce76fefe8106f32aa82567290d085c177ed89108f1c7fbf71eea255fc21"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/archive_traversal_vuln.py",
+        "file": "examples/security-corpus/archive_traversal_vuln.py",
         "line_start": 4,
         "line_end": 4
       },
@@ -978,7 +978,7 @@
         "fingerprint": "42b1bec660186f03b8ffeac23dff498e0041bcd6f8d89eb9e6a34c63e49e8b09"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/temp_files_vuln.py",
+        "file": "examples/security-corpus/temp_files_vuln.py",
         "line_start": 3,
         "line_end": 3
       },
@@ -1024,7 +1024,7 @@
         "fingerprint": "2a4d65a66470ff0b0f5652daae1810da23f204cc8de6a22a49ed4eb8df0783ff"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/eval_exec_vuln.py",
+        "file": "examples/security-corpus/eval_exec_vuln.py",
         "line_start": 2,
         "line_end": 2
       },
@@ -1070,7 +1070,7 @@
         "fingerprint": "4c6b13c95369c013cf3df5e1c24ab33c69cb05b45d472fbb441cf90846f31124"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/eval_exec_vuln.py",
+        "file": "examples/security-corpus/eval_exec_vuln.py",
         "line_start": 3,
         "line_end": 3
       },
@@ -1116,7 +1116,7 @@
         "fingerprint": "bd874049cc0b7d5df0110f30bc9bd1f1bccd6cb31d00f27222a08231b0ed6d5d"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/eval_exec_vuln.py",
+        "file": "examples/security-corpus/eval_exec_vuln.py",
         "line_start": 4,
         "line_end": 4
       },
@@ -1162,7 +1162,7 @@
         "fingerprint": "a5f67051e00051ca3d024e956c7680509cc1c2b1a051aac6aa3b8be7f8efc1a6"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/eval_exec_vuln.py",
+        "file": "examples/security-corpus/eval_exec_vuln.py",
         "line_start": 5,
         "line_end": 5
       },
@@ -1208,7 +1208,7 @@
         "fingerprint": "0d244df753ecef7f5f1d0b105d6ef7fe59eae70c6cd6bcf357ac7e368e7279e2"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ci/gh_actions/vulnerable/example1.yml",
+        "file": "examples/security-corpus/ci/gh_actions/vulnerable/example1.yml",
         "line_start": 7,
         "line_end": 7
       },
@@ -1254,7 +1254,7 @@
         "fingerprint": "b1c3b5b41c94c1a559921727e81960bc029372837b90c5f969265a9395ee73e3"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/command_injection/variant/example1.py",
+        "file": "examples/security-corpus/python/command_injection/variant/example1.py",
         "line_start": 5,
         "line_end": 5
       },
@@ -1300,7 +1300,7 @@
         "fingerprint": "002c82c1cfc45ce9a087368c08ad10f2958362a079dc9234a4fee057d79b6943"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/command_injection/vulnerable/example1.py",
+        "file": "examples/security-corpus/python/command_injection/vulnerable/example1.py",
         "line_start": 4,
         "line_end": 4
       },
@@ -1346,7 +1346,7 @@
         "fingerprint": "364324584fb73eff942080af8d903c52e195b85bb5eac1efedc6da75a61e144a"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/ssti/variant/template_renderer.py",
+        "file": "examples/security-corpus/python/ssti/variant/template_renderer.py",
         "line_start": 5,
         "line_end": 5
       },
@@ -1392,7 +1392,7 @@
         "fingerprint": "8ff6ed46fe13ed032fa055877fe3e7263fe7ecc4cee852217b725c94b39aed79"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/sqli/safe/indirect_sqli.py",
+        "file": "examples/security-corpus/python/sqli/safe/indirect_sqli.py",
         "line_start": 8,
         "line_end": 8
       },
@@ -1438,7 +1438,7 @@
         "fingerprint": "66d37b3fd4e79b899ca0fc5abb3e689322eceb17a5efd2e08c779a6c3d01a676"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/sqli/variant/indirect_sqli.py",
+        "file": "examples/security-corpus/python/sqli/variant/indirect_sqli.py",
         "line_start": 9,
         "line_end": 9
       },
@@ -1493,7 +1493,7 @@
         "fingerprint": "658c74a60a2dc7644d788c884cd6319d4734300e7d1ae3d630f0f6b0e26f58de"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/ssrf/safe/example1.py",
+        "file": "examples/security-corpus/python/ssrf/safe/example1.py",
         "line_start": 13,
         "line_end": 13
       },
@@ -1539,7 +1539,7 @@
         "fingerprint": "8efe2c4d20ee374e3cc6b2d9cf412ab136c231bc2628c024c1bfa67dec4738c4"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/ssrf/false_positive/example1.py",
+        "file": "examples/security-corpus/python/ssrf/false_positive/example1.py",
         "line_start": 6,
         "line_end": 6
       },
@@ -1585,7 +1585,7 @@
         "fingerprint": "f1dbdfe1f1116256c436382f2e1e9ad3377a1c07a9626e9269b3215b53e1bd34"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/ssrf/variant/example1.py",
+        "file": "examples/security-corpus/python/ssrf/variant/example1.py",
         "line_start": 10,
         "line_end": 10
       },
@@ -1631,7 +1631,7 @@
         "fingerprint": "6d3f09b8a930904691e53c01858a8a03fc8d3c9912e726982c158754a55c387c"
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/ssrf/vulnerable/example1.py",
+        "file": "examples/security-corpus/python/ssrf/vulnerable/example1.py",
         "line_start": 9,
         "line_end": 9
       },

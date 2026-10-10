@@ -1,7 +1,7 @@
 {
   "id": "b126c677-6406-419c-b296-a73e6c5f39f1",
   "project": {
-    "path": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus",
+    "path": "examples/security-corpus",
     "languages": [
       "config",
       "python"

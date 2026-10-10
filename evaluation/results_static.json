@@ -1,7 +1,7 @@
 {
   "id": "51695c8c-4e15-4f9f-9656-6649718245c2",
   "project": {
-    "path": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus",
+    "path": "examples/security-corpus",
     "languages": [
       "python",
       "config"
@@ -58,7 +58,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/tls_verify_vuln.py",
+        "file": "examples/security-corpus/tls_verify_vuln.py",
         "line_start": 4,
         "line_end": 4
       },
@@ -98,7 +98,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/tls_verify_vuln.py",
+        "file": "examples/security-corpus/tls_verify_vuln.py",
         "line_start": 5,
         "line_end": 5
       },
@@ -138,7 +138,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/config_vuln.env",
+        "file": "examples/security-corpus/config_vuln.env",
         "line_start": 1,
         "line_end": 1
       },
@@ -178,7 +178,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/config_vuln.env",
+        "file": "examples/security-corpus/config_vuln.env",
         "line_start": 2,
         "line_end": 2
       },
@@ -218,7 +218,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/config_vuln.env",
+        "file": "examples/security-corpus/config_vuln.env",
         "line_start": 3,
         "line_end": 3
       },
@@ -258,7 +258,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/debug_mode_vuln.py",
+        "file": "examples/security-corpus/debug_mode_vuln.py",
         "line_start": 4,
         "line_end": 4
       },
@@ -298,7 +298,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/unsafe_redirect_vuln.py",
+        "file": "examples/security-corpus/unsafe_redirect_vuln.py",
         "line_start": 3,
         "line_end": 3
       },
@@ -338,7 +338,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ssti_vuln.py",
+        "file": "examples/security-corpus/ssti_vuln.py",
         "line_start": 4,
         "line_end": 4
       },
@@ -378,7 +378,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ssti_vuln.py",
+        "file": "examples/security-corpus/ssti_vuln.py",
         "line_start": 5,
         "line_end": 5
       },
@@ -418,7 +418,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ssrf_vuln.py",
+        "file": "examples/security-corpus/ssrf_vuln.py",
         "line_start": 5,
         "line_end": 5
       },
@@ -458,7 +458,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ssrf_vuln.py",
+        "file": "examples/security-corpus/ssrf_vuln.py",
         "line_start": 6,
         "line_end": 6
       },
@@ -498,7 +498,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ssrf_vuln.py",
+        "file": "examples/security-corpus/ssrf_vuln.py",
         "line_start": 7,
         "line_end": 7
       },
@@ -538,7 +538,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/password_storage_vuln.py",
+        "file": "examples/security-corpus/password_storage_vuln.py",
         "line_start": 3,
         "line_end": 3
       },
@@ -578,7 +578,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/password_storage_vuln.py",
+        "file": "examples/security-corpus/password_storage_vuln.py",
         "line_start": 3,
         "line_end": 3
       },
@@ -618,7 +618,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/password_storage_vuln.py",
+        "file": "examples/security-corpus/password_storage_vuln.py",
         "line_start": 4,
         "line_end": 4
       },
@@ -658,7 +658,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/password_storage_vuln.py",
+        "file": "examples/security-corpus/password_storage_vuln.py",
         "line_start": 4,
         "line_end": 4
       },
@@ -698,7 +698,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/Dockerfile",
+        "file": "examples/security-corpus/Dockerfile",
         "line_start": 1,
         "line_end": 1
       },
@@ -738,7 +738,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/xss_vuln.py",
+        "file": "examples/security-corpus/xss_vuln.py",
         "line_start": 3,
         "line_end": 3
       },
@@ -778,7 +778,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/file_permissions_vuln.py",
+        "file": "examples/security-corpus/file_permissions_vuln.py",
         "line_start": 3,
         "line_end": 3
       },
@@ -818,7 +818,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/archive_traversal_vuln.py",
+        "file": "examples/security-corpus/archive_traversal_vuln.py",
         "line_start": 4,
         "line_end": 4
       },
@@ -858,7 +858,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/temp_files_vuln.py",
+        "file": "examples/security-corpus/temp_files_vuln.py",
         "line_start": 3,
         "line_end": 3
       },
@@ -898,7 +898,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/eval_exec_vuln.py",
+        "file": "examples/security-corpus/eval_exec_vuln.py",
         "line_start": 2,
         "line_end": 2
       },
@@ -938,7 +938,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/eval_exec_vuln.py",
+        "file": "examples/security-corpus/eval_exec_vuln.py",
         "line_start": 3,
         "line_end": 3
       },
@@ -978,7 +978,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/eval_exec_vuln.py",
+        "file": "examples/security-corpus/eval_exec_vuln.py",
         "line_start": 4,
         "line_end": 4
       },
@@ -1018,7 +1018,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/eval_exec_vuln.py",
+        "file": "examples/security-corpus/eval_exec_vuln.py",
         "line_start": 5,
         "line_end": 5
       },
@@ -1058,7 +1058,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ci/gh_actions/vulnerable/example1.yml",
+        "file": "examples/security-corpus/ci/gh_actions/vulnerable/example1.yml",
         "line_start": 7,
         "line_end": 7
       },
@@ -1098,7 +1098,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/command_injection/variant/example1.py",
+        "file": "examples/security-corpus/python/command_injection/variant/example1.py",
         "line_start": 5,
         "line_end": 5
       },
@@ -1138,7 +1138,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/command_injection/vulnerable/example1.py",
+        "file": "examples/security-corpus/python/command_injection/vulnerable/example1.py",
         "line_start": 4,
         "line_end": 4
       },
@@ -1178,7 +1178,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/ssti/variant/template_renderer.py",
+        "file": "examples/security-corpus/python/ssti/variant/template_renderer.py",
         "line_start": 5,
         "line_end": 5
       },
@@ -1218,7 +1218,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/sqli/safe/indirect_sqli.py",
+        "file": "examples/security-corpus/python/sqli/safe/indirect_sqli.py",
         "line_start": 8,
         "line_end": 8
       },
@@ -1264,7 +1264,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/sqli/variant/indirect_sqli.py",
+        "file": "examples/security-corpus/python/sqli/variant/indirect_sqli.py",
         "line_start": 9,
         "line_end": 9
       },
@@ -1313,7 +1313,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/ssrf/safe/example1.py",
+        "file": "examples/security-corpus/python/ssrf/safe/example1.py",
         "line_start": 13,
         "line_end": 13
       },
@@ -1353,7 +1353,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/ssrf/false_positive/example1.py",
+        "file": "examples/security-corpus/python/ssrf/false_positive/example1.py",
         "line_start": 6,
         "line_end": 6
       },
@@ -1393,7 +1393,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/ssrf/variant/example1.py",
+        "file": "examples/security-corpus/python/ssrf/variant/example1.py",
         "line_start": 10,
         "line_end": 10
       },
@@ -1433,7 +1433,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/ssrf/vulnerable/example1.py",
+        "file": "examples/security-corpus/python/ssrf/vulnerable/example1.py",
         "line_start": 9,
         "line_end": 9
       },
