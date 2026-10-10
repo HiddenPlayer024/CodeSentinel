@@ -170,8 +170,7 @@ class MockProvider(AIProvider):
                     file_name = line.split('File:')[1].strip()
                     break
             
-            with open("mock_calls.log", "a") as f:
-                f.write(f"Asked for {file_name}\n")
+
                 
             base_name = os.path.basename(file_name)
             is_vuln = False
@@ -183,8 +182,7 @@ class MockProvider(AIProvider):
                     is_vuln = True
             
             if is_vuln:
-                with open("mock_calls.log", "a") as f:
-                    f.write(f"VULN for {file_name}\n")
+
                 return {
                     "vulnerabilities": [{
                         "title": "Mock AI Vulnerability",

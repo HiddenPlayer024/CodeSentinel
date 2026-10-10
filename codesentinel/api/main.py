@@ -162,7 +162,14 @@ def _run_scanner_and_ai(target_path: Path, ai: bool, ai_provider: str, ai_mode: 
             discovered_findings = discovery_engine.run_discovery(session)
             
             if ai_mode == "discover":
-                session.findings = discovered_findings
+                # Fall back to static findings if all AI calls failed (or provider unavailable)
+                if len(discovered_findings) == 0 and session.ai_provider_calls > 0 and session.ai_provider_errors == session.ai_provider_calls:
+                    session.findings = static_findings
+                elif len(discovered_findings) == 0 and session.ai_provider_calls == 0:
+                    # Not even one call made? Fallback to static
+                    session.findings = static_findings
+                else:
+                    session.findings = discovered_findings
             else:
                 correlator = Correlator()
                 session.findings = correlator.correlate(session, static_findings, discovered_findings)

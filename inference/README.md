@@ -9,7 +9,8 @@ This directory contains the configuration to run a private, self-hosted LLM usin
 - **Concurrency**: 1 request at a time
 
 ## Security & Reliability
-- The model file is pinned via SHA-256 checksum in `start.sh` and downloaded only if absent.
+- The `llama.cpp` Docker image (`ghcr.io/ggerganov/llama.cpp:server`) should be pinned to a specific immutable digest in production deployments (e.g., using `@sha256:...`).
+- The model file is pinned via SHA-256 checksum in `start.sh`. It is downloaded to a temporary file using robust `curl -fL` options, verified, and only promoted to the actual model path if successful. Already-cached models are also verified on startup.
 - The service should be deployed as a **private service** and must not be exposed to the public internet.
 - Request timeouts are handled by the caller. Context sizes are bounded to 2048.
 

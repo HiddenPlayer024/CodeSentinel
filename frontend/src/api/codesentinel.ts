@@ -14,11 +14,6 @@ export async function checkHealth(): Promise<HealthStatus> {
     throw new Error('API is unreachable');
   }
   return response.json();
-}/health`);
-  if (!response.ok) {
-    throw new Error('API is unreachable');
-  }
-  return response.json();
 }
 
 export async function scanGithub(request: GitHubScanRequest): Promise<ScanSession> {

@@ -1,6 +1,5 @@
 import React from 'react';
-import { CheckCircle2, Circle, ArrowRight } from 'lucide-react';
-import clsx from 'clsx';
+import { CheckCircle2 } from 'lucide-react';
 
 export const ScanTimeline: React.FC = () => {
   const steps = [

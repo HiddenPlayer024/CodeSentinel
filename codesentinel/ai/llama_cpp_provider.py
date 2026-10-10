@@ -100,7 +100,14 @@ class LlamaCppProvider(AIProvider):
                     response.raise_for_status()
                     result = response.json()
                     content = result["choices"][0]["message"]["content"]
-                    return json.loads(content)
+                    parsed = json.loads(content)
+                    
+                    try:
+                        validated = schema.model_validate(parsed)
+                        return validated.model_dump()
+                    except Exception as e:
+                        print(f"llama.cpp schema validation failed: {e}")
+                        return {"_error": "general"}
                 except requests.exceptions.HTTPError as e:
                     if e.response is not None and e.response.status_code in (429, 502, 503, 504):
                         if attempt < max_retries:

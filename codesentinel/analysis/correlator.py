@@ -87,14 +87,18 @@ class Correlator:
                 stat_family = self._get_rule_family(stat_f.identity.rule_id, stat_f.classification.category)
                 reason = None
                 
+                # For correlation, we MUST require same family
+                if stat_family != family:
+                    continue
+                    
                 # 1. Exact match
                 if stat_f.location.line_start == ai_f.location.line_start and stat_f.location.line_end == ai_f.location.line_end:
                     reason = "Exact match"
                 # 2. Evidence overlap
                 elif stat_f.context.snippet and ai_f.context.snippet and (stat_f.context.snippet in ai_f.context.snippet or ai_f.context.snippet in stat_f.context.snippet):
                     reason = "Evidence overlap"
-                # 3. Same family
-                elif stat_family == family and max(stat_f.location.line_start, ai_f.location.line_start) <= min(stat_f.location.line_end, ai_f.location.line_end):
+                # 3. Same family line overlap
+                elif max(stat_f.location.line_start, ai_f.location.line_start) <= min(stat_f.location.line_end, ai_f.location.line_end):
                     reason = "Same family"
                 # 4. Source/sink comp
                 elif stat_f.data_flow.sources and ai_f.data_flow.sources and set(stat_f.data_flow.sources).intersection(ai_f.data_flow.sources):

@@ -70,15 +70,60 @@ def test_unavailable_model_service():
         result = provider.generate_response("Test prompt")
         assert result == {"_error": "general"}
 
-def test_schema_validation_failure():
+def test_schema_validation_success():
     provider = LlamaCppProvider(endpoint="http://dummy/v1")
     with patch("requests.post") as mock_post:
         mock_response = Mock()
         mock_response.json.return_value = {
-            "choices": [{"message": {"content": '{"wrong_field": "hello"}'}}]
+            "choices": [{"message": {"content": '{"message": "hello", "count": 1}'}}]
         }
         mock_response.raise_for_status = Mock()
         mock_post.return_value = mock_response
         
         result = provider.generate_structured_response("Test prompt", DummySchema)
-        assert result == {"wrong_field": "hello"}
+        assert result == {"message": "hello", "count": 1}
+
+def test_schema_validation_missing_field():
+    provider = LlamaCppProvider(endpoint="http://dummy/v1")
+    with patch("requests.post") as mock_post:
+        mock_response = Mock()
+        mock_response.json.return_value = {
+            "choices": [{"message": {"content": '{"message": "hello"}'}}] # missing count
+        }
+        mock_response.raise_for_status = Mock()
+        mock_post.return_value = mock_response
+        
+        result = provider.generate_structured_response("Test prompt", DummySchema)
+        assert result == {"_error": "general"}
+
+def test_schema_validation_wrong_type():
+    provider = LlamaCppProvider(endpoint="http://dummy/v1")
+    with patch("requests.post") as mock_post:
+        mock_response = Mock()
+        mock_response.json.return_value = {
+            "choices": [{"message": {"content": '{"message": "hello", "count": "one"}'}}] # count is string
+        }
+        mock_response.raise_for_status = Mock()
+        mock_post.return_value = mock_response
+        
+        result = provider.generate_structured_response("Test prompt", DummySchema)
+        assert result == {"_error": "general"}
+
+def test_schema_validation_malformed():
+    provider = LlamaCppProvider(endpoint="http://dummy/v1")
+    with patch("requests.post") as mock_post:
+        mock_response = Mock()
+        mock_response.json.return_value = {
+            "choices": [{"message": {"content": '{"message": "hello", "count": 1'}}] # malformed
+        }
+        mock_response.raise_for_status = Mock()
+        mock_post.return_value = mock_response
+        
+        result = provider.generate_structured_response("Test prompt", DummySchema)
+        assert result == {"_error": "general"}
+
+def test_schema_validation_transport_failure():
+    provider = LlamaCppProvider(endpoint="http://dummy/v1")
+    with patch("requests.post", side_effect=requests.exceptions.ConnectionError) as mock_post:
+        result = provider.generate_structured_response("Test prompt", DummySchema)
+        assert result == {"_error": "general"}
