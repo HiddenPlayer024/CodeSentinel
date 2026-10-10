@@ -22,6 +22,7 @@ export interface FindingIdentity {
   id: string;
   rule_id: string;
   title: string;
+  fingerprint?: string;
 }
 
 export interface FindingLocation {
@@ -73,6 +74,7 @@ export interface Finding {
   ai_assessment?: AIAssessment;
   analysis_source: string[];
   relationship?: string;
+  state?: 'New' | 'Existing' | 'Resolved' | 'Baseline';
 }
 
 export interface ScanSession {

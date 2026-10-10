@@ -177,6 +177,7 @@ def run_evaluation():
             },
             "family_metrics": family_metrics,
             "found_files": list(found_files),
+            "findings": findings,
             "duration": duration
         }
         
@@ -245,7 +246,57 @@ def run_evaluation():
             f.write(json.dumps(openai_telemetry, indent=2))
             f.write("\n```\n")
             
-    print(f"Evaluation complete. Results stored in {run_dir}/summary.md")
+    matrix_file = eval_dir / "benchmark_matrix.md"
+    with open(matrix_file, "w") as f:
+        f.write("# Benchmark Matrix\n\n")
+        f.write("| Case | Language | Family | Label | Static | AI | Hybrid | Expected source | Detected source | Relationship |\n")
+        f.write("|------|----------|--------|-------|--------|----|--------|-----------------|-----------------|--------------|\n")
+        
+        hybrid_findings_by_file = {}
+        if "HYBRID" in results and "findings" in results["HYBRID"]:
+            for finding in results["HYBRID"]["findings"]:
+                file_path = finding["location"]["file"]
+                try:
+                    rel_path = str(Path(file_path).relative_to(corpus_dir))
+                except ValueError:
+                    rel_path = file_path
+                if rel_path not in hybrid_findings_by_file:
+                    hybrid_findings_by_file[rel_path] = []
+                hybrid_findings_by_file[rel_path].append(finding)
+                
+        for item in manifest:
+            case_file = item["file"]
+            lang = Path(case_file).suffix.strip('.')
+            if not lang: lang = "unknown"
+            family = item.get("family", "unknown")
+            label = item.get("label", "unknown")
+            
+            static_found = "Yes" if case_file in results.get("STATIC", {}).get("found_files", []) else "No"
+            ai_found = "Yes" if case_file in results.get("AI_DISCOVERY", {}).get("found_files", []) else "No"
+            hybrid_found = "Yes" if case_file in results.get("HYBRID", {}).get("found_files", []) else "No"
+            
+            # Since test doesn't explicitly store Expected Source, we can infer: 
+            # label indicates vulnerability, if it's "vulnerable" we expect finding, etc.
+            # Usually Expected Source in similar context means "ai", "static" depending on test case intent? 
+            # We'll just say "static/ai" or leave it as N/A. Let's do N/A for Expected.
+            # Wait, the instruction says "Expected source". Is there expected source in manifest? Let's check manifest.
+            expected_source = item.get("expected_source", "N/A")
+            
+            detected_sources = set()
+            relationships = set()
+            if hybrid_found == "Yes" and case_file in hybrid_findings_by_file:
+                for finding in hybrid_findings_by_file[case_file]:
+                    sources = finding.get("analysis_source", ["unknown"])
+                    detected_sources.update(sources)
+                    rel = finding.get("relationship", "standalone")
+                    relationships.add(rel)
+            
+            det_src_str = ",".join(sorted(detected_sources)) if detected_sources else "None"
+            rel_str = ",".join(sorted(relationships)) if relationships else "None"
+            
+            f.write(f"| {case_file} | {lang} | {family} | {label} | {static_found} | {ai_found} | {hybrid_found} | {expected_source} | {det_src_str} | {rel_str} |\n")
+
+    print(f"Evaluation complete. Results stored in {run_dir}/summary.md and {matrix_file}")
 
 if __name__ == "__main__":
     run_evaluation()

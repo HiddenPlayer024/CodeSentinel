@@ -120,7 +120,7 @@ class ScanSession(BaseModel):
     status: str = "running"
     
     # Metadata
-    analysis_version: str = "2.2.1"
+    analysis_version: str = "2.3.0"
     static_rule_count: int = 0
     ai_enabled: bool = False
     ai_mode: Optional[str] = None
@@ -149,6 +149,8 @@ class ScanSession(BaseModel):
     ai_redacted_secrets: int = 0
     ai_input_tokens: int = 0
     ai_output_tokens: int = 0
+    ai_queued_units: int = 0
+    ai_peak_concurrency: int = 0
     
     # Legacy metric mappings to prevent breakages
     @property

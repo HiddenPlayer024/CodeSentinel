@@ -65,19 +65,39 @@ export function FindingDetail({ finding, repositoryUrl, refName }: Props) {
       <div className="p-6 space-y-8">
         
         {/* Source Code */}
+        {/* Evidence Panel */}
         <section>
           <h3 className="text-sm font-bold text-gray-300 uppercase tracking-wider mb-3 flex items-center gap-2">
-            <Terminal className="w-4 h-4" /> Source Context
+            <Terminal className="w-4 h-4" /> Evidence
           </h3>
-          <div className="bg-dark-900 rounded-lg border border-dark-700 overflow-hidden">
-            <pre className="p-4 overflow-x-auto text-sm font-mono text-gray-300">
-              <code>{finding.context.surrounding_code || finding.context.snippet}</code>
-            </pre>
+          <div className="bg-dark-900 rounded-lg border border-dark-700 overflow-hidden text-sm font-mono text-gray-300">
+            <div className="p-3 border-b border-dark-700 bg-dark-800 flex justify-between">
+              <span>Source: {finding.location.file}</span>
+              <span>Line: {finding.location.line_start}</span>
+            </div>
+            
+            <div className="p-4 space-y-4">
+              <div>
+                <div className="text-xs text-gray-500 mb-1 uppercase">Matched Evidence</div>
+                <pre className="bg-danger/10 border border-danger/30 p-2 rounded text-danger-light overflow-x-auto">
+                  <code>{finding.context.snippet}</code>
+                </pre>
+              </div>
+
+              {finding.context.surrounding_code && finding.context.surrounding_code !== finding.context.snippet && (
+                <div>
+                  <div className="text-xs text-gray-500 mb-1 uppercase">Surrounding Code</div>
+                  <pre className="p-2 bg-dark-800 rounded overflow-x-auto">
+                    <code>{finding.context.surrounding_code}</code>
+                  </pre>
+                </div>
+              )}
+            </div>
           </div>
         </section>
 
         {/* Data Flow */}
-        {(finding.data_flow.sources.length > 0 || finding.data_flow.sinks.length > 0) && (
+        {(finding.data_flow.sources.length > 0 || finding.data_flow.sinks.length > 0 || (finding.data_flow.propagation_path && finding.data_flow.propagation_path.length > 0)) && (
           <section>
             <h3 className="text-sm font-bold text-gray-300 uppercase tracking-wider mb-3 flex items-center gap-2">
               <Activity className="w-4 h-4" /> Data Flow
@@ -85,6 +105,15 @@ export function FindingDetail({ finding, repositoryUrl, refName }: Props) {
             <div className="bg-dark-900 rounded-lg border border-dark-700 p-4 font-mono text-sm space-y-2">
               {finding.data_flow.sources.length > 0 && (
                 <div><span className="text-danger">Source:</span> {finding.data_flow.sources.join(', ')}</div>
+              )}
+              {finding.data_flow.propagation_path && finding.data_flow.propagation_path.length > 0 && (
+                <div><span className="text-primary">Taint Path:</span> 
+                  <ul className="ml-4 mt-1 space-y-1">
+                    {finding.data_flow.propagation_path.map((path, idx) => (
+                      <li key={idx} className="text-gray-400 text-xs">→ {JSON.stringify(path)}</li>
+                    ))}
+                  </ul>
+                </div>
               )}
               {finding.data_flow.sinks.length > 0 && (
                 <div><span className="text-warning">Sink:</span> {finding.data_flow.sinks.join(', ')}</div>

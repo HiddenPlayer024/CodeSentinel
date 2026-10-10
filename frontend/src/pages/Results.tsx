@@ -5,6 +5,7 @@ import { SeverityBadge } from '../components/common/SeverityBadge';
 import { useState } from 'react';
 import clsx from 'clsx';
 import { FindingDetail } from '../components/findings/FindingDetail';
+import { ScanTimeline } from '../components/scan/ScanTimeline';
 
 export function Results() {
   const location = useLocation();
@@ -15,6 +16,7 @@ export function Results() {
   const [severityFilter, setSeverityFilter] = useState<string>('ALL');
   const [sourceFilter, setSourceFilter] = useState<string>('ALL');
   const [relationshipFilter, setRelationshipFilter] = useState<string>('ALL');
+  const [stateFilter, setStateFilter] = useState<string>('ALL');
 
   if (!session) {
     return <Navigate to="/" replace />;
@@ -34,13 +36,14 @@ export function Results() {
     const matchesSeverity = severityFilter === 'ALL' || f.classification.severity === severityFilter;
     const matchesSource = sourceFilter === 'ALL' || (f.analysis_source && f.analysis_source.includes(sourceFilter));
     const matchesRelationship = relationshipFilter === 'ALL' || f.relationship === relationshipFilter;
+    const matchesState = stateFilter === 'ALL' || f.state === stateFilter;
     const searchLower = search.toLowerCase();
     const matchesSearch = 
       f.identity.title.toLowerCase().includes(searchLower) ||
       f.identity.rule_id.toLowerCase().includes(searchLower) ||
       f.location.file.toLowerCase().includes(searchLower);
     
-    return matchesSeverity && matchesSearch && matchesSource && matchesRelationship;
+    return matchesSeverity && matchesSearch && matchesSource && matchesRelationship && matchesState;
   }).sort((a, b) => b.classification.confidence - a.classification.confidence);
 
   const handleDownload = () => {
@@ -74,6 +77,7 @@ export function Results() {
           <Download className="w-4 h-4" /> Download JSON
         </button>
       </div>
+      <ScanTimeline />
 
       {/* Summary Metrics */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
@@ -189,6 +193,17 @@ export function Results() {
                 <option value="duplicate">Duplicate</option>
                 <option value="verified">Verified</option>
                 <option value="ai-added">AI-Added</option>
+              </select>
+              <select 
+                value={stateFilter}
+                onChange={e => setStateFilter(e.target.value)}
+                className="bg-dark-900 border border-dark-600 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-primary"
+              >
+                <option value="ALL">All States</option>
+                <option value="New">New</option>
+                <option value="Existing">Existing</option>
+                <option value="Resolved">Resolved</option>
+                <option value="Baseline">Baseline</option>
               </select>
             </div>
 

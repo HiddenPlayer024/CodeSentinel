@@ -10,6 +10,8 @@ class SecurityConfig:
     AI_MAX_TOTAL_AI_FINDINGS: int = 50
     AI_MAX_OUTPUT_TOKENS: int = 1500
     AI_TIMEOUT_SECONDS: int = 30
+    AI_MAX_CONCURRENCY: int = 5
+    AI_MAX_RETRIES: int = 3
 
 def load_config() -> SecurityConfig:
     config = SecurityConfig()
@@ -28,6 +30,8 @@ def load_config() -> SecurityConfig:
     config.AI_MAX_TOTAL_AI_FINDINGS = get_pos_int("AI_MAX_TOTAL_AI_FINDINGS", config.AI_MAX_TOTAL_AI_FINDINGS)
     config.AI_MAX_OUTPUT_TOKENS = get_pos_int("AI_MAX_OUTPUT_TOKENS", config.AI_MAX_OUTPUT_TOKENS)
     config.AI_TIMEOUT_SECONDS = get_pos_int("AI_TIMEOUT_SECONDS", config.AI_TIMEOUT_SECONDS)
+    config.AI_MAX_CONCURRENCY = get_pos_int("AI_MAX_CONCURRENCY", config.AI_MAX_CONCURRENCY)
+    config.AI_MAX_RETRIES = get_pos_int("AI_MAX_RETRIES", config.AI_MAX_RETRIES)
     
     return config
 

@@ -1,0 +1,2410 @@
+{
+  "id": "45e58660-2e77-46d9-88fb-20ee5dde5b46",
+  "project": {
+    "path": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus",
+    "languages": [
+      "config",
+      "python"
+    ],
+    "file_count": 73,
+    "scanned_files": [
+      "cors_vuln.py",
+      "logging_secrets_vuln.py",
+      "tls_verify_vuln.py",
+      "config_vuln.env",
+      "debug_mode_vuln.py",
+      "unsafe_redirect_vuln.py",
+      "ssti_vuln.py",
+      "ssrf_vuln.py",
+      "password_storage_vuln.py",
+      "Dockerfile",
+      "xxe_vuln.py",
+      "jwt_vuln.py",
+      "xss_vuln.py",
+      "file_permissions_vuln.py",
+      "archive_traversal_vuln.py",
+      "temp_files_vuln.py",
+      "eval_exec_vuln.py",
+      "ci/gh_actions/safe/example1.yml",
+      "ci/gh_actions/false_positive/example1.yml",
+      "ci/gh_actions/variant/example1.yml",
+      "ci/gh_actions/vulnerable/example1.yml",
+      "python/auth_bypass/vulnerable/custom_auth.py",
+      "python/command_injection/safe/example1.py",
+      "python/command_injection/false_positive/example1.py",
+      "python/command_injection/variant/example1.py",
+      "python/command_injection/vulnerable/example1.py",
+      "python/dummy/vulnerable/dummy30.py",
+      "python/dummy/vulnerable/dummy22.py",
+      "python/dummy/vulnerable/dummy29.py",
+      "python/dummy/vulnerable/dummy17.py",
+      "python/dummy/vulnerable/dummy9.py",
+      "python/dummy/vulnerable/dummy19.py",
+      "python/dummy/vulnerable/dummy11.py",
+      "python/dummy/vulnerable/dummy26.py",
+      "python/dummy/vulnerable/dummy16.py",
+      "python/dummy/vulnerable/dummy5.py",
+      "python/dummy/vulnerable/dummy18.py",
+      "python/dummy/vulnerable/dummy34.py",
+      "python/dummy/vulnerable/dummy32.py",
+      "python/dummy/vulnerable/dummy14.py",
+      "python/dummy/vulnerable/dummy2.py",
+      "python/dummy/vulnerable/dummy10.py",
+      "python/dummy/vulnerable/dummy27.py",
+      "python/dummy/vulnerable/dummy13.py",
+      "python/dummy/vulnerable/dummy23.py",
+      "python/dummy/vulnerable/dummy25.py",
+      "python/dummy/vulnerable/dummy8.py",
+      "python/dummy/vulnerable/dummy1.py",
+      "python/dummy/vulnerable/dummy31.py",
+      "python/dummy/vulnerable/dummy21.py",
+      "python/dummy/vulnerable/dummy7.py",
+      "python/dummy/vulnerable/dummy20.py",
+      "python/dummy/vulnerable/dummy15.py",
+      "python/dummy/vulnerable/dummy33.py",
+      "python/dummy/vulnerable/dummy4.py",
+      "python/dummy/vulnerable/dummy6.py",
+      "python/dummy/vulnerable/dummy3.py",
+      "python/dummy/vulnerable/dummy0.py",
+      "python/dummy/vulnerable/dummy24.py",
+      "python/dummy/vulnerable/dummy12.py",
+      "python/dummy/vulnerable/dummy28.py",
+      "python/prompt_injection/safe/llm_app.py",
+      "python/prompt_injection/vulnerable/llm_app.py",
+      "python/ssti/safe/template_renderer.py",
+      "python/ssti/variant/template_renderer.py",
+      "python/sqli/safe/indirect_sqli.py",
+      "python/sqli/variant/indirect_sqli.py",
+      "python/complex/vulnerable/weird.py",
+      "python/ssrf/safe/example1.py",
+      "python/ssrf/false_positive/example1.py",
+      "python/ssrf/variant/example1.py",
+      "python/ssrf/vulnerable/example1.py",
+      "python/crypto/vulnerable/md5_usage.py"
+    ],
+    "source_type": "local",
+    "repository_url": null,
+    "ref": null
+  },
+  "start_time": "2026-10-10T11:10:31.033274Z",
+  "end_time": "2026-10-10T11:10:31.049871Z",
+  "duration_seconds": 0.016597,
+  "findings": [
+    {
+      "identity": {
+        "id": "a027c9aa-d3ce-49cb-9d72-6d4568371b07",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "eval_exec_vuln.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def run_code(user_input):",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "1cafae05-6828-4bc2-b412-7c6124308ad7",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy30.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy30():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "8cb10ae4-7384-412c-b825-169333296b29",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy22.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy22():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "be87ef31-3a71-4f31-afd7-ca2bdec0a7a8",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy29.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy29():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "06e1b774-475b-429b-955c-9fad7f177b98",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy9.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy9():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "36ce24e5-1f07-4c9b-9285-ca1ecd341495",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy11.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy11():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "27721435-9770-406a-9f62-76596d82ff44",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy26.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy26():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "298a5310-97bf-4b14-9d44-b0eee9aaa240",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy19.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy19():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "895116c4-71d2-498d-96d5-f343149902b5",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy17.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy17():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "1e9d8826-6f14-424c-947a-b3f3d1b32e3b",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy34.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy34():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "ef367d1b-76a5-41a5-b232-799f82e4e022",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy16.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy16():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "f618e495-fbe2-4c6b-95d1-8fdd6a8f3f21",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy2.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy2():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "c172f0ef-0bd8-4ec9-896c-b04112afba79",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy5.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy5():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "945dbfbb-7cf6-42c3-9d04-ededf1997c46",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy18.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy18():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "4bc9a86d-9d23-4aef-87f1-7c946d04fafa",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy32.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy32():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "e8410105-8823-4c25-9edd-3ca231319090",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy27.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy27():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "42b2c4b3-6f7f-44bf-986f-ddf7e899cefa",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy10.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy10():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "d3da692f-5389-4897-ab1c-bad359ef03ff",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy23.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy23():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "a88852bf-499b-41c8-aae8-14adbfc62cf4",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy14.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy14():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "1c6ad302-8939-4766-975b-d571cb473f9f",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy13.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy13():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "5f6e4ccb-33ae-4c27-8c12-4bf7d3c8fbd3",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy25.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy25():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "be5bdd7d-3db8-4180-b7ef-4431463df946",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy21.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy21():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "2d482b3e-2cd2-4136-a51e-fcba126c761b",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy1.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy1():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "9bf71a01-f41d-4fdd-ad2c-999aeff35fe5",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy8.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy8():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "5ba7ac79-8574-4cf0-a6a5-d73461c28aa8",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy20.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy20():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "b296a666-2cb2-43a6-a845-113cd9754d8d",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy15.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy15():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "49a61768-49f3-407f-9e2d-d04a10351639",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy31.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy31():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "b4349ecf-2e05-4825-aa84-734c88de2079",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy33.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy33():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "8d76d6f2-cbe6-4b9d-9c5d-8fc7c40645d6",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy3.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy3():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "b648eeb7-df5b-44ca-842d-b9aadd8020d6",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy4.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy4():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "eca64364-26a4-4bde-92cd-df0c3a8e6034",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy7.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy7():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "200c867d-12d0-4613-81f7-a1b01c781eac",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy12.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy12():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "a55053bd-3775-4955-b076-2e487b09c447",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy0.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy0():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "29abc6b8-7696-4b04-b643-69e3a45a720d",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy6.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy6():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "dd505613-4931-451b-a17f-5544763923d5",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy28.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy28():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "c3a3cf7f-b5cc-4b9c-9ee8-4ccd692add66",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/dummy/vulnerable/dummy24.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "def dummy24():",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "be863431-36c7-45be-8f7f-2710067b754b",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/command_injection/vulnerable/example1.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "import os, sys",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "e5d47227-248c-4970-8c32-efccb70842ac",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/sqli/variant/indirect_sqli.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "import sqlite3",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "a9fabfc5-9ab2-4cf3-8f39-1899fb47d9d1",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/command_injection/variant/example1.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "import subprocess",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "7dd25f76-5f30-4b04-aa81-bfff4b6f88ef",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "ssti_vuln.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "from flask import render_template_string",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "93d3057e-a8f6-4d94-bd08-2d35f4a3c807",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "unsafe_redirect_vuln.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "from flask import redirect",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "750573df-7871-4dea-a176-0d1051e2ffe1",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "ssrf_vuln.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "import requests",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "c54982bc-0368-4522-a92c-72249ec496a5",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "logging_secrets_vuln.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "import logging",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "52fa6a95-7fb7-491b-895b-01a13fbb217e",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/ssrf/variant/example1.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "import urllib.request",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "503254b8-6df5-4a1f-b037-bec7d25e3439",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "password_storage_vuln.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "import hashlib",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "92da9ca0-cee2-41b1-8e0e-066b336f3138",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "jwt_vuln.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "import jwt",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "ac5a209e-02ba-4511-801b-2b9ccec70095",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "tls_verify_vuln.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "import requests",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "e51a5260-358a-4517-bf6b-c0d4bf4f3d0a",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "cors_vuln.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "from fastapi import FastAPI",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "e7d55a72-ee5e-494b-85b0-b0df405b1400",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "debug_mode_vuln.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "from flask import Flask",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "b7f38165-7aa7-42c5-96dd-408ab430772f",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/ssrf/vulnerable/example1.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "import requests",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "157309d7-13d3-4bd4-a16b-5891e2f86681",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/ssti/variant/template_renderer.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "from jinja2 import Template",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    },
+    {
+      "identity": {
+        "id": "eccd357c-c2c1-4f01-91ee-750d4cfb825b",
+        "rule_id": "ai-injection",
+        "title": "Mock AI Vulnerability",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "python/crypto/vulnerable/md5_usage.py",
+        "line_start": 1,
+        "line_end": 1
+      },
+      "classification": {
+        "category": "Injection",
+        "severity": "HIGH",
+        "confidence": 0.9
+      },
+      "context": {
+        "function_name": null,
+        "class_name": null,
+        "snippet": "",
+        "surrounding_code": null,
+        "is_test_fixture": false
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Mock AI discovered this based on fixtures.",
+        "recommended_fix": "Fix it."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "ai-discovery"
+      ],
+      "relationship": "standalone",
+      "evidence_fingerprint": null,
+      "source_fingerprint": null,
+      "review_unit_id": null,
+      "correlation_reason": []
+    }
+  ],
+  "status": "completed",
+  "analysis_version": "2.3.0",
+  "static_rule_count": 0,
+  "ai_enabled": true,
+  "ai_mode": "discover",
+  "ai_provider": "mock",
+  "static_findings_count": 38,
+  "ai_findings_count": 52,
+  "verified_findings_count": 0,
+  "ai_files_considered": 76,
+  "ai_files_selected": 76,
+  "ai_review_units_created": 84,
+  "ai_review_units_scanned": 84,
+  "ai_candidate_findings": 52,
+  "ai_valid_findings": 52,
+  "ai_rejected_findings": 0,
+  "ai_added_findings": 0,
+  "ai_correlated_findings": 0,
+  "ai_duplicate_findings": 0,
+  "ai_invalid_locations": 0,
+  "ai_provider_calls": 84,
+  "ai_provider_errors": 0,
+  "ai_timeout_count": 0,
+  "ai_redacted_secrets": 3,
+  "ai_input_tokens": 0,
+  "ai_output_tokens": 0,
+  "ai_queued_units": 84,
+  "ai_peak_concurrency": 5
+}

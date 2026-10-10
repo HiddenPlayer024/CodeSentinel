@@ -46,24 +46,16 @@ class SarifReporter(BaseReporter):
                     
             results.append({
                 "ruleId": f.rule_id,
-                "level": self._map_severity(f.severity),
+                "level": self._map_severity(f.classification.severity),
                 "message": {
                     "text": msg_text
                 },
-                "locations": [{
-                    "physicalLocation": {
-                        "artifactLocation": {
-                            "uri": f.location.file
-                        },
-                        "region": {
-                            "startLine": f.location.line_start,
-                            "endLine": f.location.line_end,
-                            "snippet": {
-                                "text": f.context.snippet
-                            }
-                        }
-                    }
-                }]
+                "fingerprint": f.identity.fingerprint or f.identity.id,
+                "properties": {
+                    "analysis_source": f.analysis_source,
+                    "relationship": f.relationship,
+                    "confidence": f.confidence
+                }
             })
             
         sarif_log = {

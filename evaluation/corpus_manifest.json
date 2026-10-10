@@ -75,6 +75,46 @@
     "family": "unknown"
   },
   {
+    "file": "java/sqli/safe/UserDaoSafe.java",
+    "label": "safe",
+    "family": "sqli"
+  },
+  {
+    "file": "java/sqli/vulnerable/UserDao.java",
+    "label": "vulnerable",
+    "family": "sqli"
+  },
+  {
+    "file": "typescript/path_traversal/safe/fileHandler.ts",
+    "label": "safe",
+    "family": "path_traversal"
+  },
+  {
+    "file": "typescript/path_traversal/vulnerable/fileHandler.ts",
+    "label": "vulnerable",
+    "family": "path_traversal"
+  },
+  {
+    "file": "javascript/xss/safe/app.js",
+    "label": "safe",
+    "family": "xss"
+  },
+  {
+    "file": "javascript/xss/vulnerable/app.js",
+    "label": "vulnerable",
+    "family": "xss"
+  },
+  {
+    "file": "javascript/obfuscated/vulnerable/app_obf.js",
+    "label": "vulnerable",
+    "family": "obfuscated"
+  },
+  {
+    "file": "sql/sqli/vulnerable/query.sql",
+    "label": "vulnerable",
+    "family": "sqli"
+  },
+  {
     "file": "ci/gh_actions/safe/example1.yml",
     "label": "safe",
     "family": "gh_actions"
@@ -93,6 +133,11 @@
     "file": "ci/gh_actions/vulnerable/example1.yml",
     "label": "vulnerable",
     "family": "gh_actions"
+  },
+  {
+    "file": "python/auth_bypass/vulnerable/custom_auth.py",
+    "label": "vulnerable",
+    "family": "auth_bypass"
   },
   {
     "file": "python/command_injection/safe/example1.py",
@@ -115,6 +160,216 @@
     "family": "command_injection"
   },
   {
+    "file": "python/dummy/vulnerable/dummy30.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy22.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy29.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy17.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy9.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy19.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy11.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy26.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy16.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy5.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy18.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy34.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy32.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy14.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy2.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy10.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy27.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy13.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy23.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy25.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy8.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy1.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy31.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy21.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy7.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy20.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy15.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy33.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy4.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy6.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy3.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy0.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy24.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy12.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/dummy/vulnerable/dummy28.py",
+    "label": "vulnerable",
+    "family": "dummy"
+  },
+  {
+    "file": "python/prompt_injection/safe/llm_app.py",
+    "label": "safe",
+    "family": "prompt_injection"
+  },
+  {
+    "file": "python/prompt_injection/vulnerable/llm_app.py",
+    "label": "vulnerable",
+    "family": "prompt_injection"
+  },
+  {
+    "file": "python/ssti/safe/template_renderer.py",
+    "label": "safe",
+    "family": "ssti"
+  },
+  {
+    "file": "python/ssti/variant/template_renderer.py",
+    "label": "vulnerable",
+    "family": "ssti"
+  },
+  {
+    "file": "python/sqli/safe/indirect_sqli.py",
+    "label": "safe",
+    "family": "sqli"
+  },
+  {
+    "file": "python/sqli/variant/indirect_sqli.py",
+    "label": "vulnerable",
+    "family": "sqli"
+  },
+  {
+    "file": "python/complex/vulnerable/weird.py",
+    "label": "vulnerable",
+    "family": "complex"
+  },
+  {
     "file": "python/ssrf/safe/example1.py",
     "label": "safe",
     "family": "ssrf"
@@ -135,23 +390,8 @@
     "family": "ssrf"
   },
   {
-    "file": "python/sqli/variant/indirect_sqli.py",
+    "file": "python/crypto/vulnerable/md5_usage.py",
     "label": "vulnerable",
-    "family": "sqli"
-  },
-  {
-    "file": "python/sqli/safe/indirect_sqli.py",
-    "label": "safe",
-    "family": "sqli"
-  },
-  {
-    "file": "python/ssti/variant/template_renderer.py",
-    "label": "vulnerable",
-    "family": "ssti"
-  },
-  {
-    "file": "python/ssti/safe/template_renderer.py",
-    "label": "safe",
-    "family": "ssti"
+    "family": "crypto"
   }
 ]

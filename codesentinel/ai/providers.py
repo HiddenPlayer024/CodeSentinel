@@ -60,12 +60,28 @@ class OpenAICompatibleProvider(AIProvider):
         
         try:
             from codesentinel.config import settings
-            response = requests.post(self.endpoint, json=payload, headers=headers, timeout=settings.AI_TIMEOUT_SECONDS)
-            response.raise_for_status()
-            result = response.json()
-            content = result.get("output", {}).get("text", "{}")
-            return json.loads(content)
-        except (requests.RequestException, json.JSONDecodeError, KeyError) as e:
+            import time
+            max_retries = settings.AI_MAX_RETRIES if hasattr(settings, 'AI_MAX_RETRIES') else 3
+            
+            for attempt in range(max_retries + 1):
+                try:
+                    response = requests.post(self.endpoint, json=payload, headers=headers, timeout=settings.AI_TIMEOUT_SECONDS)
+                    response.raise_for_status()
+                    result = response.json()
+                    content = result.get("output", {}).get("text", "{}")
+                    return json.loads(content)
+                except requests.exceptions.HTTPError as e:
+                    if e.response is not None and e.response.status_code in (429, 502, 503, 504):
+                        if attempt < max_retries:
+                            time.sleep(2 ** attempt)
+                            continue
+                    print(f"OpenAI API Error: {e}")
+                    return {}
+                except (requests.RequestException, json.JSONDecodeError, KeyError) as e:
+                    print(f"OpenAI API Error: {e}")
+                    return {}
+            return {}
+        except Exception as e:
             print(f"OpenAI API Error: {e}")
             return {}
             
@@ -94,21 +110,36 @@ class OpenAICompatibleProvider(AIProvider):
         
         try:
             from codesentinel.config import settings
-            payload["text"]["max_tokens"] = settings.AI_MAX_OUTPUT_TOKENS # Can add this budget here or in payload.
-            response = requests.post(self.endpoint, json=payload, headers=headers, timeout=settings.AI_TIMEOUT_SECONDS)
-            response.raise_for_status()
-            result = response.json()
+            import time
+            payload["text"]["max_tokens"] = settings.AI_MAX_OUTPUT_TOKENS
+            max_retries = settings.AI_MAX_RETRIES if hasattr(settings, 'AI_MAX_RETRIES') else 3
             
-            output = result.get("output", {})
-            if output.get("refusal"):
-                print(f"OpenAI API Refusal: {output['refusal']}")
-                return {}
-                
-            content = output.get("text", "{}")
-            return json.loads(content)
-        except (requests.RequestException, json.JSONDecodeError, KeyError) as e:
+            for attempt in range(max_retries + 1):
+                try:
+                    response = requests.post(self.endpoint, json=payload, headers=headers, timeout=settings.AI_TIMEOUT_SECONDS)
+                    response.raise_for_status()
+                    result = response.json()
+                    
+                    output = result.get("output", {})
+                    if output.get("refusal"):
+                        print(f"OpenAI API Refusal: {output['refusal']}")
+                        return {}
+                        
+                    content = output.get("text", "{}")
+                    return json.loads(content)
+                except requests.exceptions.HTTPError as e:
+                    if e.response is not None and e.response.status_code in (429, 502, 503, 504):
+                        if attempt < max_retries:
+                            time.sleep(2 ** attempt)
+                            continue
+                    print(f"OpenAI API Error (structured): {e}")
+                    return self.generate_response(f"{prompt}\n\nPlease output ONLY JSON that matches this schema: {schema_dict}", system_prompt)
+                except (requests.RequestException, json.JSONDecodeError, KeyError) as e:
+                    print(f"OpenAI API Error (structured): {e}")
+                    return self.generate_response(f"{prompt}\n\nPlease output ONLY JSON that matches this schema: {schema_dict}", system_prompt)
+            return {}
+        except Exception as e:
             print(f"OpenAI API Error (structured): {e}")
-            # Fallback to standard JSON format if structured output is not supported by this specific endpoint/model
             return self.generate_response(f"{prompt}\n\nPlease output ONLY JSON that matches this schema: {schema_dict}", system_prompt)
 
 class MockProvider(AIProvider):

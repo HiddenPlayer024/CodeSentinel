@@ -61,58 +61,74 @@ class AIDiscoveryEngine:
         findings = []
         files = self._get_files_to_scan()
         
-        session.ai_files_considered = len(files) # In practice might be more before slice, but we did it in _get_files_to_scan. Actually it should be what we select.
+        session.ai_files_considered = len(files)
         session.ai_files_selected = len(files)
         
-        total_units_scanned = 0
-        total_findings = 0
-        
+        all_units = []
         for file_path in files:
-            if total_units_scanned >= settings.AI_MAX_REVIEW_UNITS:
+            units = get_review_units_for_file(file_path)
+            all_units.extend(units)
+            if len(all_units) >= settings.AI_MAX_REVIEW_UNITS:
                 break
                 
-            units = get_review_units_for_file(file_path)
-            session.ai_review_units_created += len(units)
+        all_units = all_units[:settings.AI_MAX_REVIEW_UNITS]
+        session.ai_review_units_created = len(all_units)
+        session.ai_queued_units = len(all_units)
+        
+        from concurrent.futures import ThreadPoolExecutor, as_completed
+        import threading
+        
+        lock = threading.Lock()
+        active_threads = 0
+        
+        total_findings = 0
+        total_units_scanned = 0
+        
+        def process_unit(unit):
+            nonlocal active_threads, total_findings, total_units_scanned
             
-            for unit in units:
-                if total_units_scanned >= settings.AI_MAX_REVIEW_UNITS:
-                    break
-                    
-                prompt = f"Analyze the following code for vulnerabilities.\n\nFile: {unit.file_path.relative_to(self.project_path)}\nLines: {unit.start_line}-{unit.end_line}\nContext: {unit.context_type}\n\nCode:\n{unit.code_chunk}"
-                
-                # Redact secrets
-                prompt = redact_secrets(prompt, session)
-                
-                try:
+            with lock:
+                active_threads += 1
+                if active_threads > session.ai_peak_concurrency:
+                    session.ai_peak_concurrency = active_threads
+            
+            prompt = f"Analyze the following code for vulnerabilities.\n\nFile: {unit.file_path.relative_to(self.project_path)}\nLines: {unit.start_line}-{unit.end_line}\nContext: {unit.context_type}\n\nCode:\n{unit.code_chunk}"
+            prompt = redact_secrets(prompt, session)
+            
+            unit_findings_list = []
+            try:
+                with lock:
                     session.ai_provider_calls += 1
-                    result = self.provider.generate_structured_response(prompt, DiscoveryResult, system_prompt=DISCOVERY_SYSTEM_PROMPT)
+                result = self.provider.generate_structured_response(prompt, DiscoveryResult, system_prompt=DISCOVERY_SYSTEM_PROMPT)
+                
+                with lock:
                     total_units_scanned += 1
                     session.ai_review_units_scanned += 1
-                    
-                    if not result:
-                        continue
-                    
+                
+                if result:
                     if hasattr(result, 'model_dump'):
                         result = result.model_dump()
                     elif hasattr(result, 'dict'):
                         result = result.dict()
-                    
+                        
                     vulns = result.get('vulnerabilities', [])
                     unit_findings = 0
+                    
                     for v in vulns:
-                        if total_findings >= settings.AI_MAX_TOTAL_AI_FINDINGS:
-                            break
-                        if unit_findings >= settings.AI_MAX_FINDINGS_PER_UNIT:
-                            break
-                            
-                        # Pass unit to validate_finding to verify bounds
+                        with lock:
+                            if total_findings >= settings.AI_MAX_TOTAL_AI_FINDINGS:
+                                break
+                            if unit_findings >= settings.AI_MAX_FINDINGS_PER_UNIT:
+                                break
+                                
                         validated_v = self.validator.validate_finding(v, session, unit=unit)
                         if not validated_v:
                             continue
                             
-                        session.ai_valid_findings += 1
-                        total_findings += 1
-                        unit_findings += 1
+                        with lock:
+                            session.ai_valid_findings += 1
+                            total_findings += 1
+                            unit_findings += 1
                             
                         finding = Finding(
                             identity=FindingIdentity(
@@ -140,12 +156,25 @@ class AIDiscoveryEngine:
                             ),
                             analysis_source=["ai-discovery"]
                         )
-                        findings.append(finding)
-                except Exception as e:
-                    print(f"Error in discovery for {file_path}: {e}")
+                        unit_findings_list.append(finding)
+            except Exception as e:
+                print(f"Error in discovery for {unit.file_path}: {e}")
+                with lock:
                     session.ai_provider_errors += 1
-                    # Gracefully handle failures to preserve static findings
-                    continue
+            finally:
+                with lock:
+                    active_threads -= 1
                     
+            return unit_findings_list
+            
+        with ThreadPoolExecutor(max_workers=settings.AI_MAX_CONCURRENCY) as executor:
+            future_to_unit = {executor.submit(process_unit, unit): unit for unit in all_units}
+            for future in as_completed(future_to_unit):
+                try:
+                    res = future.result()
+                    findings.extend(res)
+                except Exception as e:
+                    pass
+
         session.ai_findings_count = len(findings)
         return findings

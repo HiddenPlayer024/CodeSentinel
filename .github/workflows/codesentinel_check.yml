@@ -1,0 +1,41 @@
+name: CodeSentinel Check
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install CodeSentinel
+        run: |
+          python -m pip install --upgrade pip
+          pip install .
+
+      - name: Run CodeSentinel Scan
+        run: |
+          codesentinel scan . --changed --base origin/main --head HEAD --format sarif --output results.sarif
+        env:
+          # Ensure build scripts are not executed if any hook is present
+          CODESENTINEL_SAFE_MODE: "true"
+          CODESENTINEL_NO_BUILD: "1"
+
+      - name: Upload SARIF report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: codesentinel-results
+          path: results.sarif
