@@ -39,3 +39,4 @@ jobs:
         with:
           name: codesentinel-results
           path: results.sarif
+          if-no-files-found: error

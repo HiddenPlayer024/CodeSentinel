@@ -56,8 +56,8 @@ class ScanRequest(BaseModel):
 
     @field_validator('ai_mode')
     def validate_ai_mode(cls, v):
-        if v not in ('verify', 'discover', 'hybrid'):
-            raise ValueError("ai_mode must be verify, discover, or hybrid")
+        if v not in ('verify', 'discover', 'hybrid', 'off'):
+            raise ValueError("ai_mode must be verify, discover, hybrid, or off")
         return v
 
 class GitHubScanRequest(BaseModel):
@@ -75,8 +75,8 @@ class GitHubScanRequest(BaseModel):
 
     @field_validator('ai_mode')
     def validate_ai_mode(cls, v):
-        if v not in ('verify', 'discover', 'hybrid'):
-            raise ValueError("ai_mode must be verify, discover, or hybrid")
+        if v not in ('verify', 'discover', 'hybrid', 'off'):
+            raise ValueError("ai_mode must be verify, discover, hybrid, or off")
         return v
 
 @app.get("/")

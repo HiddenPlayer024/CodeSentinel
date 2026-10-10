@@ -42,8 +42,8 @@ class OpenAICompatibleProvider(AIProvider):
         self.api_key = api_key or os.environ.get("OPENAI_API_KEY", "")
         self.model = model or os.environ.get("OPENAI_MODEL", "gpt-4o-mini")
         self.endpoint = endpoint or os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1")
-        if not self.endpoint.endswith("/responses"):
-            self.endpoint = self.endpoint.rstrip("/") + "/responses"
+        if not self.endpoint.endswith("/chat/completions"):
+            self.endpoint = self.endpoint.rstrip("/") + "/chat/completions"
 
     def generate_response(self, prompt: str, system_prompt: Optional[str] = None) -> Dict[str, Any]:
         headers = {
@@ -51,12 +51,15 @@ class OpenAICompatibleProvider(AIProvider):
             "Content-Type": "application/json"
         }
         
+        messages = []
+        if system_prompt:
+            messages.append({"role": "system", "content": system_prompt})
+        messages.append({"role": "user", "content": prompt})
+        
         payload = {
             "model": self.model,
-            "input": prompt
+            "messages": messages
         }
-        if system_prompt:
-            payload["instructions"] = system_prompt
         
         try:
             from codesentinel.config import settings
@@ -68,7 +71,7 @@ class OpenAICompatibleProvider(AIProvider):
                     response = requests.post(self.endpoint, json=payload, headers=headers, timeout=settings.AI_TIMEOUT_SECONDS)
                     response.raise_for_status()
                     result = response.json()
-                    content = result.get("output", {}).get("text", "{}")
+                    content = result.get("choices", [{}])[0].get("message", {}).get("content", "{}")
                     return json.loads(content)
                 except requests.exceptions.HTTPError as e:
                     if e.response is not None and e.response.status_code in (429, 502, 503, 504):
@@ -93,25 +96,28 @@ class OpenAICompatibleProvider(AIProvider):
         
         schema_dict = schema.model_json_schema()
         
+        messages = []
+        if system_prompt:
+            messages.append({"role": "system", "content": system_prompt})
+        messages.append({"role": "user", "content": prompt})
+        
         payload = {
             "model": self.model,
-            "input": prompt,
-            "text": {
-                "format": {
-                    "type": "json_schema",
+            "messages": messages,
+            "response_format": {
+                "type": "json_schema",
+                "json_schema": {
                     "name": schema.__name__,
                     "strict": True,
                     "schema": schema_dict
                 }
             }
         }
-        if system_prompt:
-            payload["instructions"] = system_prompt
         
         try:
             from codesentinel.config import settings
             import time
-            payload["text"]["max_tokens"] = settings.AI_MAX_OUTPUT_TOKENS
+            payload["max_tokens"] = settings.AI_MAX_OUTPUT_TOKENS
             max_retries = settings.AI_MAX_RETRIES if hasattr(settings, 'AI_MAX_RETRIES') else 3
             
             for attempt in range(max_retries + 1):
@@ -120,12 +126,12 @@ class OpenAICompatibleProvider(AIProvider):
                     response.raise_for_status()
                     result = response.json()
                     
-                    output = result.get("output", {})
+                    output = result.get("choices", [{}])[0].get("message", {})
                     if output.get("refusal"):
                         print(f"OpenAI API Refusal: {output['refusal']}")
                         return {}
                         
-                    content = output.get("text", "{}")
+                    content = output.get("content", "{}")
                     return json.loads(content)
                 except requests.exceptions.HTTPError as e:
                     if e.response is not None and e.response.status_code in (429, 502, 503, 504):

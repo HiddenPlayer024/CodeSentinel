@@ -39,6 +39,9 @@ def test_provider_unavailable(mock_scanner):
         assert session.ai_provider_errors > 0
         assert len(session.findings) == 1
         assert session.findings[0].identity.id == "1"
+        assert session.findings[0].location.file == "test.py"
+        assert session.findings[0].classification.severity == Severity.HIGH
+        assert session.findings[0].analysis_source == ["static-rule"]
 
 @patch("codesentinel.api.main.Scanner")
 def test_provider_timeout(mock_scanner):
@@ -54,6 +57,9 @@ def test_provider_timeout(mock_scanner):
         assert session.ai_timeout_count > 0
         assert len(session.findings) == 1
         assert session.findings[0].identity.id == "1"
+        assert session.findings[0].location.file == "test.py"
+        assert session.findings[0].classification.severity == Severity.HIGH
+        assert session.findings[0].analysis_source == ["static-rule"]
 
 @patch("codesentinel.api.main.Scanner")
 def test_successful_zero_findings(mock_scanner):
@@ -73,3 +79,6 @@ def test_successful_zero_findings(mock_scanner):
         assert session.ai_provider_errors == 0
         assert len(session.findings) == 1
         assert session.findings[0].identity.id == "1"
+        assert session.findings[0].location.file == "test.py"
+        assert session.findings[0].classification.severity == Severity.HIGH
+        assert session.findings[0].analysis_source == ["static-rule"]
