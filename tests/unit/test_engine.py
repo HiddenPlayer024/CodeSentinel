@@ -37,3 +37,57 @@ def test_python_safe_app(engine, parser):
     findings = engine.analyze_python_ast(tree, context)
     
     assert len(findings) == 0, f"Expected 0 findings, got {len(findings)}: {[f.rule_id for f in findings]}"
+
+def test_ssrf_logic(engine, parser):
+    source = """
+import requests
+# Should NOT be flagged (safe fixed hostname)
+requests.get(f"https://api.github.com/repos/{owner}")
+requests.get(f"http://api.github.com?query={user_input}")
+requests.get(f"http://api.github.com#foo{user_input}")
+
+# SHOULD be flagged (vulnerable hostname control)
+requests.get(f"https://{host}/resource")
+requests.get(f"{scheme}://api.github.com/")
+requests.get(user_input)
+requests.get(f"http://api.github.com{user_input}")
+"""
+    import ast
+    tree = ast.parse(source)
+    context = RuleContext("test_ssrf.py", source)
+    findings = engine.analyze_python_ast(tree, context)
+    
+    ssrf_findings = [f for f in findings if f.rule_id == "python.ssrf"]
+    assert len(ssrf_findings) == 4, f"Expected 4 SSRF findings, got {len(ssrf_findings)}"
+    
+    lines = [f.location.line_start for f in ssrf_findings]
+    assert 9 in lines # https://{host}
+    assert 10 in lines # {scheme}
+    assert 11 in lines # user_input
+    assert 12 in lines # http://api.github.com{user_input}
+
+def test_xxe_logic(engine, parser):
+    source = """
+# Real XXE
+import xml.etree.ElementTree as ET
+ET.parse("untrusted.xml")
+from xml.dom.minidom import parseString
+parseString(user_input)
+
+# False Positive (non-XML)
+class MyAST:
+    def parse(self, x): pass
+parser = MyAST()
+parser.parse("something")
+"""
+    import ast
+    tree = ast.parse(source)
+    context = RuleContext("test_xxe.py", source)
+    findings = engine.analyze_python_ast(tree, context)
+    
+    xxe_findings = [f for f in findings if f.rule_id == "python.xxe"]
+    assert len(xxe_findings) == 2, f"Expected 2 XXE findings, got {len(xxe_findings)}"
+    
+    lines = [f.location.line_start for f in xxe_findings]
+    assert 4 in lines
+    assert 6 in lines

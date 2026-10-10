@@ -29,8 +29,13 @@ class SsrfRule(SecurityRule):
                         if arg.values and isinstance(arg.values[0], ast.Constant):
                             val = arg.values[0].value
                             if isinstance(val, str) and (val.startswith("http://") or val.startswith("https://")):
-                                # It has a hardcoded scheme/domain, likely not full SSRF
-                                return findings
+                                import urllib.parse
+                                parsed = urllib.parse.urlparse(val)
+                                # Ensure the authority is fully hardcoded and terminated (by a path, query, or fragment)
+                                # If it's not terminated, interpolation could modify the hostname (e.g. appending ".evil.com" or "@evil.com")
+                                if bool(parsed.netloc) and (bool(parsed.path) or bool(parsed.query) or bool(parsed.fragment)):
+                                    return findings
+
                     findings.append(self.create_finding(node, context))
 
         return findings
