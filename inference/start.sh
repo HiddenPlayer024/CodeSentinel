@@ -44,7 +44,18 @@ fi
 # CPU config: short context (2048 tokens), 1 concurrent request (-cb)
 # Serve on port 8080 on all interfaces (0.0.0.0) so it can be reached in the private network
 echo "Starting llama.cpp server..."
-exec /app/llama-server \
+if [ -x /app/llama-server ]; then
+    SERVER_BIN="/app/llama-server"
+elif [ -x /llama-server ]; then
+    SERVER_BIN="/llama-server"
+elif command -v llama-server &> /dev/null; then
+    SERVER_BIN="llama-server"
+else
+    echo "llama-server executable not found!"
+    exit 1
+fi
+
+exec $SERVER_BIN \
     -m "$MODEL_PATH" \
     --host 0.0.0.0 \
     --port 8080 \

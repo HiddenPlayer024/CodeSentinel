@@ -4,7 +4,10 @@ import json
 import subprocess
 import argparse
 import time
-import random
+# Benchmark reproducibility: Standard pseudo-random number generator is intentionally
+# used here with a fixed seed for statistical bootstrapping and evaluation reproducibility.
+# This is NOT used for cryptographic purposes, security decisions, or sensitive tokens.
+import random # nosec
 from pathlib import Path
 from datetime import datetime
 

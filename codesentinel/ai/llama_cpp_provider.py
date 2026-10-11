@@ -43,7 +43,7 @@ class LlamaCppProvider(AIProvider):
             
             for attempt in range(max_retries + 1):
                 try:
-                    response = requests.post(self.endpoint, json=payload, headers=headers, timeout=timeout)
+                    response = requests.post(self.endpoint, json=payload, headers=headers, timeout=timeout, allow_redirects=False)
                     response.raise_for_status()
                     result = response.json()
                     content = result["choices"][0]["message"]["content"]
@@ -96,7 +96,7 @@ class LlamaCppProvider(AIProvider):
             
             for attempt in range(max_retries + 1):
                 try:
-                    response = requests.post(self.endpoint, json=payload, headers=headers, timeout=timeout)
+                    response = requests.post(self.endpoint, json=payload, headers=headers, timeout=timeout, allow_redirects=False)
                     response.raise_for_status()
                     result = response.json()
                     content = result["choices"][0]["message"]["content"]

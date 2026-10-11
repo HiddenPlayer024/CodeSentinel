@@ -112,7 +112,7 @@ def health_check():
             health_url = base_url.rstrip("/") + "/health"
             
         try:
-            resp = requests.get(health_url, timeout=2)
+            resp = requests.get(health_url, timeout=2, allow_redirects=False)
             if resp.status_code == 200:
                 try:
                     data = resp.json()

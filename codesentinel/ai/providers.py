@@ -21,7 +21,7 @@ class OllamaProvider(AIProvider):
         }
         
         try:
-            response = requests.post(self.endpoint, json=payload, timeout=30)
+            response = requests.post(self.endpoint, json=payload, timeout=30, allow_redirects=False)
             response.raise_for_status()
             result = response.json()
             return json.loads(result.get("response", "{}"))
@@ -68,7 +68,7 @@ class OpenAICompatibleProvider(AIProvider):
             
             for attempt in range(max_retries + 1):
                 try:
-                    response = requests.post(self.endpoint, json=payload, headers=headers, timeout=settings.AI_TIMEOUT_SECONDS)
+                    response = requests.post(self.endpoint, json=payload, headers=headers, timeout=settings.AI_TIMEOUT_SECONDS, allow_redirects=False)
                     response.raise_for_status()
                     result = response.json()
                     content = result.get("choices", [{}])[0].get("message", {}).get("content", "{}")
@@ -122,7 +122,7 @@ class OpenAICompatibleProvider(AIProvider):
             
             for attempt in range(max_retries + 1):
                 try:
-                    response = requests.post(self.endpoint, json=payload, headers=headers, timeout=settings.AI_TIMEOUT_SECONDS)
+                    response = requests.post(self.endpoint, json=payload, headers=headers, timeout=settings.AI_TIMEOUT_SECONDS, allow_redirects=False)
                     response.raise_for_status()
                     result = response.json()
                     
