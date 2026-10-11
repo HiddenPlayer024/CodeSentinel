@@ -1,12 +1,12 @@
 {
-  "id": "ee4ba15f-12cf-4acb-8cff-da6758781f3d",
+  "id": "51695c8c-4e15-4f9f-9656-6649718245c2",
   "project": {
-    "path": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus",
+    "path": "examples/security-corpus",
     "languages": [
       "python",
       "config"
     ],
-    "file_count": 29,
+    "file_count": 33,
     "scanned_files": [
       "cors_vuln.py",
       "logging_secrets_vuln.py",
@@ -33,6 +33,10 @@
       "python/command_injection/false_positive/example1.py",
       "python/command_injection/variant/example1.py",
       "python/command_injection/vulnerable/example1.py",
+      "python/ssti/safe/template_renderer.py",
+      "python/ssti/variant/template_renderer.py",
+      "python/sqli/safe/indirect_sqli.py",
+      "python/sqli/variant/indirect_sqli.py",
       "python/ssrf/safe/example1.py",
       "python/ssrf/false_positive/example1.py",
       "python/ssrf/variant/example1.py",
@@ -42,9 +46,9 @@
     "repository_url": null,
     "ref": null
   },
-  "start_time": "2026-10-02T12:48:13.293528Z",
-  "end_time": "2026-10-02T12:48:13.305908Z",
-  "duration_seconds": 0.01238,
+  "start_time": "2026-10-02T13:14:29.823177Z",
+  "end_time": "2026-10-02T13:14:29.834434Z",
+  "duration_seconds": 0.011257,
   "findings": [
     {
       "identity": {
@@ -54,7 +58,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/tls_verify_vuln.py",
+        "file": "examples/security-corpus/tls_verify_vuln.py",
         "line_start": 4,
         "line_end": 4
       },
@@ -83,7 +87,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -93,7 +98,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/tls_verify_vuln.py",
+        "file": "examples/security-corpus/tls_verify_vuln.py",
         "line_start": 5,
         "line_end": 5
       },
@@ -122,7 +127,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -132,7 +138,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/config_vuln.env",
+        "file": "examples/security-corpus/config_vuln.env",
         "line_start": 1,
         "line_end": 1
       },
@@ -161,7 +167,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -171,7 +178,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/config_vuln.env",
+        "file": "examples/security-corpus/config_vuln.env",
         "line_start": 2,
         "line_end": 2
       },
@@ -200,7 +207,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -210,7 +218,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/config_vuln.env",
+        "file": "examples/security-corpus/config_vuln.env",
         "line_start": 3,
         "line_end": 3
       },
@@ -239,7 +247,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -249,7 +258,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/debug_mode_vuln.py",
+        "file": "examples/security-corpus/debug_mode_vuln.py",
         "line_start": 4,
         "line_end": 4
       },
@@ -278,7 +287,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -288,7 +298,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/unsafe_redirect_vuln.py",
+        "file": "examples/security-corpus/unsafe_redirect_vuln.py",
         "line_start": 3,
         "line_end": 3
       },
@@ -317,7 +327,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -327,7 +338,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ssti_vuln.py",
+        "file": "examples/security-corpus/ssti_vuln.py",
         "line_start": 4,
         "line_end": 4
       },
@@ -356,7 +367,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -366,7 +378,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ssti_vuln.py",
+        "file": "examples/security-corpus/ssti_vuln.py",
         "line_start": 5,
         "line_end": 5
       },
@@ -395,7 +407,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -405,7 +418,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ssrf_vuln.py",
+        "file": "examples/security-corpus/ssrf_vuln.py",
         "line_start": 5,
         "line_end": 5
       },
@@ -434,7 +447,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -444,7 +458,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ssrf_vuln.py",
+        "file": "examples/security-corpus/ssrf_vuln.py",
         "line_start": 6,
         "line_end": 6
       },
@@ -473,7 +487,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -483,7 +498,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ssrf_vuln.py",
+        "file": "examples/security-corpus/ssrf_vuln.py",
         "line_start": 7,
         "line_end": 7
       },
@@ -512,7 +527,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -522,7 +538,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/password_storage_vuln.py",
+        "file": "examples/security-corpus/password_storage_vuln.py",
         "line_start": 3,
         "line_end": 3
       },
@@ -551,7 +567,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -561,7 +578,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/password_storage_vuln.py",
+        "file": "examples/security-corpus/password_storage_vuln.py",
         "line_start": 3,
         "line_end": 3
       },
@@ -590,7 +607,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -600,7 +618,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/password_storage_vuln.py",
+        "file": "examples/security-corpus/password_storage_vuln.py",
         "line_start": 4,
         "line_end": 4
       },
@@ -629,7 +647,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -639,7 +658,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/password_storage_vuln.py",
+        "file": "examples/security-corpus/password_storage_vuln.py",
         "line_start": 4,
         "line_end": 4
       },
@@ -668,7 +687,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -678,7 +698,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/Dockerfile",
+        "file": "examples/security-corpus/Dockerfile",
         "line_start": 1,
         "line_end": 1
       },
@@ -707,7 +727,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -717,7 +738,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/xss_vuln.py",
+        "file": "examples/security-corpus/xss_vuln.py",
         "line_start": 3,
         "line_end": 3
       },
@@ -746,7 +767,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -756,7 +778,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/file_permissions_vuln.py",
+        "file": "examples/security-corpus/file_permissions_vuln.py",
         "line_start": 3,
         "line_end": 3
       },
@@ -785,7 +807,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -795,7 +818,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/archive_traversal_vuln.py",
+        "file": "examples/security-corpus/archive_traversal_vuln.py",
         "line_start": 4,
         "line_end": 4
       },
@@ -824,7 +847,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -834,7 +858,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/temp_files_vuln.py",
+        "file": "examples/security-corpus/temp_files_vuln.py",
         "line_start": 3,
         "line_end": 3
       },
@@ -863,7 +887,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -873,7 +898,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/eval_exec_vuln.py",
+        "file": "examples/security-corpus/eval_exec_vuln.py",
         "line_start": 2,
         "line_end": 2
       },
@@ -902,7 +927,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -912,7 +938,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/eval_exec_vuln.py",
+        "file": "examples/security-corpus/eval_exec_vuln.py",
         "line_start": 3,
         "line_end": 3
       },
@@ -941,7 +967,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -951,7 +978,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/eval_exec_vuln.py",
+        "file": "examples/security-corpus/eval_exec_vuln.py",
         "line_start": 4,
         "line_end": 4
       },
@@ -980,7 +1007,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -990,7 +1018,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/eval_exec_vuln.py",
+        "file": "examples/security-corpus/eval_exec_vuln.py",
         "line_start": 5,
         "line_end": 5
       },
@@ -1019,7 +1047,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -1029,7 +1058,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/ci/gh_actions/vulnerable/example1.yml",
+        "file": "examples/security-corpus/ci/gh_actions/vulnerable/example1.yml",
         "line_start": 7,
         "line_end": 7
       },
@@ -1058,7 +1087,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -1068,7 +1098,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/command_injection/variant/example1.py",
+        "file": "examples/security-corpus/python/command_injection/variant/example1.py",
         "line_start": 5,
         "line_end": 5
       },
@@ -1097,7 +1127,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -1107,7 +1138,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/command_injection/vulnerable/example1.py",
+        "file": "examples/security-corpus/python/command_injection/vulnerable/example1.py",
         "line_start": 4,
         "line_end": 4
       },
@@ -1136,7 +1167,143 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
+    },
+    {
+      "identity": {
+        "id": "python.ssti-5",
+        "rule_id": "python.ssti",
+        "title": "Server-Side Template Injection",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "examples/security-corpus/python/ssti/variant/template_renderer.py",
+        "line_start": 5,
+        "line_end": 5
+      },
+      "classification": {
+        "category": "ssti",
+        "severity": "HIGH",
+        "confidence": 0.8
+      },
+      "context": {
+        "function_name": "render_page",
+        "class_name": null,
+        "snippet": "t = Template(user_template_str)",
+        "surrounding_code": "def render_page(user_template_str):\n    # Wrapped template string passed to renderer\n    t = Template(user_template_str)\n    return t.render()",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [],
+        "sinks": [],
+        "sanitizers": [],
+        "propagation_path": []
+      },
+      "remediation": {
+        "explanation": "Checks for ssti vulnerabilities.",
+        "recommended_fix": "Fix the vulnerable usage."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ],
+      "relationship": "standalone"
+    },
+    {
+      "identity": {
+        "id": "python.sql.injection-8",
+        "rule_id": "python.sql.injection",
+        "title": "Potential SQL Injection",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "examples/security-corpus/python/sqli/safe/indirect_sqli.py",
+        "line_start": 8,
+        "line_end": 8
+      },
+      "classification": {
+        "category": "sql",
+        "severity": "HIGH",
+        "confidence": 0.15000000000000002
+      },
+      "context": {
+        "function_name": "get_user_data",
+        "class_name": null,
+        "snippet": "cursor.execute(base_query, (user_input,))",
+        "surrounding_code": "    # Safe usage\n    base_query = \"SELECT * FROM users WHERE username = ?\"\n    cursor.execute(base_query, (user_input,))\n    return cursor.fetchall()",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [
+          "constant"
+        ],
+        "sinks": [
+          "execute"
+        ],
+        "sanitizers": [],
+        "propagation_path": [
+          "base_query"
+        ]
+      },
+      "remediation": {
+        "explanation": "Constructing SQL queries by concatenating or formatting strings with untrusted input.",
+        "recommended_fix": "Use parameterized queries or prepared statements (e.g., execute('SELECT * FROM users WHERE id=?', (user_id,)))."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ],
+      "relationship": "standalone"
+    },
+    {
+      "identity": {
+        "id": "python.sql.injection-9",
+        "rule_id": "python.sql.injection",
+        "title": "Potential SQL Injection",
+        "fingerprint": null
+      },
+      "location": {
+        "file": "examples/security-corpus/python/sqli/variant/indirect_sqli.py",
+        "line_start": 9,
+        "line_end": 9
+      },
+      "classification": {
+        "category": "sql",
+        "severity": "HIGH",
+        "confidence": 0.8500000000000001
+      },
+      "context": {
+        "function_name": "get_user_data",
+        "class_name": null,
+        "snippet": "cursor.execute(final_query)",
+        "surrounding_code": "    base_query = \"SELECT * FROM users WHERE username = '%s'\"\n    final_query = base_query % user_input\n    cursor.execute(final_query)\n    return cursor.fetchall()",
+        "is_test_fixture": true
+      },
+      "data_flow": {
+        "sources": [
+          "user_input",
+          "base_query"
+        ],
+        "sinks": [
+          "execute"
+        ],
+        "sanitizers": [],
+        "propagation_path": [
+          "final_query",
+          "user_input",
+          "base_query"
+        ]
+      },
+      "remediation": {
+        "explanation": "Constructing SQL queries by concatenating or formatting strings with untrusted input.",
+        "recommended_fix": "Use parameterized queries or prepared statements (e.g., execute('SELECT * FROM users WHERE id=?', (user_id,)))."
+      },
+      "ai_assessment": null,
+      "analysis_source": [
+        "static-rule"
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -1146,7 +1313,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/ssrf/safe/example1.py",
+        "file": "examples/security-corpus/python/ssrf/safe/example1.py",
         "line_start": 13,
         "line_end": 13
       },
@@ -1175,7 +1342,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -1185,7 +1353,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/ssrf/false_positive/example1.py",
+        "file": "examples/security-corpus/python/ssrf/false_positive/example1.py",
         "line_start": 6,
         "line_end": 6
       },
@@ -1214,7 +1382,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -1224,7 +1393,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/ssrf/variant/example1.py",
+        "file": "examples/security-corpus/python/ssrf/variant/example1.py",
         "line_start": 10,
         "line_end": 10
       },
@@ -1253,7 +1422,8 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     },
     {
       "identity": {
@@ -1263,7 +1433,7 @@
         "fingerprint": null
       },
       "location": {
-        "file": "/home/unknown/Projects_II/CodeSentinel/examples/security-corpus/python/ssrf/vulnerable/example1.py",
+        "file": "examples/security-corpus/python/ssrf/vulnerable/example1.py",
         "line_start": 9,
         "line_end": 9
       },
@@ -1292,11 +1462,12 @@
       "ai_assessment": null,
       "analysis_source": [
         "static-rule"
-      ]
+      ],
+      "relationship": "standalone"
     }
   ],
   "status": "completed",
-  "analysis_version": "2.1.0",
+  "analysis_version": "2.2.0",
   "static_rule_count": 0,
   "ai_enabled": false,
   "ai_mode": null,
@@ -1304,10 +1475,21 @@
   "static_findings_count": 0,
   "ai_findings_count": 0,
   "verified_findings_count": 0,
+  "ai_files_considered": 0,
+  "ai_files_selected": 0,
+  "ai_review_units_created": 0,
+  "ai_review_units_scanned": 0,
   "ai_candidate_findings": 0,
+  "ai_valid_findings": 0,
   "ai_rejected_findings": 0,
-  "correlated_findings": 0,
-  "duplicate_ai_findings": 0,
-  "invalid_ai_locations": 0,
-  "provider_errors": 0
+  "ai_added_findings": 0,
+  "ai_correlated_findings": 0,
+  "ai_duplicate_findings": 0,
+  "ai_invalid_locations": 0,
+  "ai_provider_calls": 0,
+  "ai_provider_errors": 0,
+  "ai_timeout_count": 0,
+  "ai_redacted_secrets": 0,
+  "ai_input_tokens": 0,
+  "ai_output_tokens": 0
 }

@@ -45,12 +45,20 @@ def get_language_for_file(path: Path) -> Optional[str]:
 
 
 class Scanner:
-    def __init__(self, target_path: str, ignores: Optional[Set[str]] = None):
+    def __init__(self, target_path: str, ignores: Optional[Set[str]] = None, exclude_paths: Optional[List[str]] = None):
         self.target_path = Path(target_path).resolve()
         self.ignores = ignores or DEFAULT_IGNORES
+        self.exclude_paths = [Path(p).resolve() for p in (exclude_paths or [])]
 
     def is_ignored(self, path: Path) -> bool:
         """Check if a path should be ignored."""
+        try:
+            resolved_path = path.resolve()
+            for ep in self.exclude_paths:
+                if resolved_path == ep or ep in resolved_path.parents:
+                    return True
+        except Exception:
+            pass
         for part in path.parts:
             if part in self.ignores:
                 return True

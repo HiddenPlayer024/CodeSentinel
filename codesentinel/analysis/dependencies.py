@@ -1,6 +1,7 @@
 import re
+from typing import List
 from pathlib import Path
-from codesentinel.models.core import Finding, FindingIdentity, FindingLocation, FindingClassification, FindingContext, FindingRemediation, DataFlowInfo
+from codesentinel.models.core import Finding, FindingIdentity, FindingLocation, FindingClassification, FindingContext, FindingRemediation, DataFlowInfo, Severity
 
 class DependencyAnalyzer:
     def __init__(self):
@@ -30,7 +31,7 @@ class DependencyAnalyzer:
                     ),
                     classification=FindingClassification(
                         category="dependencies",
-                        severity="MEDIUM",
+                        severity=Severity.MEDIUM,
                         confidence=0.9
                     ),
                     context=FindingContext(

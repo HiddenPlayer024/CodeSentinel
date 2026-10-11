@@ -16,6 +16,7 @@ dependencies = [
     "requests>=2.0.0",
     "fastapi>=0.100.0",
     "uvicorn>=0.20.0",
+    "PyYAML>=6.0",
 ]
 
 [project.scripts]
@@ -25,6 +26,7 @@ codesentinel = "codesentinel.cli.main:app"
 dev = [
     "pytest>=7.0.0",
     "httpx>=0.24.0",
+    "hypothesis>=6.0.0",
 ]
 
 [tool.setuptools.packages.find]

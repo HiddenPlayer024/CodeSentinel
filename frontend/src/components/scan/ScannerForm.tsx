@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Search, Loader2, GitBranch, Globe, BrainCircuit } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { scanGithub } from '../../api/codesentinel';
+import { scanGithub, checkHealth, type HealthStatus } from '../../api/codesentinel';
+import { useEffect } from 'react';
 import type { ScanSession } from '../../types/codesentinel';
 
 export function ScannerForm() {
@@ -12,6 +13,11 @@ export function ScannerForm() {
   const [aiProvider, setAiProvider] = useState('mock');
   const [status, setStatus] = useState<'idle' | 'scanning' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
+  const [health, setHealth] = useState<HealthStatus | null>(null);
+
+  useEffect(() => {
+    checkHealth().then(setHealth).catch(console.error);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -120,7 +126,26 @@ export function ScannerForm() {
                 <option value="mock">Mock (Testing)</option>
                 <option value="openai">OpenAI (Requires Backend Env)</option>
                 <option value="ollama">Ollama (Local Only)</option>
+                <option value="llama_cpp">Local TinyLlama (Self-hosted)</option>
               </select>
+              {aiProvider === 'llama_cpp' && (
+                <div className="mt-2 text-xs text-gray-400">
+                  <p>Inference is self-hosted. Code is analyzed securely in your infrastructure.</p>
+                  {health && (
+                    <div className="mt-1">
+                      <span className="font-bold">Model Status: </span>
+                      <span className={
+                        health.model === 'ready' ? 'text-green-400' :
+                        health.model === 'loading' ? 'text-yellow-400' : 'text-red-400'
+                      }>
+                        {health.model === 'ready' ? 'Ready' :
+                         health.model === 'loading' ? 'Loading' : 
+                         health.model_configured ? 'Unavailable' : 'Not Configured'}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           )}
         </div>

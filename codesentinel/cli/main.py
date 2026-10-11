@@ -1,3 +1,4 @@
+from typing import List, Optional
 import typer
 from rich.console import Console
 from rich.table import Table
@@ -24,6 +25,30 @@ def callback():
     """
     pass
 
+baseline_app = typer.Typer(help="Manage baselines")
+app.add_typer(baseline_app, name="baseline")
+
+@baseline_app.command("create")
+def baseline_create(
+    target: str = typer.Argument(..., help="Path to the directory or file to scan"),
+    output: str = typer.Option("baseline.json", "--output", "-o", help="Output file path for the baseline"),
+):
+    """
+    Create a baseline from a scan.
+    """
+    console.print(f"[bold blue]Creating baseline from scan on:[/bold blue] {target}")
+    try:
+        scanner = Scanner(target_path=target)
+        session = scanner.run_scan()
+        from codesentinel.baseline import Baseline
+        baseline = Baseline(output)
+        baseline.save(session.findings)
+        console.print(f"[bold green]Baseline successfully created and saved to {output}[/bold green]")
+    except Exception as e:
+        console.print(f"[bold red]Error creating baseline:[/bold red] {e}")
+        raise typer.Exit(code=2)
+
+
 @app.command()
 def serve(
     host: str = typer.Option("127.0.0.1", "--host", help="Host to bind the API to"),
@@ -42,17 +67,34 @@ def scan(
     format: OutputFormat = typer.Option(OutputFormat.TERMINAL, "--format", "-f", help="Output format"),
     output: str = typer.Option(None, "--output", "-o", help="Output file path (required for json/sarif/html)"),
     ai: bool = typer.Option(False, "--ai", help="Enable AI-assisted verification"),
-    ai_provider: str = typer.Option("mock", "--ai-provider", help="AI provider (mock, ollama, openai)"),
+    ai_provider: str = typer.Option("mock", "--ai-provider", help="AI provider (mock, ollama, openai, llama_cpp)"),
     ai_mode: str = typer.Option("hybrid", "--ai-mode", help="AI mode (verify, discover, hybrid)"),
+    ai_max_files: int = typer.Option(None, "--ai-max-files", help="Maximum files for AI to analyze"),
+    ai_max_review_units: int = typer.Option(None, "--ai-max-review-units", help="Maximum review units"),
+    ai_max_findings: int = typer.Option(None, "--ai-max-findings", help="Maximum total AI findings"),
     fail_on: str = typer.Option("LOW", "--fail-on", help="Minimum severity to exit with non-zero status (INFO, LOW, MEDIUM, HIGH, CRITICAL)"),
+    exclude: List[str] = typer.Option(None, "--exclude", "-e", help="Paths to exclude from the scan"),
+    changed: bool = typer.Option(False, "--changed", help="Enable incremental scan"),
+    base: str = typer.Option("HEAD~1", "--base", help="Git base ref for incremental scan"),
+    head: str = typer.Option("HEAD", "--head", help="Git head ref for incremental scan"),
+    baseline_file: str = typer.Option(None, "--baseline", help="Path to baseline file"),
+    policy_file: str = typer.Option(None, "--policy", help="Path to policy file"),
 ):
     """
     Scan a repository for security vulnerabilities.
     """
+    from codesentinel.config import settings
+    if ai_max_files is not None:
+        settings.AI_MAX_FILES = ai_max_files
+    if ai_max_review_units is not None:
+        settings.AI_MAX_REVIEW_UNITS = ai_max_review_units
+    if ai_max_findings is not None:
+        settings.AI_MAX_TOTAL_AI_FINDINGS = ai_max_findings
+    
     console.print(f"[bold blue]CodeSentinel initializing scan on:[/bold blue] {target}")
     
     try:
-        scanner = Scanner(target_path=target)
+        scanner = Scanner(target_path=target, exclude_paths=exclude)
         session = scanner.run_scan()
         
         # Display the results
@@ -75,16 +117,21 @@ def scan(
         if ai:
             console.print(f"[bold blue]Running AI ({ai_mode}) via {ai_provider}...[/bold blue]")
             from codesentinel.ai.providers import MockProvider, OllamaProvider, OpenAICompatibleProvider
+            from codesentinel.ai.llama_cpp_provider import LlamaCppProvider
             from codesentinel.ai.discovery import AIDiscoveryEngine
             from codesentinel.ai.verifier import AIVerifier
             from codesentinel.analysis.correlator import Correlator
             
             if ai_provider == "mock":
-                provider = MockProvider()
+                import os, json
+                fixtures = json.loads(os.environ.get("MOCK_FIXTURES", "{}"))
+                provider = MockProvider(fixtures=fixtures)
             elif ai_provider == "ollama":
                 provider = OllamaProvider()
             elif ai_provider == "openai":
                 provider = OpenAICompatibleProvider()
+            elif ai_provider == "llama_cpp":
+                provider = LlamaCppProvider()
             else:
                 console.print(f"[bold red]Error:[/bold red] Unknown AI provider '{ai_provider}'")
                 raise typer.Exit(code=2)
@@ -104,7 +151,7 @@ def scan(
                     session.findings = discovered_findings
                 else:
                     correlator = Correlator()
-                    session.findings = correlator.correlate(static_findings, discovered_findings)
+                    session.findings = correlator.correlate(session, static_findings, discovered_findings)
                     
             if ai_mode in ["verify", "hybrid"]:
                 verifier = AIVerifier(provider=provider)
@@ -115,16 +162,58 @@ def scan(
             session.verified_findings_count = sum(1 for f in session.findings if "ai-verified" in f.analysis_source)
 
             console.print("[bold green]AI processing complete.[/bold green]")
+            
+            ai_table = Table(title="AI Telemetry")
+            ai_table.add_column("Metric", style="cyan")
+            ai_table.add_column("Value", style="magenta")
+            ai_table.add_row("Candidates", str(session.ai_candidate_findings))
+            ai_table.add_row("Validated", str(session.ai_valid_findings))
+            ai_table.add_row("Rejected", str(session.ai_rejected_findings))
+            ai_table.add_row("AI-Added", str(session.ai_added_findings))
+            ai_table.add_row("Correlated", str(session.ai_correlated_findings))
+            ai_table.add_row("Duplicates", str(session.ai_duplicate_findings))
+            ai_table.add_row("Provider Errors", str(session.ai_provider_errors))
+            console.print(ai_table)
 
-        # --- Determine Exit Code ---
-        severity_rank = {"INFO": 0, "LOW": 1, "MEDIUM": 2, "HIGH": 3, "CRITICAL": 4}
-        fail_threshold = severity_rank.get(fail_on.upper(), 1)
+        # --- PHASE 7: Baseline & Incremental ---
+        from codesentinel.baseline import Baseline
+        from codesentinel.analysis.incremental import parse_git_diff, categorize_findings
+        from codesentinel.policy import Policy
         
-        has_failing_findings = any(
-            severity_rank.get(f.severity.value, 0) >= fail_threshold 
-            for f in session.findings
-        )
-        exit_code = 1 if has_failing_findings else 0
+        new_findings = session.findings
+        all_findings = session.findings
+        
+        if baseline_file:
+            console.print(f"[bold blue]Applying baseline:[/bold blue] {baseline_file}")
+            baseline = Baseline(baseline_file)
+            baseline.load()
+            all_findings = baseline.apply(all_findings)
+            new_findings = all_findings
+            session.findings = all_findings
+            
+        if changed:
+            console.print(f"[bold blue]Incremental Scan ({base}..{head}):[/bold blue]")
+            changed_files = parse_git_diff(base, head, target)
+            categorized = categorize_findings(all_findings, all_findings, changed_files)
+            new_findings = categorized["new"] + categorized["existing"]
+            # Just keep everything in session.findings or narrow down? The requirement says return error codes strictly based on policy. Policy evaluates (all, new).
+            
+        # --- Determine Exit Code using Policy ---
+        policy = None
+        if policy_file:
+            policy = Policy(policy_file)
+        else:
+            policy = Policy("default")
+            severity_levels = ["INFO", "LOW", "MEDIUM", "HIGH", "CRITICAL"]
+            fail_val = fail_on.upper()
+            if fail_val in severity_levels:
+                idx = severity_levels.index(fail_val)
+                policy.fail_on = severity_levels[idx:]
+            else:
+                policy.fail_on = ["HIGH", "CRITICAL"]
+
+        passed = policy.evaluate(all_findings, new_findings)
+        exit_code = 0 if passed else 1
 
         # --- PHASE 5: Reporting ---
         if format != OutputFormat.TERMINAL:
@@ -158,8 +247,10 @@ def scan(
                     console.print(f"  [bold blue]{ai_title}:[/bold blue] {ai_text}")
                 console.print(f"  [bold]Fix :[/bold] {f.remediation_text}")
                 
-            if not has_failing_findings:
-                console.print(f"\n[bold green]Scan completed. Findings found, but none meet the failure threshold ({fail_on}).[/bold green]")
+            if passed:
+                console.print(f"\n[bold green]Scan completed. Findings found, but none meet the failure threshold.[/bold green]")
+            else:
+                console.print(f"\n[bold red]Scan failed policy check.[/bold red]")
             raise typer.Exit(code=exit_code)
         else:
             console.print("\n[bold green]No vulnerabilities found! Scan successful.[/bold green]")

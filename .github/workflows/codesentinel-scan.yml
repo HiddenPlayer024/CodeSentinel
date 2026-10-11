@@ -32,7 +32,7 @@ jobs:
 
     - name: Run CodeSentinel Scan (SARIF output)
       run: |
-        codesentinel scan . -f sarif -o codesentinel-results.sarif --fail-on CRITICAL
+        codesentinel scan . -e examples/security-corpus -e examples/vulnerable-python-app -e tests/rules/python/vulnerable -f sarif -o codesentinel-results.sarif --fail-on CRITICAL
         
     - name: Run CodeSentinel AI Verification (Optional)
       if: env.OPENAI_API_KEY != ''
@@ -40,10 +40,11 @@ jobs:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       run: |
         # This step overwrites the SARIF with AI-verified results if API key is present
-        codesentinel scan . -f sarif -o codesentinel-results.sarif --fail-on CRITICAL --ai --ai-provider openai
+        codesentinel scan . -e examples/security-corpus -e examples/vulnerable-python-app -e tests/rules/python/vulnerable -f sarif -o codesentinel-results.sarif --fail-on CRITICAL --ai --ai-provider openai
       continue-on-error: true
 
     - name: Upload SARIF to GitHub Security tab
+      if: always()
       uses: github/codeql-action/upload-sarif@v3
       with:
         sarif_file: codesentinel-results.sarif

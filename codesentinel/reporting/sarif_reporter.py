@@ -3,6 +3,7 @@ from pathlib import Path
 
 from codesentinel.models.core import ScanSession, Severity
 from .base import BaseReporter
+from codesentinel.analysis.fingerprint import generate_fingerprint
 
 class SarifReporter(BaseReporter):
     """Generates a SARIF v2.1.0 formatted report."""
@@ -44,28 +45,49 @@ class SarifReporter(BaseReporter):
                 else:
                     msg_text += f"\n\nAI Note (Likely False Positive): {f.ai_assessment.false_positive_reason}"
                     
-            results.append({
+            fp = f.identity.fingerprint
+            if not fp and f.location:
+                fp = generate_fingerprint(session.project.path, f.location.file, f.location.line_start, f.location.line_end, f.rule_id, f.classification.category)
+            if not fp:
+                fp = f.identity.id
+                
+            result = {
                 "ruleId": f.rule_id,
-                "level": self._map_severity(f.severity),
+                "level": self._map_severity(f.classification.severity),
                 "message": {
                     "text": msg_text
                 },
-                "locations": [{
+                "partialFingerprints": {
+                    "identity": fp
+                },
+                "properties": {
+                    "analysis_source": f.analysis_source,
+                    "relationship": f.relationship,
+                    "confidence": f.classification.confidence
+                }
+            }
+            
+            if f.location:
+                # Make it repository-relative if possible
+                try:
+                    uri = str(Path(f.location.file).relative_to(session.project.path))
+                except ValueError:
+                    uri = f.location.file
+                    
+                result["locations"] = [{
                     "physicalLocation": {
                         "artifactLocation": {
-                            "uri": f.location.file
+                            "uri": uri,
+                            "uriBaseId": "%SRCROOT%"
                         },
                         "region": {
                             "startLine": f.location.line_start,
-                            "endLine": f.location.line_end,
-                            "snippet": {
-                                "text": f.context.snippet
-                            }
+                            "endLine": f.location.line_end
                         }
                     }
                 }]
-            })
-            
+                
+            results.append(result)            
         sarif_log = {
             "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
             "version": "2.1.0",

@@ -6,3 +6,6 @@ __pycache__/
 dist/
 build/
 output/
+mock_calls.log
+/models/
+*_results.json

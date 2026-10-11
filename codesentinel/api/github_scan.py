@@ -71,9 +71,13 @@ class GitHubArchiveAcquirer:
             
         # Basic sanity check on owner/repo lengths and characters
         # GitHub usernames are max 39 chars, alphanumeric and hyphens.
-        # Repos are max 100 chars. We do a loose but safe check.
+        # Repos are max 100 chars.
+        import re
         if not owner or not repo or len(owner) > 100 or len(repo) > 100:
-            raise InvalidGitHubURLError("Invalid owner or repository name")
+            raise InvalidGitHubURLError("Invalid owner or repository length")
+            
+        if not re.match(r"^[a-zA-Z0-9_.-]+$", owner) or not re.match(r"^[a-zA-Z0-9_.-]+$", repo):
+            raise InvalidGitHubURLError("Invalid characters in owner or repository name")
             
         # Reject if path strongly suggests it's an issue/PR/wiki page rather than repo root
         if len(path_parts) > 2 and path_parts[2] in ("issues", "pull", "releases", "actions", "wiki"):
@@ -89,7 +93,7 @@ class GitHubArchiveAcquirer:
         api_url = f"https://api.github.com/repos/{owner}/{repo}"
         try:
             response = requests.get(
-                api_url, 
+                f"https://api.github.com/repos/{owner}/{repo}", 
                 timeout=(GitHubScanLimits.CONNECT_TIMEOUT, GitHubScanLimits.READ_TIMEOUT),
                 headers={"Accept": "application/vnd.github.v3+json"}
             )
@@ -120,7 +124,7 @@ class GitHubArchiveAcquirer:
         
         try:
             with requests.get(
-                archive_url, 
+                f"https://github.com/{owner}/{repo}/archive/refs/heads/{branch}.zip", 
                 stream=True, 
                 timeout=(GitHubScanLimits.CONNECT_TIMEOUT, GitHubScanLimits.READ_TIMEOUT)
             ) as response:

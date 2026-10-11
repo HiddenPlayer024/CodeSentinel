@@ -61,7 +61,10 @@ Sanitizers: {', '.join(finding.data_flow.sanitizers) if finding.data_flow.saniti
             prompt = self.build_prompt(finding)
             response = self.provider.generate_response(prompt, system_prompt=SYSTEM_PROMPT)
             
-            if not response:
+            if not response or response.get("_error"):
+                if response and response.get("_error") == "timeout":
+                    session.ai_timeout_count += 1
+                session.ai_provider_errors += 1
                 continue # API failed, fallback to static analysis
                 
             finding.analysis_source.append("ai-verified")

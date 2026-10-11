@@ -11,6 +11,7 @@ from codesentinel.core.scanner import Scanner
 from codesentinel.models.core import ScanSession
 from codesentinel.ai.verifier import AIVerifier
 from codesentinel.ai.providers import MockProvider, OllamaProvider, OpenAICompatibleProvider
+from codesentinel.ai.llama_cpp_provider import LlamaCppProvider
 from codesentinel.api.github_scan import (
     GitHubArchiveAcquirer, 
     InvalidGitHubURLError, 
@@ -24,7 +25,7 @@ logger = logging.getLogger(__name__)
 app = FastAPI(
     title="CodeSentinel API",
     description="AI-assisted static analysis API",
-    version="0.1.0"
+    version="2.2.0"
 )
 
 # CORS Configuration
@@ -39,11 +40,25 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+from pydantic import BaseModel, field_validator
+
 class ScanRequest(BaseModel):
     target: str
     ai: bool = False
     ai_provider: str = "mock"
     ai_mode: str = "hybrid"
+
+    @field_validator('ai_provider')
+    def validate_ai_provider(cls, v):
+        if v not in ('mock', 'ollama', 'openai', 'llama_cpp'):
+            raise ValueError("ai_provider must be mock, ollama, openai, or llama_cpp")
+        return v
+
+    @field_validator('ai_mode')
+    def validate_ai_mode(cls, v):
+        if v not in ('verify', 'discover', 'hybrid', 'off'):
+            raise ValueError("ai_mode must be verify, discover, hybrid, or off")
+        return v
 
 class GitHubScanRequest(BaseModel):
     repository_url: str
@@ -52,11 +67,23 @@ class GitHubScanRequest(BaseModel):
     ai_provider: str = "mock"
     ai_mode: str = "hybrid"
 
+    @field_validator('ai_provider')
+    def validate_ai_provider(cls, v):
+        if v not in ('mock', 'ollama', 'openai', 'llama_cpp'):
+            raise ValueError("ai_provider must be mock, ollama, openai, or llama_cpp")
+        return v
+
+    @field_validator('ai_mode')
+    def validate_ai_mode(cls, v):
+        if v not in ('verify', 'discover', 'hybrid', 'off'):
+            raise ValueError("ai_mode must be verify, discover, hybrid, or off")
+        return v
+
 @app.get("/")
 def read_root():
     return {
         "name": "CodeSentinel API",
-        "version": "0.1.0",
+        "version": "2.2.0",
         "status": "online",
         "docs": "/docs",
         "health": "/health",
@@ -65,7 +92,50 @@ def read_root():
 
 @app.get("/health")
 def health_check():
-    return {"status": "healthy"}
+    import os
+    import requests
+    
+    status_info = {
+        "api": "online",
+        "model": "unavailable",
+        "model_configured": False
+    }
+    
+    base_url = os.environ.get("LOCAL_LLM_BASE_URL")
+    if base_url:
+        status_info["model_configured"] = True
+        # Base url usually looks like http://127.0.0.1:8080/v1
+        # Health endpoint for llama.cpp is typically at the root /health
+        if base_url.endswith("/v1"):
+            health_url = base_url[:-3] + "/health"
+        else:
+            health_url = base_url.rstrip("/") + "/health"
+            
+        try:
+            resp = requests.get(health_url, timeout=2, allow_redirects=False)
+            if resp.status_code == 200:
+                try:
+                    data = resp.json()
+                    if isinstance(data, dict):
+                        if data.get("status") == "ok":
+                            status_info["model"] = "ready"
+                        elif data.get("status") == "loading model":
+                            status_info["model"] = "loading"
+                        else:
+                            status_info["model"] = "unavailable"
+                    else:
+                        status_info["model"] = "unavailable"
+                except Exception:
+                    status_info["model"] = "unavailable"
+            elif resp.status_code == 503:
+                status_info["model"] = "loading"
+            else:
+                status_info["model"] = "unavailable"
+        except Exception:
+            status_info["model"] = "unavailable"
+            
+    return status_info
+
 
 def _run_scanner_and_ai(target_path: Path, ai: bool, ai_provider: str, ai_mode: str = "hybrid") -> ScanSession:
     # Always run static scanner unless we are explicitly skipping it or only discovering
@@ -82,6 +152,8 @@ def _run_scanner_and_ai(target_path: Path, ai: bool, ai_provider: str, ai_mode: 
             provider = OllamaProvider()
         elif ai_provider == "openai":
             provider = OpenAICompatibleProvider()
+        elif ai_provider == "llama_cpp":
+            provider = LlamaCppProvider()
         else:
             raise HTTPException(status_code=400, detail=f"Unknown AI provider '{ai_provider}'")
             
@@ -98,10 +170,11 @@ def _run_scanner_and_ai(target_path: Path, ai: bool, ai_provider: str, ai_mode: 
             discovered_findings = discovery_engine.run_discovery(session)
             
             if ai_mode == "discover":
-                session.findings = discovered_findings
+                # Always preserve static findings. Just append discovered findings.
+                session.findings = static_findings + discovered_findings
             else:
                 correlator = Correlator()
-                session.findings = correlator.correlate(static_findings, discovered_findings)
+                session.findings = correlator.correlate(session, static_findings, discovered_findings)
                 
         if ai_mode in ["verify", "hybrid"]:
             verifier = AIVerifier(provider=provider)
